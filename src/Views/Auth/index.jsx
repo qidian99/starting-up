@@ -2,16 +2,29 @@ import React, { Component } from "react";
 import { compose } from "redux";
 import { connect } from "react-redux";
 import gql from "graphql-tag";
-import { graphql } from "react-apollo";
-import { Link, withRouter } from "react-router-dom";
-import Cookies from "js-cookie";
-import { store, persistor } from "../../reducers";
+import { useSubscription, useQuery } from "@apollo/client";
 
 
 
-const Auth = (props) => {
-  console.log(props.users);
-  return (<div>This is the Auth</div>)
+
+const CustomSubscription = () => {
+  const {
+    data,
+    loading,
+  } = useSubscription(CUSTOM_SUBSCRIPTION, { variables: {} });
+  console.log("CustomSubscription", data);
+  return <h4>subscription: {!loading && data.onCustomSubscription}</h4>;
+};
+
+
+export default (props) => {
+
+  const { loading, data } = useQuery(USERS_QUERY);
+  console.log(data);
+  return (<div>
+    <p>This is the Auth</p>
+    <CustomSubscription></CustomSubscription>
+    </div>)
 };
 
 
@@ -25,6 +38,12 @@ const SIGN_IN_MUTATION = gql`
       }
       jwt
     }
+  }
+`;
+
+const CUSTOM_SUBSCRIPTION = gql`
+  subscription custom {
+    onCustomSubscription(channel: "test")
   }
 `;
 
@@ -45,25 +64,3 @@ function mapStateToProps(state, ownProps) {
   const { game } = state;
   return {};
 }
-
-export default compose(
-  withRouter,
-  connect(mapStateToProps, (dispatch) => ({
-    loginUser: (user) =>
-      dispatch({
-        type: "LOGIN_USER",
-        user,
-      }),
-  })),
-  graphql(USERS_QUERY, {
-    props: ({ data: { users, loading } }) => ({
-      loading,
-      users,
-    }),
-  }),
-  graphql(SIGN_IN_MUTATION, {
-    props: ({ mutate }) => ({
-      login: (variables) => mutate({ variables }),
-    }),
-  })
-)(Auth);
