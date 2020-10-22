@@ -13,41 +13,33 @@ import {
   RouteComponentProps,
 } from "react-router-dom";
 
-import { ToastProvider, DefaultToast } from "react-toast-notifications";
+import Unauthorized from "./views/Unauthorized";
 
-import { Provider } from "react-redux";
-import { PersistGate } from "redux-persist/integration/react";
-
-import { store, persistor } from "./reducers";
 import "antd/dist/antd.css";
 import "./App.less";
 
 // Views
 import Dashboard from "./views/Dashboard";
 import Auth from "./views/Auth";
-import { appTheme } from "./theme";
-import { ThemeProvider } from "@material-ui/core";
+
+import ProtectedRoute from "./components/ProtectedRoute";
+import AuthRoute from "./components/AuthRoute";
+import { store } from "./reducers";
 
 function App(props) {
-  // return (<Auth></Auth>);
+  const user = store.getState().auth.user;
+  console.log('In App', { user })
   return (
-    <Provider store={store}>
-      <PersistGate loading={null} persistor={persistor}>
-        <ThemeProvider theme={appTheme}>
-          <ToastProvider
-            autoDismiss={false}
-            autoDismissTimeout={10000}
-            transitionDuration={200}
-            placement="top-center"
-          >
-            <Switch>
-              <Route exact path="/" component={Auth} {...props} />
-              <Route exact path="/dashboard" component={Dashboard} {...props} />
-            </Switch>
-          </ToastProvider>
-        </ThemeProvider>
-      </PersistGate>
-    </Provider>
+    <Switch>
+      <AuthRoute exact path="/" user={user} component={Auth} />
+      <ProtectedRoute
+        exact
+        path="/dashboard"
+        user={user}
+        component={Dashboard}
+      />
+      <Route exact path="/unauthorized" component={Unauthorized} />
+    </Switch>
   );
 }
 

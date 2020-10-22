@@ -17,7 +17,8 @@ import { useToasts } from "react-toast-notifications";
 
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
-import { AUTH_FORM_MODE } from "../../util";
+import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
+import { useSelector, useDispatch } from "react-redux";
 
 const userStyles = makeStyles((theme) => ({
   title: {
@@ -56,7 +57,7 @@ const getLoginPrompt = (mode) => {
       return "Already have an account?";
     case AUTH_FORM_MODE.LOGIN:
     default:
-      return "Not have an account?";
+      return "Don't have an account?";
   }
 };
 
@@ -79,15 +80,26 @@ const AuthForm = () => {
   const [login, { data: loginResponse }] = useMutation(LOGIN_MUTATION);
   const [signup, { data: signupResponse }] = useMutation(SIGNUP_MUTATION);
   const [error, setError] = useState(null);
+
+  const auth = useSelector((state) => state.auth);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    console.log(auth);
+    return () => {};
+  }, [auth]);
+
   const onButtonClick = useCallback(() => {
     if (mode === AUTH_FORM_MODE.LOGIN) {
-      login({ variables: { username: email, password } }).catch((e) =>
-        setError("Login failed")
-      );
+      login({ variables: { username: email, password } }).catch((e) => {
+        console.log(e);
+        setError("Login failed");
+      });
     } else {
-      signup({ variables: { username: email, email, password } }).catch((e) =>
-        setError("Sign up failed")
-      );
+      signup({ variables: { username: email, email, password } }).catch((e) => {
+        console.log(e);
+        setError("Sign up failed");
+      });
     }
   }, [login, signup, mode, email, password]);
   const onActionClick = useCallback(() => {
@@ -100,8 +112,17 @@ const AuthForm = () => {
 
   useEffect(() => {
     console.log("Auth form responses", { loginResponse, signupResponse });
+    const response = loginResponse || loginResponse;
+    if (!response) return;
+    if (loginResponse) {
+      const {
+        login: { user, jwt },
+      } = loginResponse;
+      dispatch({ type: AUTH_ACTIONS.LOGIN, user, jwt });
+    }
+
     return () => {};
-  }, [loginResponse, signupResponse]);
+  }, [loginResponse, signupResponse, dispatch]);
 
   useEffect(() => {
     if (error) {

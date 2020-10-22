@@ -5,28 +5,48 @@ import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
 import { onError } from "@apollo/client/link/error";
-
-import { CookiesProvider, withCookies } from "react-cookie";
-
-import { split, HttpLink, ApolloClient, ApolloProvider  } from "@apollo/client";
+import { store, persistor } from "./reducers";
+import { appTheme } from "./theme";
+import { ThemeProvider } from "@material-ui/core";
+import {
+  split,
+  HttpLink,
+  ApolloClient,
+  ApolloProvider,
+  ApolloLink,
+} from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 
 import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { WebSocketLink } from "@apollo/client/link/ws";
+import { ToastProvider, DefaultToast } from "react-toast-notifications";
+
+import { Provider } from "react-redux";
+import { PersistGate } from "redux-persist/integration/react";
 
 // Create an http link:
 const httpLink = new HttpLink({
   uri: "http://localhost:1337/graphql",
 });
 
+const authLink = setContext((_, { headers }) => {
+  const jwt = store.getState().auth.jwt;
+  return {
+    headers: {
+      ...headers,
+      Authorization: jwt ? `Bearer ${jwt}` : "",
+    },
+  };
+});
+
 const wsLink = new WebSocketLink({
   uri: `ws://localhost:1337/graphql`,
   options: {
     reconnect: true,
-    // connectionParams: {
-    //   authToken: user.authToken,
-    // },
+    connectionParams: {
+      authToken: store.getState().auth.jwt,
+    },
   },
 });
 
@@ -51,38 +71,42 @@ const cache = new InMemoryCache({
   dataIdFromObject: (object) => object[`${object.__typename.toLowerCase()}Id`],
 });
 
-const authLink = setContext((_, { headers }) => ({
-  headers: {
-    ...headers,
-    Authorization: sessionStorage.getItem("Authorization")
-      ? `Bearer ${sessionStorage.getItem("Authorization")}`
-      : "",
-    // Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjAyOTA4OTk5LCJleHAiOjE2MDU1MDA5OTl9.4rlNUMqceZHsSnkQqSpP2mTX92Kn6Q7PzoCyNHP--xI',
-  },
-}));
-
-// const link = onError(({ graphQLErrors, networkError }) => {
-//   if (graphQLErrors)
-//     graphQLErrors.map(({ message, locations, path }) =>
-//       console.log(
-//         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
-//       ),
-//     );
-
-//   if (networkError) console.log(`[Network error]: ${networkError}`);
-// });
-
 const client = new ApolloClient({
-  link: authLink.concat(splitLink),
+  link: ApolloLink.from([
+    onError(({ graphQLErrors, networkError }) => {
+      if (graphQLErrors) {
+        graphQLErrors.forEach(({ message, locations, path }) =>
+          console.log(
+            `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
+          )
+        );
+      }
+      if (networkError) console.log(`[Network error]: ${networkError}`);
+    }),
+    authLink.concat(splitLink),
+  ]),
   cache,
 });
 
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
-      <BrowserRouter>
-        <App />
-      </BrowserRouter>
+      <Provider store={store}>
+        <PersistGate loading={null} persistor={persistor}>
+          <ThemeProvider theme={appTheme}>
+            <ToastProvider
+              autoDismiss={true}
+              autoDismissTimeout={2000}
+              transitionDuration={200}
+              placement="top-center"
+            >
+              <BrowserRouter>
+                <App />
+              </BrowserRouter>
+            </ToastProvider>
+          </ThemeProvider>
+        </PersistGate>
+      </Provider>
     </ApolloProvider>
   </React.StrictMode>,
   document.getElementById("root")
