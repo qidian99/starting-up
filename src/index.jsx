@@ -4,6 +4,7 @@ import "./index.css";
 import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import { BrowserRouter } from "react-router-dom";
+import { onError } from "@apollo/client/link/error";
 
 import { CookiesProvider, withCookies } from "react-cookie";
 
@@ -59,6 +60,17 @@ const authLink = setContext((_, { headers }) => ({
     // Authorization: 'Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZCI6MiwiaWF0IjoxNjAyOTA4OTk5LCJleHAiOjE2MDU1MDA5OTl9.4rlNUMqceZHsSnkQqSpP2mTX92Kn6Q7PzoCyNHP--xI',
   },
 }));
+
+// const link = onError(({ graphQLErrors, networkError }) => {
+//   if (graphQLErrors)
+//     graphQLErrors.map(({ message, locations, path }) =>
+//       console.log(
+//         `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`,
+//       ),
+//     );
+
+//   if (networkError) console.log(`[Network error]: ${networkError}`);
+// });
 
 const client = new ApolloClient({
   link: authLink.concat(splitLink),

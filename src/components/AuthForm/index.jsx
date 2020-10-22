@@ -1,4 +1,4 @@
-import React, { Fragment, useCallback, useState } from "react";
+import React, { Fragment, useCallback, useEffect, useState } from "react";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
 import {
@@ -13,7 +13,9 @@ import {
   makeStyles,
   Button,
 } from "@material-ui/core";
-import { useMutation, gql } from "@apollo/client";
+import { useToasts } from "react-toast-notifications";
+
+import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
 import { AUTH_FORM_MODE } from "../../util";
 
@@ -56,7 +58,7 @@ const getLoginPrompt = (mode) => {
     default:
       return "Not have an account?";
   }
-}
+};
 
 const getLoginAction = (mode) => {
   switch (mode) {
@@ -68,29 +70,45 @@ const getLoginAction = (mode) => {
   }
 };
 
-const LoginForm = ({}) => {
+const AuthForm = () => {
   const classes = userStyles();
+  const { addToast } = useToasts();
   const [mode, setMode] = useState(AUTH_FORM_MODE.LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [login, { data: loginResponse }] = useMutation(LOGIN_MUTATION);
   const [signup, { data: signupResponse }] = useMutation(SIGNUP_MUTATION);
+  const [error, setError] = useState(null);
   const onButtonClick = useCallback(() => {
     if (mode === AUTH_FORM_MODE.LOGIN) {
-      login({ variables: { username: email, password } });
+      login({ variables: { username: email, password } }).catch((e) =>
+        setError("Login failed")
+      );
     } else {
-      signup({ variables: { username: email, email, password } });
+      signup({ variables: { username: email, email, password } }).catch((e) =>
+        setError("Sign up failed")
+      );
     }
   }, [login, signup, mode, email, password]);
-;
-const onActionClick = useCallback(() => {
-  if (mode === AUTH_FORM_MODE.LOGIN) {
-    setMode(AUTH_FORM_MODE.SIGNUP);
-  } else {
-    setMode(AUTH_FORM_MODE.LOGIN);
-  }
-}, [mode]);
-  console.log("LoginForm", loginResponse);
+  const onActionClick = useCallback(() => {
+    if (mode === AUTH_FORM_MODE.LOGIN) {
+      setMode(AUTH_FORM_MODE.SIGNUP);
+    } else {
+      setMode(AUTH_FORM_MODE.LOGIN);
+    }
+  }, [mode]);
+
+  useEffect(() => {
+    console.log("Auth form responses", { loginResponse, signupResponse });
+    return () => {};
+  }, [loginResponse, signupResponse]);
+
+  useEffect(() => {
+    if (error) {
+      addToast(error, { appearance: "error", onDismiss: setError(null) });
+    }
+    return () => {};
+  }, [addToast, error]);
 
   return (
     <Box
@@ -136,9 +154,9 @@ const onActionClick = useCallback(() => {
         alignSelf="flex-end"
         marginTop={1}
       >
-        <Typography variant="span">{getLoginPrompt(mode)}</Typography>
+        <Typography>{getLoginPrompt(mode)}</Typography>
         <Box onClick={onActionClick}>
-          <Typography className={classes.action} variant="span" color="primary">
+          <Typography className={classes.action} color="primary">
             {getLoginAction(mode)}
           </Typography>
         </Box>
@@ -147,4 +165,4 @@ const onActionClick = useCallback(() => {
   );
 };
 
-export default LoginForm;
+export default AuthForm;
