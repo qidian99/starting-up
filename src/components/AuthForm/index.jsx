@@ -41,95 +41,16 @@ const userStyles = makeStyles((theme) => ({
   },
 }));
 
-const getLoginButtonText = (mode) => {
-  switch (mode) {
-    case AUTH_FORM_MODE.SIGNUP:
-      return "SIGNUP";
-    case AUTH_FORM_MODE.LOGIN:
-    default:
-      return "Login";
-  }
-};
-
-const getLoginPrompt = (mode) => {
-  switch (mode) {
-    case AUTH_FORM_MODE.SIGNUP:
-      return "Already have an account?";
-    case AUTH_FORM_MODE.LOGIN:
-    default:
-      return "Don't have an account?";
-  }
-};
-
-const getLoginAction = (mode) => {
-  switch (mode) {
-    case AUTH_FORM_MODE.SIGNUP:
-      return "Login Now";
-    case AUTH_FORM_MODE.LOGIN:
-    default:
-      return "Register Now";
-  }
-};
-
-const AuthForm = () => {
+const AuthForm = ({
+  onButtonClick,
+  onActionClick,
+  buttonText,
+  loginPrompt,
+  loginActionText,
+}) => {
   const classes = userStyles();
-  const { addToast } = useToasts();
-  const [mode, setMode] = useState(AUTH_FORM_MODE.LOGIN);
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [login, { data: loginResponse }] = useMutation(LOGIN_MUTATION);
-  const [signup, { data: signupResponse }] = useMutation(SIGNUP_MUTATION);
-  const [error, setError] = useState(null);
-
-  const auth = useSelector((state) => state.auth);
-  const dispatch = useDispatch();
-
-  useEffect(() => {
-    console.log(auth);
-    return () => {};
-  }, [auth]);
-
-  const onButtonClick = useCallback(() => {
-    if (mode === AUTH_FORM_MODE.LOGIN) {
-      login({ variables: { username: email, password } }).catch((e) => {
-        console.log(e);
-        setError("Login failed");
-      });
-    } else {
-      signup({ variables: { username: email, email, password } }).catch((e) => {
-        console.log(e);
-        setError("Sign up failed");
-      });
-    }
-  }, [login, signup, mode, email, password]);
-  const onActionClick = useCallback(() => {
-    if (mode === AUTH_FORM_MODE.LOGIN) {
-      setMode(AUTH_FORM_MODE.SIGNUP);
-    } else {
-      setMode(AUTH_FORM_MODE.LOGIN);
-    }
-  }, [mode]);
-
-  useEffect(() => {
-    console.log("Auth form responses", { loginResponse, signupResponse });
-    const response = loginResponse || loginResponse;
-    if (!response) return;
-    if (loginResponse) {
-      const {
-        login: { user, jwt },
-      } = loginResponse;
-      dispatch({ type: AUTH_ACTIONS.LOGIN, user, jwt });
-    }
-
-    return () => {};
-  }, [loginResponse, signupResponse, dispatch]);
-
-  useEffect(() => {
-    if (error) {
-      addToast(error, { appearance: "error", onDismiss: setError(null) });
-    }
-    return () => {};
-  }, [addToast, error]);
 
   return (
     <Box
@@ -161,12 +82,12 @@ const AuthForm = () => {
           variant="outlined"
         />
         <Button
-          onClick={onButtonClick}
+          onClick={onButtonClick(email, password)}
           color="primary"
           variant="contained"
           className={classes.button}
         >
-          {getLoginButtonText(mode)}
+          {buttonText}
         </Button>
       </FormControl>
       <Box
@@ -175,10 +96,10 @@ const AuthForm = () => {
         alignSelf="flex-end"
         marginTop={1}
       >
-        <Typography>{getLoginPrompt(mode)}</Typography>
+        <Typography>{loginPrompt}</Typography>
         <Box onClick={onActionClick}>
           <Typography className={classes.action} color="primary">
-            {getLoginAction(mode)}
+            {loginActionText}
           </Typography>
         </Box>
       </Box>
