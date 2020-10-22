@@ -4,7 +4,8 @@ import { connect } from "react-redux";
 import gql from "graphql-tag";
 import { useSubscription, useQuery } from "@apollo/client";
 import AuthLayout from "../../layouts/AuthLayout";
-
+import AuthForm from "../../components/AuthForm";
+import { useHistory } from "react-router-dom";
 
 
 
@@ -20,12 +21,14 @@ const CustomSubscription = () => {
 
 export default (props) => {
 
-  const { loading, data } = useQuery(USERS_QUERY);
-  console.log(data);
+  // const { loading, data } = useQuery(USERS_QUERY);
+  // console.log(data);
+
+  const history = useHistory();
+  // history.push("/dashboard");
   return (
     <AuthLayout>
-      <p>This is the Auth</p>
-      <CustomSubscription></CustomSubscription>
+      <AuthForm />
     </AuthLayout>
   );
 };
