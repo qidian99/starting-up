@@ -106,11 +106,28 @@ const forumReducer = (state = DEFAULT_FORUM_STATE, action) => {
   }
 };
 
+const DEFAULT_GAME_STATE = {
+  width: -1,
+  height: -1,
+  users: [],
+  name: [],
+}
+const gameReducer = (state = DEFAULT_GAME_STATE, action) => {
+  switch (action.type) {
+    case 'GAME_START': {
+      const { name, width, height, users } = action;
+      return {
+        ...state,
+        name, width, height, users,
+      };
+    }
+    default:
+      return state;
+  }
+};
+
 const rootReducer = combineReducers({
-  auth: authReducer,
-  network: networkReducer,
-  resource: resourceReducer,
-  forum: forumReducer,
+  game: gameReducer,
 });
 
 const persistConfig = {
