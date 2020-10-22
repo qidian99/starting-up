@@ -3,6 +3,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import gql from "graphql-tag";
 import { useSubscription, useQuery } from "@apollo/client";
+import AuthLayout from "../../layouts/AuthLayout";
 
 
 
@@ -21,10 +22,12 @@ export default (props) => {
 
   const { loading, data } = useQuery(USERS_QUERY);
   console.log(data);
-  return (<div>
-    <p>This is the Auth</p>
-    <CustomSubscription></CustomSubscription>
-    </div>)
+  return (
+    <AuthLayout>
+      <p>This is the Auth</p>
+      <CustomSubscription></CustomSubscription>
+    </AuthLayout>
+  );
 };
 
 

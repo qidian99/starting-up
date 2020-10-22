@@ -23,30 +23,29 @@ import "antd/dist/antd.css";
 import "./App.less";
 
 // Views
-import Dashboard from "./Views/Dashboard";
-import Auth from "./Views/Auth";
+import Dashboard from "./views/Dashboard";
+import Auth from "./views/Auth";
+import { appTheme } from "./theme";
+import { ThemeProvider } from "@material-ui/core";
 
 function App(props) {
   // return (<Auth></Auth>);
   return (
     <Provider store={store}>
       <PersistGate loading={null} persistor={persistor}>
-        <ToastProvider
-          autoDismiss={false}
-          autoDismissTimeout={10000}
-          transitionDuration={200}
-          placement="top-center"
-        >
-          <Switch>
-            <Route exact path="/" component={Auth} {...props} />
-            <Route
-              exact
-              path="/dashboard"
-              component={Dashboard}
-              {...props}
-            />
-          </Switch>
-        </ToastProvider>
+        <ThemeProvider theme={appTheme}>
+          <ToastProvider
+            autoDismiss={false}
+            autoDismissTimeout={10000}
+            transitionDuration={200}
+            placement="top-center"
+          >
+            <Switch>
+              <Route exact path="/" component={Auth} {...props} />
+              <Route exact path="/dashboard" component={Dashboard} {...props} />
+            </Switch>
+          </ToastProvider>
+        </ThemeProvider>
       </PersistGate>
     </Provider>
   );
