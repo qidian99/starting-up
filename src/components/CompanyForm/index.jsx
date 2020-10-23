@@ -6,6 +6,7 @@ import React, {
   useState,
 } from "react";
 import PropTypes from "prop-types";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -21,6 +22,7 @@ import {
   makeStyles,
   Button,
   Grid,
+  Tooltip,
 } from "@material-ui/core";
 import { useToasts } from "react-toast-notifications";
 
@@ -29,6 +31,7 @@ import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
 import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
 import { useSelector, useDispatch } from "react-redux";
 import { STRATEGY_ERROR_TEXT } from "../../util/game";
+import StrategyItem from "./StrategyItem";
 
 const userStyles = makeStyles((theme) => ({
   root: {
@@ -54,6 +57,14 @@ const userStyles = makeStyles((theme) => ({
   action: {
     textDecoration: "underline",
     cursor: "pointer",
+  },
+  strategyGrid: {
+    position: "relative",
+  },
+  infoIcon: {
+    position: "absolute",
+    top: 28,
+    right: 40,
   },
 }));
 
@@ -131,86 +142,66 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
       </Typography>
 
       <Grid container spacing={3} direction="row">
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            value={preseed}
-            onChange={(e) => setPreseed(e.target.value)}
-            className={classes.smallInput}
-            label="Pre-seed"
-            variant="outlined"
-            {...(errors[0]
-              ? {
-                  error: true,
-                  helperText: errors[0],
-                }
-              : {})}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            value={seed}
-            onChange={(e) => setSeed(e.target.value)}
-            className={classes.smallInput}
-            label="Seed round"
-            variant="outlined"
-            {...(errors[1]
-              ? {
-                  error: true,
-                  helperText: errors[1],
-                }
-              : {})}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            value={seriesA}
-            onChange={(e) => setSeriesA(e.target.value)}
-            className={classes.smallInput}
-            label="Series A"
-            variant="outlined"
-            {...(errors[2]
-              ? {
-                  error: true,
-                  helperText: errors[2],
-                }
-              : {})}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            value={seriesB}
-            onChange={(e) => setSeriesB(e.target.value)}
-            className={classes.smallInput}
-            label="Series B"
-            variant="outlined"
-            {...(errors[3]
-              ? {
-                  error: true,
-                  helperText: errors[3],
-                }
-              : {})}
-          />
-        </Grid>
-        <Grid item xs={4}>
-          <TextField
-            type="number"
-            value={seriesC}
-            onChange={(e) => setSeriesC(e.target.value)}
-            className={classes.smallInput}
-            label="Series C"
-            variant="outlined"
-            {...(errors[4]
-              ? {
-                  error: true,
-                  helperText: errors[4],
-                }
-              : {})}
-          />
-        </Grid>
+        <StrategyItem
+          value={preseed}
+          onChange={(e) => setPreseed(e.target.value)}
+          label="Pre-seed"
+          tooltip="Market occupancy threshold in pre-seed period after which the company should expand."
+          {...(errors[0]
+            ? {
+                error: true,
+                helperText: errors[0],
+              }
+            : {})}
+        />
+        <StrategyItem
+          value={seed}
+          onChange={(e) => setSeed(e.target.value)}
+          label="Seed round"
+          tooltip="Market occupancy threshold after seed round after which the company should expand."
+          {...(errors[1]
+            ? {
+                error: true,
+                helperText: errors[1],
+              }
+            : {})}
+        />
+        <StrategyItem
+          value={seriesA}
+          onChange={(e) => setSeriesA(e.target.value)}
+          label="Series A"
+          tooltip="Market occupancy threshold after series A after which the company should expand."
+          {...(errors[2]
+            ? {
+                error: true,
+                helperText: errors[2],
+              }
+            : {})}
+        />
+        <StrategyItem
+          value={seriesB}
+          onChange={(e) => setSeriesB(e.target.value)}
+          label="Series B"
+          tooltip="Market occupancy threshold after series B after which the company should expand."
+          {...(errors[3]
+            ? {
+                error: true,
+                helperText: errors[3],
+              }
+            : {})}
+        />
+        <StrategyItem
+          value={seriesC}
+          onChange={(e) => setSeriesC(e.target.value)}
+          label="Series C"
+          tooltip="Market occupancy threshold after series C after which the company should expand."
+          {...(errors[4]
+            ? {
+                error: true,
+                helperText: errors[4],
+              }
+            : {})}
+        />
       </Grid>
     </React.Fragment>
   );
