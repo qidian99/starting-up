@@ -1,0 +1,3 @@
+export const GAME_ACTIONS = {
+  REGISTER_GAME: 'REGISTER_GAME',
+}

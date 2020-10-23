@@ -1,5 +1,7 @@
 import React, { Fragment, useCallback, useEffect, useState } from "react";
 import Radio from "@material-ui/core/Radio";
+import PropTypes from "prop-types";
+
 import RadioGroup from "@material-ui/core/RadioGroup";
 import {
   Input,
@@ -107,4 +109,18 @@ const AuthForm = ({
   );
 };
 
+AuthForm.propTypes = {
+  onButtonClick: PropTypes.func,
+  onActionClick: PropTypes.func,
+  buttonText: PropTypes.string,
+  loginPrompt: PropTypes.string,
+  loginActionText: PropTypes.string,
+};
+AuthForm.defaultProps = {
+  onButtonClick: () => {},
+  onActionClick: () => {},
+  buttonText: "Login",
+  loginPrompt: "Not a user?",
+  loginActionText: "Register",
+};
 export default AuthForm;

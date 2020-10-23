@@ -25,6 +25,7 @@ import Auth from "./views/Auth";
 import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
 import { store } from "./reducers";
+import Company from "./views/Company";
 
 function App(props) {
   const user = store.getState().auth.user;
@@ -37,6 +38,12 @@ function App(props) {
         path="/dashboard"
         user={user}
         component={Dashboard}
+      />
+      <ProtectedRoute
+        exact
+        path="/company"
+        user={user}
+        component={Company}
       />
       <Route exact path="/unauthorized" component={Unauthorized} />
     </Switch>

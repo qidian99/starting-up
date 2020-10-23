@@ -27,9 +27,12 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
 import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
 import { useSelector, useDispatch } from "react-redux";
-import DashboardMenu from "../../components/DashboardMenu";
-
+import CompanyForm from "../../components/CompanyForm";
 
 export default () => {
-  return <AuthLayout><DashboardMenu /></AuthLayout>;
-}
+  return (
+    <AuthLayout>
+      <CompanyForm />
+    </AuthLayout>
+  );
+};

@@ -74,6 +74,7 @@ export default (props) => {
 
   const auth = useSelector((state) => state.auth);
   const dispatch = useDispatch();
+  const history = useHistory();
 
   const [mode, setMode] = useState(AUTH_FORM_MODE.LOGIN);
 
@@ -118,6 +119,7 @@ export default (props) => {
         login: { user, jwt },
       } = loginResponse;
       dispatch({ type: AUTH_ACTIONS.LOGIN, user, jwt });
+      history.push("/dashboard");
     }
 
     return () => {};

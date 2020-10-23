@@ -12,3 +12,11 @@ export const appTheme = createMuiTheme({
     },
   },
 });
+
+export const menuTheme = createMuiTheme({
+  palette: {
+    primary: {
+      main: '#FFF',
+    },
+  },
+});
