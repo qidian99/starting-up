@@ -1,4 +1,10 @@
-import React, { Fragment, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  Fragment,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import PropTypes from "prop-types";
 
 import Radio from "@material-ui/core/Radio";
@@ -22,6 +28,7 @@ import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
 import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
 import { useSelector, useDispatch } from "react-redux";
+import { STRATEGY_ERROR_TEXT } from "../../util/game";
 
 const userStyles = makeStyles((theme) => ({
   root: {
@@ -38,7 +45,7 @@ const userStyles = makeStyles((theme) => ({
     marginBottom: theme.spacing(2),
   },
   smallInput: {
-    width: '100%',
+    width: "100%",
   },
   button: {
     marginTop: theme.spacing(1),
@@ -50,19 +57,16 @@ const userStyles = makeStyles((theme) => ({
   },
 }));
 
-const CompanyForm = ({
-  onButtonClick,
-  buttonText,
-}) => {
+const CompanyForm = ({ onButtonClick, buttonText }) => {
   const classes = userStyles();
   const [name, setName] = useState("");
-  const strategies = useRef(Array(5).fill(null));
-  const setStrategy = useCallback(
-    (index, value) => {
-      strategies.current[index] = value;
-    },
-    [],
-  )
+  const [nameError, setNameError] = useState(null)
+  const [errors, setErrors] = useState(Array(5).fill(null));
+  const [preseed, setPreseed] = useState("");
+  const [seed, setSeed] = useState("");
+  const [seriesA, setSeriesA] = useState("");
+  const [seriesB, setSeriesB] = useState("");
+  const [seriesC, setSeriesC] = useState("");
 
   const LeftPanel = (
     <React.Fragment>
@@ -77,9 +81,40 @@ const CompanyForm = ({
           className={classes.formInput}
           label="Company name"
           variant="outlined"
+          {
+            ...(nameError && {
+              error: true,
+              helperText: nameError,
+            })
+          }
         />
         <Button
-          onClick={onButtonClick(name)}
+          onClick={() => {
+            const strategies = [preseed, seed, seriesA, seriesB, seriesC];
+            let error = false;
+            const newError = Array(5).fill(null);
+
+            if (name.length === 0) {
+              setNameError('Invalid company name.');
+            } else {
+              setNameError(null);
+            }
+
+            strategies.forEach((strategy, index) => {
+              if (strategy === "" || strategy < 0 || strategy > 1) {
+                newError[index] = STRATEGY_ERROR_TEXT;
+                error = true;
+              }
+            });
+
+            setErrors(newError);
+            if (!error) {
+              onButtonClick(
+                name,
+                strategies.map((s) => parseInt(s, 10))
+              );
+            }
+          }}
           color="primary"
           variant="contained"
           className={classes.button}
@@ -99,51 +134,81 @@ const CompanyForm = ({
         <Grid item xs={4}>
           <TextField
             type="number"
-            value={strategies.current[0]}
-            onChange={(e) => setStrategy(0, e.target.value)}
+            value={preseed}
+            onChange={(e) => setPreseed(e.target.value)}
             className={classes.smallInput}
             label="Pre-seed"
             variant="outlined"
+            {...(errors[0]
+              ? {
+                  error: true,
+                  helperText: errors[0],
+                }
+              : {})}
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             type="number"
-            value={strategies.current[1]}
-            onChange={(e) => setStrategy(1, e.target.value)}
+            value={seed}
+            onChange={(e) => setSeed(e.target.value)}
             className={classes.smallInput}
             label="Seed round"
             variant="outlined"
+            {...(errors[1]
+              ? {
+                  error: true,
+                  helperText: errors[1],
+                }
+              : {})}
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             type="number"
-            value={strategies.current[2]}
-            onChange={(e) => setStrategy(2, e.target.value)}
+            value={seriesA}
+            onChange={(e) => setSeriesA(e.target.value)}
             className={classes.smallInput}
             label="Series A"
             variant="outlined"
+            {...(errors[2]
+              ? {
+                  error: true,
+                  helperText: errors[2],
+                }
+              : {})}
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             type="number"
-            value={strategies.current[3]}
-            onChange={(e) => setStrategy(3, e.target.value)}
+            value={seriesB}
+            onChange={(e) => setSeriesB(e.target.value)}
             className={classes.smallInput}
             label="Series B"
             variant="outlined"
+            {...(errors[3]
+              ? {
+                  error: true,
+                  helperText: errors[3],
+                }
+              : {})}
           />
         </Grid>
         <Grid item xs={4}>
           <TextField
             type="number"
-            value={strategies.current[4]}
-            onChange={(e) => setStrategy(4, e.target.value)}
+            value={seriesC}
+            onChange={(e) => setSeriesC(e.target.value)}
             className={classes.smallInput}
             label="Series C"
             variant="outlined"
+            {...(errors[4]
+              ? {
+                  error: true,
+                  helperText: errors[4],
+                }
+              : {})}
           />
         </Grid>
       </Grid>
@@ -168,7 +233,7 @@ CompanyForm.propTypes = {
 };
 CompanyForm.defaultProps = {
   onButtonClick: () => {},
-  buttonText: 'Start Up',
+  buttonText: "Start Up",
 };
 
 export default CompanyForm;

@@ -30,9 +30,15 @@ import { useSelector, useDispatch } from "react-redux";
 import CompanyForm from "../../components/CompanyForm";
 
 export default () => {
+  const onButtonClick = useCallback(
+    (name, strategies) => {
+      console.log(name, strategies)
+    },
+    [],
+  )
   return (
     <AuthLayout>
-      <CompanyForm />
+      <CompanyForm onButtonClick={onButtonClick} />
     </AuthLayout>
   );
 };
