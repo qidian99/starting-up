@@ -26,6 +26,7 @@ import ProtectedRoute from "./components/ProtectedRoute";
 import AuthRoute from "./components/AuthRoute";
 import { store } from "./reducers";
 import Company from "./views/Company";
+import SimpleGame from "./views/SimpleGame";
 
 function App(props) {
   const user = store.getState().auth.user;
@@ -39,12 +40,8 @@ function App(props) {
         user={user}
         component={Dashboard}
       />
-      <ProtectedRoute
-        exact
-        path="/company"
-        user={user}
-        component={Company}
-      />
+      <ProtectedRoute exact path="/company" user={user} component={Company} />
+      <ProtectedRoute exact path="/simplegame" user={user} component={SimpleGame} />
       <Route exact path="/unauthorized" component={Unauthorized} />
     </Switch>
   );

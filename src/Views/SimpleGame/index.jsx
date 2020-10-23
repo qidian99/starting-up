@@ -1,0 +1,34 @@
+import { compose } from "redux";
+import { connect } from "react-redux";
+import gql from "graphql-tag";
+import { useSubscription, useQuery } from "@apollo/client";
+import GameLayout from "../../layouts/GameLayout";
+import AuthForm from "../../components/AuthForm";
+import { useHistory } from "react-router-dom";
+
+import React, { Fragment, useCallback, useEffect, useState } from "react";
+import Radio from "@material-ui/core/Radio";
+import RadioGroup from "@material-ui/core/RadioGroup";
+import {
+  Input,
+  InputLabel,
+  FormControl,
+  FormControlLabel,
+  FormHelperText,
+  Box,
+  TextField,
+  Typography,
+  makeStyles,
+  Button,
+} from "@material-ui/core";
+import { useToasts } from "react-toast-notifications";
+
+import { useMutation } from "@apollo/client";
+import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../gql";
+import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
+import { useSelector, useDispatch } from "react-redux";
+import DashboardMenu from "../../components/DashboardMenu";
+
+export default () => {
+  return <GameLayout>GAME</GameLayout>;
+};

@@ -31,3 +31,18 @@ mutation signup($username: String! $password: String!) {
     jwt
   }
 }`;
+
+
+export const REGISTER_COMPANY_MUTATION = gql`
+mutation registerCompany($name: String! $strategies: JSON!) {
+  registerCompany(name: $name strategies: $strategies) {
+    id
+    name
+    user {
+      id
+      email
+    }
+    strategies
+    createdAt
+  }
+}`;
