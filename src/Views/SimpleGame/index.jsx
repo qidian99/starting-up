@@ -35,8 +35,10 @@ import Terrian from "../../components/game/Terrian";
 import GameProgress from "../../components/game/GameProgress";
 import GameStatus from "../../components/game/GameStatus";
 
+import { simpleGameHeight, simpleGameWidth, Game } from 'starting-up-common'
+
 export default () => {
-  const game = useSelector((state) => state.game);
+  const gameState = useSelector((state) => state.game);
   const [createSimpleGame, { data: gameResponse }] = useMutation(
     CREATE_SIMPLE_GAME_MUTATION
   );
@@ -45,9 +47,11 @@ export default () => {
 
   const [gameError, setGameError] = useState(null);
 
+  const [gameInstance, setGameInstance] = useState(null)
+
   useEffect(() => {
-    console.log(game);
-    const { newGame } = game;
+    console.log(gameState);
+    const { newGame, game } = gameState;
 
     if (newGame) {
       createSimpleGame().catch((e) => {
@@ -55,8 +59,20 @@ export default () => {
         setGameError("Simple game creation failed");
       });
     }
-  }, [game, createSimpleGame]);
 
+    if (game) {
+      setGameInstance(new Game(game));
+    }
+
+
+  }, [gameState, createSimpleGame]);
+
+  useEffect(() => {
+    console.log({
+      gameInstance,
+    });
+  }, [gameInstance])
+  
   useEffect(() => {
     console.log(gameResponse);
     if (!gameResponse) return;
