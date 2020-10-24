@@ -11,9 +11,9 @@ import TableRow from "@material-ui/core/TableRow";
 import Paper from "@material-ui/core/Paper";
 import IconButton from "@material-ui/core/IconButton";
 
-import { ReactComponent as CompanyIcon } from "../../assets/buildings.svg";
-import { ReactComponent as RegionIcon } from "../../assets/tiles.svg";
-import { generateRegionRows } from "../../util/game";
+import { ReactComponent as CompanyIcon } from "../../../assets/buildings.svg";
+import { ReactComponent as RegionIcon } from "../../../assets/tiles.svg";
+import { generateRegionRows } from "../../../util/game";
 
 const useStyles = makeStyles((theme) => ({
   table: {

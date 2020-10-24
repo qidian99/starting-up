@@ -31,7 +31,7 @@ import DashboardMenu from "../../components/DashboardMenu";
 
 import { CREATE_SIMPLE_GAME_MUTATION } from "../../gql";
 import { GAME_ACTIONS } from "../../util/game";
-import Terrian from "../../components/Terrian";
+import Terrian from "../../components/game/Terrian";
 
 export default () => {
   const game = useSelector((state) => state.game);

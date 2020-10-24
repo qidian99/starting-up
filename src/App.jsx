@@ -22,8 +22,8 @@ import "./App.less";
 import Dashboard from "./views/Dashboard";
 import Auth from "./views/Auth";
 
-import ProtectedRoute from "./components/ProtectedRoute";
-import AuthRoute from "./components/AuthRoute";
+import ProtectedRoute from "./components/route/ProtectedRoute";
+import AuthRoute from "./components/route/AuthRoute";
 import { store } from "./reducers";
 import Company from "./views/Company";
 import SimpleGame from "./views/SimpleGame";
