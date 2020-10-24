@@ -1,4 +1,5 @@
 export const GAME_ACTIONS = {
+  SET_NEW_GAME: false,
   REGISTER_GAME: 'REGISTER_GAME',
 }
 

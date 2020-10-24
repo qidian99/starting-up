@@ -32,17 +32,33 @@ mutation signup($username: String! $password: String!) {
   }
 }`;
 
+const StrategyFragment = gql`
+fragment StrategyFragment on ComponentCompanyStrategy {
+  id
+  preseed
+  seed
+  seriesA
+  seriesB
+  seriesC
+}
+`
+
 
 export const REGISTER_COMPANY_MUTATION = gql`
-mutation registerCompany($name: String! $strategies: JSON!) {
-  registerCompany(name: $name strategies: $strategies) {
+
+mutation registerCompany($name: String! $strategy: JSON!) {
+  registerCompany(name: $name strategy: $strategy) {
     id
     name
     user {
       id
       email
     }
-    strategies
+    strategy {
+      ...StrategyFragment
+    }
     createdAt
   }
-}`;
+}
+${StrategyFragment}
+`;

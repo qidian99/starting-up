@@ -24,11 +24,16 @@ import {
 import { useToasts } from "react-toast-notifications";
 
 import { useMutation } from "@apollo/client";
-import { LOGIN_MUTATION, REGISTER_COMPANY_MUTATION, SIGNUP_MUTATION } from "../../gql";
+import {
+  LOGIN_MUTATION,
+  REGISTER_COMPANY_MUTATION,
+  SIGNUP_MUTATION,
+} from "../../gql";
 import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
 import { useSelector, useDispatch } from "react-redux";
 import CompanyForm from "../../components/CompanyForm";
 import { COMPANY_ACTIONS } from "../../util/company";
+import { GAME_ACTIONS } from "../../util/game";
 
 export default () => {
   const [error, setError] = useState(null);
@@ -38,20 +43,18 @@ export default () => {
 
   const dispatch = useDispatch();
   const { addToast } = useToasts();
-  const history = useHistory()
+  const history = useHistory();
 
   const onButtonClick = useCallback(
-    (name, strategies) => {
-      console.log(name, strategies)
+    (name, strategy) => {
+      console.log(name, strategy);
       // Register the company
-      registerCompany({ variables: { name, strategies } }).catch((e) => {
+      registerCompany({ variables: { name, strategy } }).catch((e) => {
         setError("Register company failed");
       });
     },
-    [registerCompany],
-  )
-
-
+    [registerCompany]
+  );
 
   useEffect(() => {
     if (error) {
@@ -60,29 +63,30 @@ export default () => {
     return () => {};
   }, [addToast, error]);
 
-
-
   useEffect(() => {
     console.log(companyResponse);
     if (companyResponse) {
       async function setCompany() {
-       const { registerCompany: company } = companyResponse;
+        const { registerCompany: company } = companyResponse;
 
-       const res = await dispatch({
-         type: COMPANY_ACTIONS.REGISTER_COMPANY,
-         company,
-       });
-       console.log("Register company result", res)
-       await dispatch({
-         type: COMPANY_ACTIONS.SET_ACTIVE_COMPANY,
-         company,
-       });
-       history.push('/simplegame');
+        const res = await dispatch({
+          type: COMPANY_ACTIONS.REGISTER_COMPANY,
+          company,
+        });
+        console.log("Register company result", res);
+        await dispatch({
+          type: COMPANY_ACTIONS.SET_ACTIVE_COMPANY,
+          company,
+        });
+        await dispatch({
+          type: GAME_ACTIONS.SET_NEW_GAME,
+          value: true,
+        });
+        history.push("/simplegame");
       }
       setCompany();
     }
   }, [companyResponse, dispatch, history]);
-
 
   return (
     <AuthLayout>

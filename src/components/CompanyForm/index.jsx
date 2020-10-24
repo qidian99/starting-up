@@ -101,7 +101,7 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
         />
         <Button
           onClick={() => {
-            const strategies = [preseed, seed, seriesA, seriesB, seriesC];
+            const strategy = {preseed, seed, seriesA, seriesB, seriesC};
             let error = false;
             const newError = Array(5).fill(null);
 
@@ -111,18 +111,20 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
               setNameError(null);
             }
 
-            strategies.forEach((strategy, index) => {
-              if (strategy === "" || strategy < 0 || strategy > 1) {
-                newError[index] = STRATEGY_ERROR_TEXT;
-                error = true;
+            [preseed, seed, seriesA, seriesB, seriesC].forEach(
+              (val, index) => {
+                if (val === "" || val < 0 || val > 1) {
+                  newError[index] = STRATEGY_ERROR_TEXT;
+                  error = true;
+                }
               }
-            });
+            );
 
             setErrors(newError);
             if (!error) {
               onButtonClick(
                 name,
-                strategies.map((s) => parseInt(s, 10))
+                strategy
               );
             }
           }}

@@ -12,8 +12,8 @@ import {
   IconButton,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
-import clsx from 'clsx';
-
+import clsx from "clsx";
+import PropTypes from "prop-types";
 import { ReactComponent as CompanyIcon } from "../../assets/buildings.svg";
 import { ReactComponent as RegionIcon } from "../../assets/tiles.svg";
 import { ReactComponent as RevenueIcon } from "../../assets/money-bag.svg";
@@ -48,16 +48,25 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   actionButton: {
+    border: '1px dashed rgba(0, 0, 0, 0.23)',
     minWidth: 100,
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
   },
   title: {
     flexGrow: 1,
+    fontWeight: 800,
   },
 }));
 
-const AuthLayout = ({ children }) => {
+const GameLayout = ({
+  onLogClick,
+  onStatusClick,
+  onProgressClick,
+  onSettingClick,
+  onExitClick,
+  children,
+}) => {
   const classes = useStyles();
   return (
     <Box className={clsx(classes.root, classes.flex)}>
@@ -66,19 +75,40 @@ const AuthLayout = ({ children }) => {
           <Typography variant="h6" className={classes.title}>
             STARTING UP
           </Typography>
-          <Button variant="outlined" color="inherit" className={classes.actionButton}>
+          <Button
+            onClick={onLogClick}
+            variant="outlined"
+            color="inherit"
+            className={classes.actionButton}
+          >
             Log
           </Button>
-          <Button variant="outlined" color="inherit" className={classes.actionButton}>
+          <Button
+            onClick={onStatusClick}
+            variant="outlined"
+            color="inherit"
+            className={classes.actionButton}
+          >
             Status
           </Button>
-          <Button variant="outlined" color="inherit" className={classes.actionButton}>
+          <Button
+            onClick={onProgressClick}
+            variant="outlined"
+            color="inherit"
+            className={classes.actionButton}
+          >
             Progress
           </Button>
-          <Button variant="outlined" color="inherit" className={classes.actionButton}>
+          <Button
+            onClick={onSettingClick}
+            variant="outlined"
+            color="inherit"
+            className={classes.actionButton}
+          >
             Setting
           </Button>
           <Button
+            onClick={onExitClick}
             variant="outlined"
             color="inherit"
             className={classes.exitButton}
@@ -98,4 +128,22 @@ const AuthLayout = ({ children }) => {
   );
 };
 
-export default AuthLayout;
+GameLayout.prototype = {
+  onLogClick: PropTypes.func,
+  onStatusClick: PropTypes.func,
+  onProgressClick: PropTypes.func,
+  onSettingClick: PropTypes.func,
+  onExitClick: PropTypes.func,
+  children: PropTypes.elementType,
+};
+
+GameLayout.defaultProps = {
+  onLogClick: () => {},
+  onStatusClick: () => {},
+  onProgressClick: () => {},
+  onSettingClick: () => {},
+  onExitClick: () => {},
+  children: null,
+};
+
+export default GameLayout;
