@@ -123,7 +123,7 @@ export default (props) => {
     }
 
     return () => {};
-  }, [loginResponse, signupResponse, dispatch]);
+  }, [loginResponse, signupResponse, dispatch, history]);
 
   const { addToast } = useToasts();
 

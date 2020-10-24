@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import {
   Box,
   makeStyles,
@@ -14,10 +14,6 @@ import {
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
 import PropTypes from "prop-types";
-import { ReactComponent as CompanyIcon } from "../../assets/buildings.svg";
-import { ReactComponent as RegionIcon } from "../../assets/tiles.svg";
-import { ReactComponent as RevenueIcon } from "../../assets/money-bag.svg";
-import { ReactComponent as UserIcon } from "../../assets/profile.svg";
 
 const useStyles = makeStyles((theme) => ({
   flex: {
@@ -68,6 +64,7 @@ const GameLayout = ({
   children,
 }) => {
   const classes = useStyles();
+
   return (
     <Box className={clsx(classes.root, classes.flex)}>
       <AppBar position="fixed" color="default">
