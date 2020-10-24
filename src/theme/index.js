@@ -1,6 +1,6 @@
 import purple from '@material-ui/core/colors/purple';
 import green from '@material-ui/core/colors/green';
-const { createMuiTheme } = require("@material-ui/core");
+import { unstable_createMuiStrictModeTheme as createMuiTheme } from "@material-ui/core";
 
 export const appTheme = createMuiTheme({
   palette: {

@@ -3,7 +3,6 @@ module.exports = {
     "react-app",
   ],
   "rules": {
-    "additional-rule": "warn"
   },
   "overrides": [
     {

@@ -33,6 +33,7 @@ import { ReactComponent as ScheduleIcon } from "../../../assets/schedule.svg";
 import { ReactComponent as FundingIcon } from "../../../assets/loan.svg";
 
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { simpleGameFundings } from "starting-up-common";
 
 const useStyles = makeStyles((theme) => ({
   root: {
@@ -121,28 +122,7 @@ const GameProgress = ({ cycle, fundings }) => {
 
 GameProgress.defaultProps = {
   cycle: 0,
-  fundings: [
-    {
-      name: "Seed Round Funding",
-      amount: 125,
-      cycle: 12,
-    },
-    {
-      name: "Series A Funding",
-      amount: 300,
-      cycle: 36,
-    },
-    {
-      name: "Series B Funding",
-      amount: 500,
-      cycle: 60,
-    },
-    {
-      name: "Series C Funding",
-      amount: 1000,
-      cycle: 120,
-    },
-  ],
+  fundings: simpleGameFundings,
 };
 
 export default GameProgress;

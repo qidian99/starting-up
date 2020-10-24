@@ -24,7 +24,6 @@ const useStyles = makeStyles((theme) => ({
   },
   cell: {
     flex: 1 / 9,
-    width: 66,
     height: 66,
     display: "flex",
     justifyContent: "center",

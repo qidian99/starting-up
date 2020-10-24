@@ -20,7 +20,7 @@ import {
 } from "@material-ui/core";
 import { useToasts } from "react-toast-notifications";
 import _ from "lodash";
-
+import { noCompanyResult } from 'starting-up-common'
 import { useMutation } from "@apollo/client";
 import { LOGIN_MUTATION, SIGNUP_MUTATION } from "../../../gql";
 import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../../util";
@@ -89,9 +89,19 @@ const GameCompanyStatusEntry = ({ Icon, text, tooltip }) => {
   );
 };
 
-const GameStatus = ({ companies }) => {
+const GameStatus = ({ companies: companyInput }) => {
   const classes = useStyles();
   const [index, setIndex] = useState(0);
+
+  console.log({
+    companyInput,
+    noCompanyResult,
+  })
+
+  const companies = companyInput;
+  if (companies.length === 0) {
+    companies.push(noCompanyResult)
+  }
 
   return (
     <Box className={classes.root}>

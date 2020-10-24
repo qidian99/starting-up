@@ -35,7 +35,9 @@ import Terrian from "../../components/game/Terrian";
 import GameProgress from "../../components/game/GameProgress";
 import GameStatus from "../../components/game/GameStatus";
 
-import { simpleGameHeight, simpleGameWidth, Game } from 'starting-up-common'
+import { simpleGameHeight, simpleGameWidth, Game } from "starting-up-common";
+import { GridLoader } from "react-spinners";
+import { appTheme } from "../../theme";
 
 export default () => {
   const gameState = useSelector((state) => state.game);
@@ -47,7 +49,7 @@ export default () => {
 
   const [gameError, setGameError] = useState(null);
 
-  const [gameInstance, setGameInstance] = useState(null)
+  const [gameInstance, setGameInstance] = useState(null);
 
   useEffect(() => {
     console.log(gameState);
@@ -63,22 +65,18 @@ export default () => {
     if (game) {
       setGameInstance(new Game(game));
     }
-
-
   }, [gameState, createSimpleGame]);
 
   useEffect(() => {
     console.log({
       gameInstance,
     });
-  }, [gameInstance])
-  
+  }, [gameInstance]);
+
   useEffect(() => {
     console.log(gameResponse);
     if (!gameResponse) return;
-    const {
-      createSimpleGame: game
-    } = gameResponse;
+    const { createSimpleGame: game } = gameResponse;
 
     dispatch({
       type: GAME_ACTIONS.ENTER_GAME,
@@ -88,20 +86,43 @@ export default () => {
 
   useEffect(() => {
     if (gameError) {
-      addToast(gameError, { appearance: "error", onDismiss: setGameError(null) });
+      addToast(gameError, {
+        appearance: "error",
+        onDismiss: setGameError(null),
+      });
     }
     return () => {};
   }, [addToast, gameError]);
 
+  if (!gameInstance) {
+    console.log("Game instance not instantiated.");
+    return (
+      <Box
+        width="100vw"
+        height="100vh"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <GridLoader size={24} color={appTheme.palette.primary.main} />
+      </Box>
+    );
+  }
+
   return (
     <GameLayout>
-      <Box display="flex" justifyContent="center" alignItems="center">
-        <Box padding={4}>
+      <Box
+        width="100%"
+        display="flex"
+        justifyContent="center"
+        alignItems="center"
+      >
+        <Box padding={4} flex={1}>
           <GameProgress />
         </Box>
-        <Terrian width={9} height={9} />
-        <Box padding={4}>
-          <GameStatus />
+        <Terrian width={gameInstance.width} height={gameInstance.height} />
+        <Box padding={4} flex={1} justifyContent="flex-end" display="flex">
+          <GameStatus companies={gameInstance.companies} />
         </Box>
       </Box>
     </GameLayout>

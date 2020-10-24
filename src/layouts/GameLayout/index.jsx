@@ -24,6 +24,7 @@ const useStyles = makeStyles((theme) => ({
   root: {
     height: "100vh",
     flexDirection: "column",
+    width: "100vw",
   },
   container: {
     position: "relative",
@@ -119,7 +120,7 @@ const GameLayout = ({
         height="60%"
         className={clsx(classes.container, classes.flex)}
       >
-        <Box className={clsx(classes.children, classes.flex)}>{children}</Box>
+        <Box width="100%" className={clsx(classes.children, classes.flex)}>{children}</Box>
       </Box>
     </Box>
   );
