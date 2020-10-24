@@ -30,6 +30,7 @@ const useStyles = makeStyles((theme) => ({
     justifyContent: "center",
     alignItems: "center",
     border: "1px solid black",
+    backgroundColor: "#F2F2F2",
   },
   icon: {
     width: 60,
@@ -52,19 +53,21 @@ const Terrian = ({ width, height, regions, counts }) => {
 
   return (
     <table className={classes.table}>
-      {Array(width)
-        .fill(null)
-        .map((_, row) => {
-          return (
-            <TerrianRow
-              key={`Terrian-${row}`}
-              row={row}
-              height={height}
-              regions={regions.slice(row * height, (row + 1) * height)}
-              counts={counts.slice(row * height, (row + 1) * height)}
-            />
-          );
-        })}
+      <tbody>
+        {Array(width)
+          .fill(null)
+          .map((_, row) => {
+            return (
+              <TerrianRow
+                key={`Terrian-${row}`}
+                row={row}
+                height={height}
+                regions={regions.slice(row * height, (row + 1) * height)}
+                counts={counts.slice(row * height, (row + 1) * height)}
+              />
+            );
+          })}
+      </tbody>
     </table>
   );
 };

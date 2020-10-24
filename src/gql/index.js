@@ -26,11 +26,7 @@ fragment RegionFragment on Region {
 
 const FundingFragment = gql`
 fragment FundingFragment on Funding {
-  id
-  game {
-    id
-    name
-  }
+	id
   amount
   cycle
   threshold
@@ -77,7 +73,7 @@ mutation signup($username: String! $password: String!) {
 
 export const REGISTER_COMPANY_MUTATION = gql`
 
-mutation registerCompany($name: String! $strategy: JSON!) {
+mutation registerCompany($name: String! $strategy: SimpleStrategyInput!) {
   registerCompany(name: $name strategy: $strategy) {
     id
     name
@@ -98,6 +94,7 @@ export const CREATE_SIMPLE_GAME_MUTATION = gql`
 mutation createSimpleGame {
   createSimpleGame {
     id
+    name
     width
     height
     numCycles

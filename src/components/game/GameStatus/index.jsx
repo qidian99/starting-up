@@ -102,7 +102,7 @@ const GameStatus = ({ companies }) => {
         alignItems="center"
       >
         {companies.map(({ name }, i) => (
-          <Grid item xs>
+          <Grid item xs key={`StatusHeader-${name}-${i}`}>
             <Button
               onClick={() => setIndex(i)}
               disabled={i === index}
@@ -116,9 +116,10 @@ const GameStatus = ({ companies }) => {
         ))}
       </Grid>
       {companies.map(
-        ({ revenue, numUsers, numRegions }, i) =>
+        ({ name, revenue, numUsers, numRegions }, i) =>
           i === index && (
             <GameCompanyStatus
+              key={`StatusBody-${name}-${i}`}
               revenue={revenue}
               numUsers={numUsers}
               numRegions={numRegions}

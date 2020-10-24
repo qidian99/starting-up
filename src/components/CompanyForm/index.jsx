@@ -101,7 +101,8 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
         />
         <Button
           onClick={() => {
-            const strategy = {preseed, seed, seriesA, seriesB, seriesC};
+            const strategyRaw = { preseed, seed, seriesA, seriesB, seriesC };
+            const strategy = {}
             let error = false;
             const newError = Array(5).fill(null);
 
@@ -111,14 +112,16 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
               setNameError(null);
             }
 
-            [preseed, seed, seriesA, seriesB, seriesC].forEach(
-              (val, index) => {
-                if (val === "" || val < 0 || val > 1) {
-                  newError[index] = STRATEGY_ERROR_TEXT;
-                  error = true;
-                }
+
+            Object.keys(strategyRaw).forEach((key, index) => {
+              const val = strategyRaw[key];
+              if (val === "" || val < 0 || val > 1) {
+                newError[index] = STRATEGY_ERROR_TEXT;
+                error = true;
+              } else {
+                strategy[key] = parseFloat(val);
               }
-            );
+            });
 
             setErrors(newError);
             if (!error) {

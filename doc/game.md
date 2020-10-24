@@ -26,7 +26,7 @@ mutation createCompany($name: String! $preseed: Float! $seed: Float! $seriesA: F
   }
 }
 
-mutation registerCompany($name: String! $strategy: JSON!) {
+mutation registerCompany($name: String! $strategy: SimpleStrategyInput!) {
   registerCompany(name: $name strategy: $strategy) {
     id
     name
@@ -62,6 +62,7 @@ query companies {
 mutation createSimpleGame {
   createSimpleGame {
     id
+    name
     width
     height
     numCycles
@@ -70,6 +71,9 @@ mutation createSimpleGame {
     companies {
       id
       name
+      strategy {
+        ...StrategyFragment
+      }
     }
     started
     update {
@@ -133,10 +137,6 @@ fragment RegionFragment on Region {
 
 fragment FundingFragment on Funding {
 	id
-  game {
-    id
-    name
-  }
   amount
   cycle
   threshold

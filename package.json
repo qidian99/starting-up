@@ -63,7 +63,8 @@
     "simplemde": "^1.11.2",
     "subscriptions-transport-ws": "^0.9.16",
     "use-merge-value": "^1.0.1",
-    "uuid": "^3.3.3"
+    "uuid": "^3.3.3",
+    "starting-up-common": "^0.0.5"
   },
   "devDependencies": {
     "@babel/core": "^7.6.2",
