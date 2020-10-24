@@ -33,6 +33,7 @@ import { CREATE_SIMPLE_GAME_MUTATION } from "../../gql";
 import { GAME_ACTIONS } from "../../util/game";
 import Terrian from "../../components/game/Terrian";
 import GameProgress from "../../components/game/GameProgress";
+import GameStatus from "../../components/game/GameStatus";
 
 export default () => {
   const game = useSelector((state) => state.game);
@@ -83,6 +84,9 @@ export default () => {
           <GameProgress />
         </Box>
         <Terrian width={9} height={9} />
+        <Box padding={4}>
+          <GameStatus />
+        </Box>
       </Box>
     </GameLayout>
   );
