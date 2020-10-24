@@ -32,6 +32,7 @@ import DashboardMenu from "../../components/DashboardMenu";
 import { CREATE_SIMPLE_GAME_MUTATION } from "../../gql";
 import { GAME_ACTIONS } from "../../util/game";
 import Terrian from "../../components/game/Terrian";
+import GameProgress from "../../components/game/GameProgress";
 
 export default () => {
   const game = useSelector((state) => state.game);
@@ -75,5 +76,14 @@ export default () => {
     return () => {};
   }, [addToast, gameError]);
 
-  return <GameLayout><Terrian width={9} height={9} /></GameLayout>;
+  return (
+    <GameLayout>
+      <Box display="flex" justifyContent="center" alignItems="center">
+        <Box padding={4}>
+          <GameProgress />
+        </Box>
+        <Terrian width={9} height={9} />
+      </Box>
+    </GameLayout>
+  );
 };
