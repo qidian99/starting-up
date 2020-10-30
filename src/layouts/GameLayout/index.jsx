@@ -136,7 +136,7 @@ const GameLayout = ({
   const classes = useStyles();
 
   useEffect(() => {
-    console.log("GameLayout logs", logs);
+    // console.log("GameLayout logs", logs);
   }, [logs]);
 
   return (

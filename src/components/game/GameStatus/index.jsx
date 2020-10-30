@@ -111,7 +111,7 @@ const GameStatus = ({ companies: companyInput }) => {
         justify="flex-start"
         alignItems="center"
       >
-        {companies.map(({ name }, i) => (
+        {companies.map(({ name, company }, i) => (
           <Grid item xs key={`StatusHeader-${name}-${i}`}>
             <Button
               onClick={() => setIndex(i)}
@@ -120,7 +120,7 @@ const GameStatus = ({ companies: companyInput }) => {
               fullWidth
               className={classes.companyButton}
             >
-              <Typography>{name}</Typography>
+              <Typography>{name || company.name}</Typography>
             </Button>
           </Grid>
         ))}

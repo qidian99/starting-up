@@ -5,7 +5,7 @@ import { useSubscription, useQuery } from "@apollo/client";
 import GameLayout from "../../layouts/GameLayout";
 import AuthForm from "../../components/AuthForm";
 import { useHistory } from "react-router-dom";
-
+import _ from "lodash";
 import React, {
   Fragment,
   useCallback,
@@ -51,26 +51,19 @@ import {
   Game,
   TYPE_GAME_INFO_UPDATE,
   TYPE_GAME_REGION_UPDATE,
+  TYPE_GAME_COMPANY_UPDATE,
 } from "starting-up-common";
 import { GridLoader } from "react-spinners";
 import { appTheme } from "../../theme";
 
-const simpleGameState = { logs: [] };
-
-function gameReducer(state, action) {
-  switch (action.type) {
-    case "SET_GAME_LOGS":
-      const { logs } = action;
-      return { ...state, logs };
-    case "SET_GAME_REGIONS":
-      const { regions } = action;
-      return { ...state, regions };
-    default:
-      throw new Error();
-  }
-}
-
-const GameSubscription = ({ company, gameInstance, setGameLogs }) => {
+const GameSubscription = ({
+  company,
+  gameInstance,
+  setGameCycle,
+  setGameLogs,
+  setGameRegions,
+  setGameStatus,
+}) => {
   const { data: gameSubscription, loading } = useSubscription(
     JOIN_GAME_SUBSCRIPTION,
     {
@@ -82,8 +75,6 @@ const GameSubscription = ({ company, gameInstance, setGameLogs }) => {
     }
   );
 
-  const [state, dispatchGameState] = useReducer(gameReducer, simpleGameState);
-
   useEffect(() => {
     if (!gameSubscription) {
       return;
@@ -93,22 +84,41 @@ const GameSubscription = ({ company, gameInstance, setGameLogs }) => {
       switch (update.__typename) {
         case TYPE_GAME_INFO_UPDATE: {
           gameInstance.updateGameInfo(update);
-          console.log(update);
+          // console.log(update);
           // console.log('setting game logs', gameInstance.logs)
           setGameLogs([...gameInstance.logs]);
+          setGameCycle(update.cycle);
           break;
         }
         case TYPE_GAME_REGION_UPDATE: {
           gameInstance.updateGameRegion(update);
+          setGameRegions(_.orderBy(gameInstance.regions, ["index"], ["asc"]));
+          break;
+        }
+        case TYPE_GAME_COMPANY_UPDATE: {
+          gameInstance.updateGameCompany(update);
+          setGameStatus(gameInstance.status);
           break;
         }
         default: {
         }
       }
     });
-  }, [gameInstance, gameInstance.up, gameSubscription, setGameLogs]);
+  }, [
+    gameInstance,
+    gameInstance.up,
+    gameSubscription,
+    setGameCycle,
+    setGameLogs,
+    setGameRegions,
+    setGameStatus,
+  ]);
 
   return <></>;
+};
+
+GameSubscription.prototype = {
+  gameInstance: Game,
 };
 
 export default () => {
@@ -123,12 +133,15 @@ export default () => {
 
   const [gameError, setGameError] = useState(null);
   const [logs, setLogs] = useState([]);
-
   const [gameInstance, setGameInstance] = useState(new Game());
+  const [gameRegions, setGameRegions] = useState([]);
+  const [gameCycle, setGameCycle] = useState(gameInstance.cycle || 0);
+  const [gameStatus, setGameStatus] = useState([])
+  const [currentPlayer, setCurrentPlayer] = useState(companyState.active.id);
+  // console.log({ currentPlayer });
 
   const setGameLogs = useCallback(
     (lgs) => {
-      console.log("setting logs", lgs);
       setLogs(lgs);
     },
     [setLogs]
@@ -157,9 +170,9 @@ export default () => {
   }, [gameInstance]);
 
   useEffect(() => {
-    console.log({
-      logs,
-    });
+    // console.log({
+    //   logs,
+    // });
   }, [logs]);
 
   useEffect(() => {
@@ -204,7 +217,10 @@ export default () => {
         <GameSubscription
           gameInstance={gameInstance}
           company={companyState.active}
+          setGameCycle={setGameCycle}
           setGameLogs={setGameLogs}
+          setGameRegions={setGameRegions}
+          setGameStatus={setGameStatus}
         />
       )}
       <GameLayout logs={logs}>
@@ -215,11 +231,19 @@ export default () => {
           alignItems="center"
         >
           <Box padding={4} flex={1}>
-            <GameProgress />
+            <GameProgress cycle={gameCycle} />
           </Box>
-          <Terrian width={gameInstance.width} height={gameInstance.height} />
+          <Terrian
+            counts={_.map(
+              gameRegions,
+              ({ users }) => users[currentPlayer] || 0
+            )}
+            regions={gameRegions}
+            width={gameInstance.width}
+            height={gameInstance.height}
+          />
           <Box padding={4} flex={1} justifyContent="flex-end" display="flex">
-            <GameStatus companies={gameInstance.companies} />
+            <GameStatus companies={gameStatus} />
           </Box>
         </Box>
       </GameLayout>

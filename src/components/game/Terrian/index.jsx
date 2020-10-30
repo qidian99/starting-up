@@ -50,6 +50,8 @@ const useStyles = makeStyles((theme) => ({
 const Terrian = ({ width, height, regions, counts }) => {
   const classes = useStyles();
 
+  console.log(counts);
+
   return (
     <table className={classes.table}>
       <tbody>
@@ -94,7 +96,7 @@ const TerrianRow = ({ row, height, regions, counts }) => {
 const Region = ({ row, column, count, region }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
-  const IconComponent = count === 0 ? RegionIcon : CompanyIcon;
+  const IconComponent = (count === 0 || count === undefined) ? RegionIcon : CompanyIcon;
 
   const handleClick = useCallback((event) => {
     setAnchorEl(event.currentTarget);
@@ -142,7 +144,7 @@ const RegionInfo = ({ region, count }) => {
 
   let header = null;
 
-  if (count !== 0) {
+  if (count !== 0 && count !== undefined) {
     header = (
       <TableRow key={"count"} className={classes.popoverHeader}>
         <TableCell
