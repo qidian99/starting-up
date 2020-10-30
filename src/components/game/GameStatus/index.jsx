@@ -93,10 +93,10 @@ const GameStatus = ({ companies: companyInput }) => {
   const classes = useStyles();
   const [index, setIndex] = useState(0);
 
-  console.log({
-    companyInput,
-    noCompanyResult,
-  })
+  // console.log({
+  //   companyInput,
+  //   noCompanyResult,
+  // })
 
   const companies = companyInput;
   if (companies.length === 0) {

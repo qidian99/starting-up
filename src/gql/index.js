@@ -22,6 +22,28 @@ fragment RegionFragment on Region {
   revenue
   cost
   growth
+  index
+}`;
+
+const CompanyFragment = gql`
+fragment CompanyFragment on Company {
+  id
+  name
+  user {
+    id
+    email
+  }
+  strategy {
+    ...StrategyFragment
+  }
+  createdAt
+}
+${StrategyFragment}`;
+
+const CompanyFragmentTiny = gql`
+fragment CompanyFragmentTiny on Company {
+  id
+  name
 }`;
 
 const FundingFragment = gql`
@@ -75,19 +97,11 @@ export const REGISTER_COMPANY_MUTATION = gql`
 
 mutation registerCompany($name: String! $strategy: SimpleStrategyInput!) {
   registerCompany(name: $name strategy: $strategy) {
-    id
-    name
-    user {
-      id
-      email
-    }
-    strategy {
-      ...StrategyFragment
-    }
-    createdAt
+    ...CompanyFragment
   }
 }
 ${StrategyFragment}
+${CompanyFragment}
 `;
 
 export const CREATE_SIMPLE_GAME_MUTATION = gql`
@@ -110,17 +124,17 @@ mutation createSimpleGame {
     started
     update {
       ...on ComponentGameRegionUpdate {
-        RegionUserUpdate {
-          user {
-            ...UserFragment
+          RegionUserUpdate {
+            company {
+            ...CompanyFragmentTiny
           }
           count
         }
       }
       ...on ComponentGameCompanyUpdate {
         CompanyUserUpdate {
-          user {
-            ...UserFragment
+          company {
+            ...CompanyFragmentTiny
           }
           revenue
           bankrupt
@@ -128,8 +142,8 @@ mutation createSimpleGame {
       }
       ...on ComponentGameFundingUpdate {
         FundingUserUpdate {
-          user {
-            ...UserFragment
+          company {
+            ...CompanyFragmentTiny
           }
           funding {
             name
@@ -140,8 +154,8 @@ mutation createSimpleGame {
     }
     status {
       GameUserStatus {
-        user {
-          ...UserFragment
+        company {
+          ...CompanyFragmentTiny
         }
         revenue
         bankrupt
@@ -159,8 +173,53 @@ mutation createSimpleGame {
 ${StrategyFragment}
 ${RegionFragment}
 ${FundingFragment}
-${UserFragment}
+${CompanyFragmentTiny}
 `
 
+export const JOIN_GAME_SUBSCRIPTION = gql`
+subscription joinGame($company: ID $game: ID) {
+  joinGame(company: $company game: $game) {
+    ...on ComponentGameInfoUpdate {
+      message
+      cycle
+    }
+    ...on ComponentGameFundingUpdate {
+      cycle
+      FundingUserUpdate {
+        company {
+          ...CompanyFragment
+        }
+        funding {
+          name
+          amount
+        }
+      }
+    }
+    ...on ComponentGameRegionUpdate {
+      cycle
+      region {
+        id
+        index
+      }
+      RegionUserUpdate {
+        company {
+          ...CompanyFragment
+        }
+        count
+      }
+    }
+    ...on ComponentGameCompanyUpdate {
+      cycle
+      CompanyUserUpdate {
+        revenue
+        company {
+          ...CompanyFragment
+        }
+        bankrupt
+      }
+    }
+  }
+}
 
-
+${CompanyFragment}
+`;

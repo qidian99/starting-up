@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useCallback, useState } from "react";
 import {
   Box,
   makeStyles,
@@ -10,10 +10,16 @@ import {
   Toolbar,
   Button,
   IconButton,
+  List,
+  ListItem,
+  ListItemIcon,
+  ListItemText,
 } from "@material-ui/core";
 import MenuIcon from "@material-ui/icons/Menu";
 import clsx from "clsx";
 import PropTypes from "prop-types";
+import Popover from "@material-ui/core/Popover";
+import { AccessTime } from "@material-ui/icons";
 
 const useStyles = makeStyles((theme) => ({
   flex: {
@@ -45,7 +51,7 @@ const useStyles = makeStyles((theme) => ({
     marginRight: theme.spacing(2),
   },
   actionButton: {
-    border: '1px dashed rgba(0, 0, 0, 0.23)',
+    border: "1px dashed rgba(0, 0, 0, 0.23)",
     minWidth: 100,
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -56,8 +62,71 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
+const GameLogButton = ({ logs }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = useCallback((event) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const open = Boolean(anchorEl);
+  const id = "game-statust-button";
+
+  return (
+    <>
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        color="inherit"
+        className={classes.actionButton}
+      >
+        Log
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Paper style={{ width: 300, maxHeight: 600, overflow: "auto" }}>
+          {logs.length === 0 ? (
+            <ListItem button>
+              <ListItemText primary={"No logs available"} />
+            </ListItem>
+          ) : (
+            <List>
+              {logs.map((log, index) => (
+                <ListItem button key={"log" + index}>
+                  <ListItemIcon>
+                    <AccessTime />
+                  </ListItemIcon>
+                  <ListItemText primary={log} />
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Paper>
+      </Popover>
+    </>
+  );
+};
+
 const GameLayout = ({
   onLogClick,
+  logs,
   onStatusClick,
   onProgressClick,
   onSettingClick,
@@ -66,6 +135,10 @@ const GameLayout = ({
 }) => {
   const classes = useStyles();
 
+  useEffect(() => {
+    console.log("GameLayout logs", logs);
+  }, [logs]);
+
   return (
     <Box className={clsx(classes.root, classes.flex)}>
       <AppBar position="fixed" color="default">
@@ -73,14 +146,7 @@ const GameLayout = ({
           <Typography variant="h6" className={classes.title}>
             STARTING UP
           </Typography>
-          <Button
-            onClick={onLogClick}
-            variant="outlined"
-            color="inherit"
-            className={classes.actionButton}
-          >
-            Log
-          </Button>
+          <GameLogButton logs={logs} />
           <Button
             onClick={onStatusClick}
             variant="outlined"
@@ -120,7 +186,9 @@ const GameLayout = ({
         height="60%"
         className={clsx(classes.container, classes.flex)}
       >
-        <Box width="100%" className={clsx(classes.children, classes.flex)}>{children}</Box>
+        <Box width="100%" className={clsx(classes.children, classes.flex)}>
+          {children}
+        </Box>
       </Box>
     </Box>
   );
@@ -133,6 +201,7 @@ GameLayout.prototype = {
   onSettingClick: PropTypes.func,
   onExitClick: PropTypes.func,
   children: PropTypes.elementType,
+  logs: PropTypes.array,
 };
 
 GameLayout.defaultProps = {
@@ -142,6 +211,7 @@ GameLayout.defaultProps = {
   onSettingClick: () => {},
   onExitClick: () => {},
   children: null,
+  logs: [],
 };
 
 export default GameLayout;

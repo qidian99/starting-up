@@ -25,6 +25,16 @@ subscription joinGame {
         count
       }
     }
+    ...on ComponentGameCompanyUpdate {
+      cycle
+      CompanyUserUpdate {
+        revenue
+        company {
+          name
+        }
+        bankrupt
+      }
+    }
   }
 }
 

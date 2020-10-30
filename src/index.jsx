@@ -14,16 +14,21 @@ import {
   ApolloClient,
   ApolloProvider,
   ApolloLink,
+  InMemoryCache
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 
-import { InMemoryCache } from "apollo-cache-inmemory";
 import { setContext } from "apollo-link-context";
 import { WebSocketLink } from "@apollo/client/link/ws";
 import { ToastProvider, DefaultToast } from "react-toast-notifications";
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
+
+// For generating possible types
+// import './gql/possibleTypes';
+import possibleTypes from "./gql/possibleTypes.json";
+
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -44,9 +49,9 @@ const wsLink = new WebSocketLink({
   uri: `ws://localhost:1337/graphql`,
   options: {
     reconnect: true,
-    connectionParams: {
+    connectionParams: () => ({
       authToken: store.getState().auth.jwt,
-    },
+    }),
   },
 });
 
@@ -68,7 +73,8 @@ const splitLink = split(
 );
 
 const cache = new InMemoryCache({
-  dataIdFromObject: (object) => object[`${object.__typename.toLowerCase()}Id`],
+  // dataIdFromObject: (object) => object[`${object.__typename.toLowerCase()}Id`],
+  possibleTypes,
 });
 
 const client = new ApolloClient({
