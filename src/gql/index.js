@@ -49,6 +49,7 @@ fragment CompanyFragmentTiny on Company {
 const FundingFragment = gql`
 fragment FundingFragment on Funding {
 	id
+  name
   amount
   cycle
   threshold

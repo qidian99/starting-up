@@ -52,6 +52,7 @@ import {
   TYPE_GAME_INFO_UPDATE,
   TYPE_GAME_REGION_UPDATE,
   TYPE_GAME_COMPANY_UPDATE,
+  TYPE_GAME_FUNDING_UPDATE,
 } from "starting-up-common";
 import { GridLoader } from "react-spinners";
 import { appTheme } from "../../theme";
@@ -86,7 +87,6 @@ const GameSubscription = ({
           gameInstance.updateGameInfo(update);
           // console.log(update);
           // console.log('setting game logs', gameInstance.logs)
-          setGameLogs([...gameInstance.logs]);
           setGameCycle(update.cycle);
           break;
         }
@@ -100,10 +100,16 @@ const GameSubscription = ({
           setGameStatus(gameInstance.status);
           break;
         }
+        case TYPE_GAME_FUNDING_UPDATE: {
+          gameInstance.updateGameFunding(update);
+          setGameStatus(gameInstance.status);
+          break;
+        }
         default: {
         }
       }
     });
+    setGameLogs(_.dropRight(gameInstance.logs, 100));
   }, [
     gameInstance,
     gameInstance.up,
@@ -131,21 +137,40 @@ export default () => {
   const dispatch = useDispatch();
   const { addToast } = useToasts();
 
+  const strategy = _.pick(companyState.active.strategy, [
+    "preseed",
+    "seed",
+    "seriesA",
+    "seriesB",
+    "seriesC",
+  ]);
+  const [gameSetting] = useState(
+    Object.keys(strategy).map((s) => ({ name: s, value: strategy[s]}))
+  );
+
   const [gameError, setGameError] = useState(null);
   const [logs, setLogs] = useState([]);
   const [gameInstance, setGameInstance] = useState(new Game());
   const [gameRegions, setGameRegions] = useState([]);
   const [gameCycle, setGameCycle] = useState(gameInstance.cycle || 0);
-  const [gameStatus, setGameStatus] = useState([])
+  const [gameStatus, setGameStatus] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState(companyState.active.id);
   // console.log({ currentPlayer });
 
+  const history = useHistory();
   const setGameLogs = useCallback(
     (lgs) => {
       setLogs(lgs);
     },
     [setLogs]
   );
+
+  const onExitClick = useCallback(
+    () => {
+      history.push('/');
+    },
+    [history],
+  )
 
   useEffect(() => {
     // console.log(gameState);
@@ -164,10 +189,10 @@ export default () => {
   }, [gameState, createSimpleGame]);
 
   useEffect(() => {
-    // console.log({
-    //   gameInstance,
-    // });
-  }, [gameInstance]);
+    console.log({
+      gameStatus,
+    });
+  }, [gameStatus]);
 
   useEffect(() => {
     // console.log({
@@ -211,6 +236,8 @@ export default () => {
     );
   }
 
+  console.log("Fundings", gameInstance.fundings);
+
   return (
     <>
       {!gameState.newGame && gameInstance && (
@@ -223,7 +250,25 @@ export default () => {
           setGameStatus={setGameStatus}
         />
       )}
-      <GameLayout logs={logs}>
+      <GameLayout
+        logs={logs}
+        setting={gameSetting}
+        progress={{
+          cycle: gameCycle,
+          numCycles: gameInstance.numCycles,
+          fundings: gameInstance.fundings,
+        }}
+        status={_.map(
+          gameStatus,
+          _.partialRight(_.pick, [
+            "company",
+            "revenue",
+            "numUsers",
+            "numRegions",
+          ])
+        )}
+        onExitClick={onExitClick}
+      >
         <Box
           width="100%"
           display="flex"
@@ -231,7 +276,7 @@ export default () => {
           alignItems="center"
         >
           <Box padding={4} flex={1}>
-            <GameProgress cycle={gameCycle} />
+            <GameProgress cycle={gameCycle} fundings={gameInstance.fundings} />
           </Box>
           <Terrian
             counts={_.map(

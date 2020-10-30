@@ -15,11 +15,12 @@ import {
   ListItemIcon,
   ListItemText,
 } from "@material-ui/core";
-import MenuIcon from "@material-ui/icons/Menu";
+import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import clsx from "clsx";
 import PropTypes from "prop-types";
 import Popover from "@material-ui/core/Popover";
 import { AccessTime } from "@material-ui/icons";
+import PersonIcon from "@material-ui/icons/Person";
 
 const useStyles = makeStyles((theme) => ({
   flex: {
@@ -75,7 +76,7 @@ const GameLogButton = ({ logs }) => {
   }, []);
 
   const open = Boolean(anchorEl);
-  const id = "game-statust-button";
+  const id = "game-log-button";
 
   return (
     <>
@@ -124,9 +125,221 @@ const GameLogButton = ({ logs }) => {
   );
 };
 
+
+const GameStatusButton = ({ status }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = useCallback((event) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const open = Boolean(anchorEl);
+  const id = "game-status-button";
+
+  return (
+    <>
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        color="inherit"
+        className={classes.actionButton}
+      >
+        Status
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Paper style={{ width: 300, maxHeight: 600, overflow: "auto" }}>
+          {status.length === 0 ? (
+            <ListItem button>
+              <ListItemText primary={"No status available"} />
+            </ListItem>
+          ) : (
+            <List>
+              {status.map(
+                ({ company, revenue, numUsers, numRegions }, index) => (
+                  <React.Fragment key={"status-" + index}>
+                    <ListItem button>
+                      <ListItemIcon>
+                        <PersonIcon />
+                      </ListItemIcon>
+                      <ListItemText primary={company.name} />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText primary="Total Revenue" secondary={revenue} />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText primary="Number of Users" secondary={numUsers} />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText
+                        primary="Number of Regions" secondary={numRegions}
+                      />
+                    </ListItem>
+                  </React.Fragment>
+                )
+              )}
+            </List>
+          )}
+        </Paper>
+      </Popover>
+    </>
+  );
+};
+
+
+const GameProgressButton = ({ progress }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = useCallback((event) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const open = Boolean(anchorEl);
+  const id = "game-status-button";
+
+  const {
+    cycle,
+    numCycles,
+    fundings = [],
+  } = progress
+
+  return (
+    <>
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        color="inherit"
+        className={classes.actionButton}
+      >
+        Progress
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Paper style={{ width: 300, maxHeight: 600, overflow: "auto" }}>
+          <List>
+            <ListItem button>
+              <ListItemText primary={"Current Cycle"} secondary={cycle} />
+            </ListItem>
+            <ListItem button>
+              <ListItemText
+                primary={"Total Number of Cycles"}
+                secondary={numCycles}
+              />
+            </ListItem>
+            {fundings.map(({ name, amount, cycle }, index) => (
+              <ListItem button key={"game-progress-funding" + index}>
+                <ListItemText primary={name || `Funding ${index}`} secondary={`Cycle: ${cycle}, Amount: ${amount}`} />
+              </ListItem>
+            ))}
+          </List>
+        </Paper>
+      </Popover>
+    </>
+  );
+};
+
+
+const GameSettingButton = ({ setting }) => {
+  const classes = useStyles();
+  const [anchorEl, setAnchorEl] = useState(null);
+
+  const handleClick = useCallback((event) => {
+    setAnchorEl(event.currentTarget);
+  }, []);
+
+  const handleClose = useCallback(() => {
+    setAnchorEl(null);
+  }, []);
+
+  const open = Boolean(anchorEl);
+  const id = "game-status-button";
+
+  return (
+    <>
+      <Button
+        onClick={handleClick}
+        variant="outlined"
+        color="inherit"
+        className={classes.actionButton}
+      >
+        Setting
+      </Button>
+      <Popover
+        id={id}
+        open={open}
+        anchorEl={anchorEl}
+        onClose={handleClose}
+        anchorOrigin={{
+          vertical: "bottom",
+          horizontal: "center",
+        }}
+        transformOrigin={{
+          vertical: "top",
+          horizontal: "center",
+        }}
+      >
+        <Paper style={{ width: 300, maxHeight: 600, overflow: "auto" }}>
+          {setting.length === 0 ? (
+            <ListItem button>
+              <ListItemText primary={"No setting available"} />
+            </ListItem>
+          ) : (
+            <List>
+              {setting.map((setting, index) => (
+                <ListItem button key={"setting" + index}>
+                  <ListItemIcon>
+                    <AttachMoneyIcon />
+                  </ListItemIcon>
+                  <ListItemText primary={setting.name} secondary={setting.value} />
+                </ListItem>
+              ))}
+            </List>
+          )}
+        </Paper>
+      </Popover>
+    </>
+  );
+};
 const GameLayout = ({
   onLogClick,
   logs,
+  status,
+  progress,
+  setting,
   onStatusClick,
   onProgressClick,
   onSettingClick,
@@ -147,30 +360,9 @@ const GameLayout = ({
             STARTING UP
           </Typography>
           <GameLogButton logs={logs} />
-          <Button
-            onClick={onStatusClick}
-            variant="outlined"
-            color="inherit"
-            className={classes.actionButton}
-          >
-            Status
-          </Button>
-          <Button
-            onClick={onProgressClick}
-            variant="outlined"
-            color="inherit"
-            className={classes.actionButton}
-          >
-            Progress
-          </Button>
-          <Button
-            onClick={onSettingClick}
-            variant="outlined"
-            color="inherit"
-            className={classes.actionButton}
-          >
-            Setting
-          </Button>
+          <GameStatusButton status={status} />
+          <GameProgressButton progress={progress} />
+          <GameSettingButton setting={setting} />
           <Button
             onClick={onExitClick}
             variant="outlined"
