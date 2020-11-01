@@ -61,6 +61,77 @@ fragment UserFragment on UsersPermissionsUser {
   username
 }`;
 
+const GameFragment = gql`
+fragment GameFragment on Game {
+  id
+  name
+  width
+  height
+  numCycles
+  cycle
+  numCompanies
+  companies {
+    id
+    name
+    strategy {
+      ...StrategyFragment
+    }
+  }
+  started
+  update {
+    ...on ComponentGameRegionUpdate {
+        RegionUserUpdate {
+          company {
+          ...CompanyFragmentTiny
+        }
+        count
+      }
+    }
+    ...on ComponentGameCompanyUpdate {
+      CompanyUserUpdate {
+        company {
+          ...CompanyFragmentTiny
+        }
+        revenue
+        bankrupt
+      }
+    }
+    ...on ComponentGameFundingUpdate {
+      FundingUserUpdate {
+        company {
+          ...CompanyFragmentTiny
+        }
+        funding {
+          name
+          amount
+        }
+      }
+    }
+  }
+  status {
+    GameUserStatus {
+      company {
+        ...CompanyFragmentTiny
+      }
+      revenue
+      bankrupt
+      connected
+    }
+  }
+  fundings {
+    ...FundingFragment
+  }
+  regions {
+    ...RegionFragment
+  }
+}
+${StrategyFragment}
+${RegionFragment}
+${FundingFragment}
+${CompanyFragmentTiny}
+`;
+
+
 
 export const LOGIN_MUTATION = gql`
 mutation login($username: String! $password: String!) {
@@ -108,77 +179,13 @@ ${CompanyFragment}
 export const CREATE_SIMPLE_GAME_MUTATION = gql`
 mutation createSimpleGame {
   createSimpleGame {
-    id
-    name
-    width
-    height
-    numCycles
-    cycle
-    numCompanies
-    companies {
-      id
-      name
-      strategy {
-        ...StrategyFragment
-      }
-    }
-    started
-    update {
-      ...on ComponentGameRegionUpdate {
-          RegionUserUpdate {
-            company {
-            ...CompanyFragmentTiny
-          }
-          count
-        }
-      }
-      ...on ComponentGameCompanyUpdate {
-        CompanyUserUpdate {
-          company {
-            ...CompanyFragmentTiny
-          }
-          revenue
-          bankrupt
-        }
-      }
-      ...on ComponentGameFundingUpdate {
-        FundingUserUpdate {
-          company {
-            ...CompanyFragmentTiny
-          }
-          funding {
-            name
-            amount
-          }
-        }
-      }
-    }
-    status {
-      GameUserStatus {
-        company {
-          ...CompanyFragmentTiny
-        }
-        revenue
-        bankrupt
-        connected
-      }
-    }
-    fundings {
-      ...FundingFragment
-    }
-    regions {
-      ...RegionFragment
-    }
+    ...GameFragment
   }
 }
-${StrategyFragment}
-${RegionFragment}
-${FundingFragment}
-${CompanyFragmentTiny}
-`
+${GameFragment}`
 
 export const JOIN_GAME_SUBSCRIPTION = gql`
-subscription joinGame($company: ID $game: ID) {
+subscription joinGame($company: ID $game: ID!) {
   joinGame(company: $company game: $game) {
     ...on ComponentGameInfoUpdate {
       message
@@ -222,5 +229,23 @@ subscription joinGame($company: ID $game: ID) {
   }
 }
 
+${CompanyFragment}
+`;
+
+
+export const GAME_QUERY = gql`
+query game($gameId: ID!) {
+  game(id: $gameId) {
+    ...GameFragment
+  }
+}
+${GameFragment}`
+
+export const COMPANY_QUERY = gql`
+query company($companyId: ID!) {
+  company(id: $companyId) {
+    ...CompanyFragment
+  }
+}
 ${CompanyFragment}
 `;

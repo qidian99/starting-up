@@ -98,7 +98,7 @@ const GameStatus = ({ companies: companyInput }) => {
   //   noCompanyResult,
   // })
 
-  const companies = companyInput;
+  const companies = [...companyInput];
   if (companies.length === 0) {
     companies.push(noCompanyResult)
   }
@@ -115,9 +115,10 @@ const GameStatus = ({ companies: companyInput }) => {
           <Grid item xs key={`StatusHeader-${name}-${i}`}>
             <Button
               onClick={() => setIndex(i)}
-              disabled={i === index}
+              // disabled={i === index}
               {...(i === index ? { variant: "contained" } : {})}
               fullWidth
+              color={i === index ? "primary" : "default"}
               className={classes.companyButton}
             >
               <Typography>{name || company.name}</Typography>

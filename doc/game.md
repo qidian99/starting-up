@@ -43,8 +43,9 @@ mutation registerCompany($name: String! $strategy: SimpleStrategyInput!) {
 
 query companies {
   companies {
-   id
+    id
     name
+    fund
     user {
       id
       email
@@ -61,67 +62,25 @@ query companies {
 
 mutation createSimpleGame {
   createSimpleGame {
+    ...GameFragment
+  }
+}
+
+query games {
+  games(sort: "createdAt:ASC") {
     id
-    name
-    width
-    height
-    numCycles
-    cycle
-    numCompanies
-    companies {
-      id
-      name
-      strategy {
-        ...StrategyFragment
-      }
-    }
-    started
-    update {
-      ...on ComponentGameRegionUpdate {
-        RegionUserUpdate {
-          user {
-            ...UserFragment
-          }
-          count
-        }
-      }
-      ...on ComponentGameCompanyUpdate {
-        CompanyUserUpdate {
-          user {
-            ...UserFragment
-          }
-          revenue
-          bankrupt
-        }
-      }
-      ...on ComponentGameFundingUpdate {
-        FundingUserUpdate {
-          user {
-            ...UserFragment
-          }
-          funding {
-            name
-            amount
-          }
-        }
-      }
-    }
-    status {
-      GameUserStatus {
-        user {
-          ...UserFragment
-        }
-        revenue
-        bankrupt
-        connected
-      }
-    }
-    fundings {
-      ...FundingFragment
-    }
-    regions {
-      ...RegionFragment
-    }
+  }
+}
+
+query company($companyId: ID!) {
+  company(id: $companyId) {
+    ...CompanyFragment
+  }
+}
+
+query game($gameId: ID!) {
+  game(id: $gameId) {
+    ...GameFragment
   }
 }
 
@@ -142,10 +101,10 @@ fragment FundingFragment on Funding {
   threshold
 }
 
-fragment UserFragment on UsersPermissionsUser {
-  id
-  username
-}
+# fragment UserFragment on UsersPermissionsUser {
+#   id
+#   username
+# }
 
 fragment StrategyFragment on ComponentCompanyStrategy {
   id
@@ -155,3 +114,86 @@ fragment StrategyFragment on ComponentCompanyStrategy {
   seriesB
   seriesC
 }
+
+fragment GameFragment on Game {
+  id
+  name
+  width
+  height
+  numCycles
+  cycle
+  numCompanies
+  companies {
+    id
+    name
+    strategy {
+      ...StrategyFragment
+    }
+  }
+  started
+  update {
+    ...on ComponentGameRegionUpdate {
+        RegionUserUpdate {
+          company {
+          ...CompanyFragmentTiny
+        }
+        count
+      }
+    }
+    ...on ComponentGameCompanyUpdate {
+      CompanyUserUpdate {
+        company {
+          ...CompanyFragmentTiny
+        }
+        revenue
+        bankrupt
+      }
+    }
+    ...on ComponentGameFundingUpdate {
+      FundingUserUpdate {
+        company {
+          ...CompanyFragmentTiny
+        }
+        funding {
+          name
+          amount
+        }
+      }
+    }
+  }
+  status {
+    GameUserStatus {
+      company {
+        ...CompanyFragmentTiny
+      }
+      revenue
+      bankrupt
+      connected
+    }
+  }
+  fundings {
+    ...FundingFragment
+  }
+  regions {
+    ...RegionFragment
+  } 
+}
+
+fragment CompanyFragmentTiny on Company {
+  id
+  name
+}
+
+fragment CompanyFragment on Company {
+  id
+  name
+  user {
+    id
+    email
+  }
+  strategy {
+    ...StrategyFragment
+  }
+  createdAt
+}
+

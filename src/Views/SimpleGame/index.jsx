@@ -32,6 +32,8 @@ import { useToasts } from "react-toast-notifications";
 import { useMutation } from "@apollo/client";
 import {
   JOIN_GAME_SUBSCRIPTION,
+  GAME_QUERY,
+  COMPANY_QUERY,
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
 } from "../../gql";
@@ -48,6 +50,7 @@ import GameStatus from "../../components/game/GameStatus";
 import {
   simpleGameHeight,
   simpleGameWidth,
+  simpleGameStrategies,
   Game,
   TYPE_GAME_INFO_UPDATE,
   TYPE_GAME_REGION_UPDATE,
@@ -109,7 +112,8 @@ const GameSubscription = ({
         }
       }
     });
-    setGameLogs(_.dropRight(gameInstance.logs, 100));
+    setGameLogs(gameInstance.logs);
+    // setGameLogs(_.dropRight(gameInstance.logs, 100));
   }, [
     gameInstance,
     gameInstance.up,
@@ -134,19 +138,27 @@ export default () => {
     CREATE_SIMPLE_GAME_MUTATION
   );
 
+  const { loading: gameLoading, data: gameQueryResult } = useQuery(GAME_QUERY, {
+    variables: {
+      gameId: _.get(gameState, ["game", "id"]),
+    },
+  });
+
+  const { loading: companyLoading, data: companyQueryResult } = useQuery(
+    COMPANY_QUERY,
+    {
+      variables: {
+        companyId: _.get(companyState, ["active", "id"]),
+      },
+    }
+  );
+
   const dispatch = useDispatch();
   const { addToast } = useToasts();
 
-  const strategy = _.pick(companyState.active.strategy, [
-    "preseed",
-    "seed",
-    "seriesA",
-    "seriesB",
-    "seriesC",
-  ]);
-  const [gameSetting] = useState(
-    Object.keys(strategy).map((s) => ({ name: s, value: strategy[s]}))
-  );
+  const [strategy, setStrategy] = useState({});
+
+  const gameSetting = Object.keys(strategy).map((s) => ({ name: s, value: strategy[s] }));
 
   const [gameError, setGameError] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -165,16 +177,35 @@ export default () => {
     [setLogs]
   );
 
-  const onExitClick = useCallback(
-    () => {
-      history.push('/');
-    },
-    [history],
-  )
+  const onExitClick = useCallback(() => {
+    history.push("/");
+  }, [history]);
+
+  useEffect(() => {
+    const newStrategy = {};
+    _.assign(
+      newStrategy,
+      _.pick(companyState.active.strategy, simpleGameStrategies),
+      _.pick(
+        _.get(companyQueryResult, ["company", "strategy"]),
+        simpleGameStrategies
+      )
+    );
+
+    console.log({
+      s: _.get(companyQueryResult, ["company", "strategy"]),
+      v: simpleGameStrategies,
+      res: _.pick(
+        _.get(companyQueryResult, ["company", "strategy"]),
+        simpleGameStrategies
+      ),
+    });
+    setStrategy(newStrategy);
+  }, [companyQueryResult, companyState]);
 
   useEffect(() => {
     // console.log(gameState);
-    const { newGame, game } = gameState;
+    const { newGame } = gameState;
 
     if (newGame) {
       createSimpleGame().catch((e) => {
@@ -183,16 +214,23 @@ export default () => {
       });
     }
 
-    if (game) {
-      setGameInstance(new Game(game));
+    console.log({ game: gameQueryResult });
+    if (gameQueryResult) {
+      setGameInstance(new Game(gameQueryResult.game));
     }
-  }, [gameState, createSimpleGame]);
+  }, [gameState, gameQueryResult, createSimpleGame]);
 
   useEffect(() => {
     console.log({
       gameStatus,
     });
   }, [gameStatus]);
+
+  useEffect(() => {
+    console.log({
+      game: gameQueryResult,
+    });
+  }, [gameQueryResult]);
 
   useEffect(() => {
     // console.log({
@@ -221,17 +259,19 @@ export default () => {
     return () => {};
   }, [addToast, gameError]);
 
-  if (!gameInstance) {
+  if (gameLoading || gameState.newGame || !gameInstance) {
     console.log("Game instance not instantiated.");
     return (
-      <Box
-        width="100vw"
-        height="100vh"
-        display="flex"
-        justifyContent="center"
-        alignItems="center"
-      >
-        <GridLoader size={24} color={appTheme.palette.primary.main} />
+      <Box display="absolute" top={0} right={0} bottom={0} left={0}>
+        <Box
+          width="100vw"
+          height="100vh"
+          display="flex"
+          justifyContent="center"
+          alignItems="center"
+        >
+          <GridLoader size={24} color={appTheme.palette.primary.main} />
+        </Box>
       </Box>
     );
   }
@@ -240,7 +280,20 @@ export default () => {
 
   return (
     <>
-      {!gameState.newGame && gameInstance && (
+      {gameCycle < 1 && (
+        <Box display="absolute" top={0} right={0} bottom={0} left={0}>
+          <Box
+            width="100vw"
+            height="100vh"
+            display="flex"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <GridLoader size={24} color={appTheme.palette.primary.main} />
+          </Box>
+        </Box>
+      )}
+      {!gameState.newGame && gameInstance.id && (
         <GameSubscription
           gameInstance={gameInstance}
           company={companyState.active}
@@ -256,7 +309,7 @@ export default () => {
         progress={{
           cycle: gameCycle,
           numCycles: gameInstance.numCycles,
-          fundings: gameInstance.fundings,
+          fundings: _.orderBy(gameInstance.fundings, ["cycle"], ["asc"]),
         }}
         status={_.map(
           gameStatus,
@@ -275,8 +328,11 @@ export default () => {
           justifyContent="center"
           alignItems="center"
         >
-          <Box padding={4} flex={1}>
-            <GameProgress cycle={gameCycle} fundings={gameInstance.fundings} />
+          <Box padding={4} flex={1} justifyContent="center" display="flex">
+            <GameProgress
+              cycle={gameCycle}
+              fundings={_.orderBy(gameInstance.fundings, ["cycle"], ["asc"])}
+            />
           </Box>
           <Terrian
             counts={_.map(
@@ -287,7 +343,7 @@ export default () => {
             width={gameInstance.width}
             height={gameInstance.height}
           />
-          <Box padding={4} flex={1} justifyContent="flex-end" display="flex">
+          <Box padding={4} flex={1} justifyContent="center" display="flex">
             <GameStatus companies={gameStatus} />
           </Box>
         </Box>
