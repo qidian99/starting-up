@@ -73,21 +73,32 @@ fragment GameFragment on Game {
   companies {
     id
     name
+    fund
     strategy {
       ...StrategyFragment
     }
   }
   started
   update {
+    ...on ComponentGameInfoUpdate {
+      cycle
+      message
+    }
     ...on ComponentGameRegionUpdate {
-        RegionUserUpdate {
-          company {
+      cycle 
+      region {
+        id
+        index
+      }
+      RegionUserUpdate {
+        company {
           ...CompanyFragmentTiny
         }
         count
       }
     }
     ...on ComponentGameCompanyUpdate {
+      cycle
       CompanyUserUpdate {
         company {
           ...CompanyFragmentTiny
@@ -97,6 +108,7 @@ fragment GameFragment on Game {
       }
     }
     ...on ComponentGameFundingUpdate {
+      cycle
       FundingUserUpdate {
         company {
           ...CompanyFragmentTiny

@@ -52,6 +52,7 @@ import { GAME_ACTIONS } from "../../util/game";
 import Terrian from "../../components/game/Terrian";
 import GameProgress from "../../components/game/GameProgress";
 import GameStatus from "../../components/game/GameStatus";
+import Spinner from "../../components/Spinner";
 
 import {
   simpleGameHeight,
@@ -312,17 +313,7 @@ const SimpleGame = () => {
   if (gameLoading || gameState.newGame || !gameInstance) {
     console.log("Game instance not instantiated.");
     return (
-      <Box display="absolute" top={0} right={0} bottom={0} left={0}>
-        <Box
-          width="100vw"
-          height="100vh"
-          display="flex"
-          justifyContent="center"
-          alignItems="center"
-        >
-          <GridLoader size={24} color={appTheme.palette.primary.main} />
-        </Box>
-      </Box>
+      <Spinner />
     );
   }
 
@@ -332,17 +323,7 @@ const SimpleGame = () => {
   return (
     <>
       {gameCycle < 1 && (
-        <Box display="absolute" top={0} right={0} bottom={0} left={0}>
-          <Box
-            width="100vw"
-            height="100vh"
-            display="flex"
-            justifyContent="center"
-            alignItems="center"
-          >
-            <GridLoader size={24} color={appTheme.palette.primary.main} />
-          </Box>
-        </Box>
+        <Spinner />
       )}
       {!gameState.newGame && gameInstance.id && (
         <GameSubscription
