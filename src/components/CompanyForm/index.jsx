@@ -7,6 +7,7 @@ import React, {
 } from "react";
 import PropTypes from "prop-types";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import withWidth, { isWidthDown } from "@material-ui/core/withWidth";
 
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -36,6 +37,11 @@ import StrategyItem from "./StrategyItem";
 const userStyles = makeStyles((theme) => ({
   root: {
     width: "80vw",
+    [theme.breakpoints.down("md")]: {
+      "& > .b-panel": {
+        padding: 0,
+      },
+    },
   },
   title: {
     fontWeight: 600,
@@ -45,13 +51,13 @@ const userStyles = makeStyles((theme) => ({
   },
   formInput: {
     minWidth: 360,
-    marginBottom: theme.spacing(2),
+    marginBottom: theme.spacing(0),
   },
   smallInput: {
     width: "100%",
   },
   button: {
-    marginTop: theme.spacing(1),
+    marginTop: theme.spacing(3),
     padding: theme.spacing(2),
   },
   action: {
@@ -68,16 +74,58 @@ const userStyles = makeStyles((theme) => ({
   },
 }));
 
-const CompanyForm = ({ onButtonClick, buttonText }) => {
+const CompanyForm = ({ onButtonClick, buttonText, width }) => {
   const classes = userStyles();
   const [name, setName] = useState("");
-  const [nameError, setNameError] = useState(null)
+  const [nameError, setNameError] = useState(null);
   const [errors, setErrors] = useState(Array(5).fill(null));
   const [preseed, setPreseed] = useState("");
   const [seed, setSeed] = useState("");
   const [seriesA, setSeriesA] = useState("");
   const [seriesB, setSeriesB] = useState("");
   const [seriesC, setSeriesC] = useState("");
+
+  let md = true;
+  if (isWidthDown("md", width)) {
+    md = false;
+  }
+
+  const SubmitButton = (
+    <Button
+      onClick={() => {
+        const strategyRaw = { preseed, seed, seriesA, seriesB, seriesC };
+        const strategy = {};
+        let error = false;
+        const newError = Array(5).fill(null);
+
+        if (name.length === 0) {
+          setNameError("Invalid company name.");
+        } else {
+          setNameError(null);
+        }
+
+        Object.keys(strategyRaw).forEach((key, index) => {
+          const val = strategyRaw[key];
+          if (val === "" || val < 0 || val > 1) {
+            newError[index] = STRATEGY_ERROR_TEXT;
+            error = true;
+          } else {
+            strategy[key] = parseFloat(val);
+          }
+        });
+
+        setErrors(newError);
+        if (!error) {
+          onButtonClick(name, strategy);
+        }
+      }}
+      color="primary"
+      variant="contained"
+      className={classes.button}
+    >
+      {buttonText}
+    </Button>
+  );
 
   const LeftPanel = (
     <React.Fragment>
@@ -92,51 +140,12 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
           className={classes.formInput}
           label="Company name"
           variant="outlined"
-          {
-            ...(nameError && {
-              error: true,
-              helperText: nameError,
-            })
-          }
+          {...(nameError && {
+            error: true,
+            helperText: nameError,
+          })}
         />
-        <Button
-          onClick={() => {
-            const strategyRaw = { preseed, seed, seriesA, seriesB, seriesC };
-            const strategy = {}
-            let error = false;
-            const newError = Array(5).fill(null);
-
-            if (name.length === 0) {
-              setNameError('Invalid company name.');
-            } else {
-              setNameError(null);
-            }
-
-
-            Object.keys(strategyRaw).forEach((key, index) => {
-              const val = strategyRaw[key];
-              if (val === "" || val < 0 || val > 1) {
-                newError[index] = STRATEGY_ERROR_TEXT;
-                error = true;
-              } else {
-                strategy[key] = parseFloat(val);
-              }
-            });
-
-            setErrors(newError);
-            if (!error) {
-              onButtonClick(
-                name,
-                strategy
-              );
-            }
-          }}
-          color="primary"
-          variant="contained"
-          className={classes.button}
-        >
-          {buttonText}
-        </Button>
+        {md && SubmitButton}
       </FormControl>
     </React.Fragment>
   );
@@ -208,15 +217,30 @@ const CompanyForm = ({ onButtonClick, buttonText }) => {
             : {})}
         />
       </Grid>
+      {!md && SubmitButton}
     </React.Fragment>
   );
 
   return (
     <Grid container className={classes.root} spacing={8}>
-      <Grid container item md={5} direction="column">
+      <Grid
+        className="b-panel"
+        container
+        item
+        md={12}
+        lg={5}
+        direction="column"
+      >
         {LeftPanel}
       </Grid>
-      <Grid container item md={7} direction="column">
+      <Grid
+        className="b-panel"
+        container
+        item
+        md={12}
+        lg={7}
+        direction="column"
+      >
         {RightPanel}
       </Grid>
     </Grid>
@@ -232,4 +256,4 @@ CompanyForm.defaultProps = {
   buttonText: "Start Up",
 };
 
-export default CompanyForm;
+export default withWidth()(CompanyForm);

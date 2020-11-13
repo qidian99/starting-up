@@ -14,7 +14,7 @@ import {
   ApolloClient,
   ApolloProvider,
   ApolloLink,
-  InMemoryCache
+  InMemoryCache,
 } from "@apollo/client";
 import { getMainDefinition } from "@apollo/client/utilities";
 
@@ -28,7 +28,7 @@ import { PersistGate } from "redux-persist/integration/react";
 // For generating possible types
 // import './gql/possibleTypes';
 import possibleTypes from "./gql/possibleTypes.json";
-
+import { AUTH_ACTIONS } from "./util";
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -81,11 +81,14 @@ const client = new ApolloClient({
   link: ApolloLink.from([
     onError(({ graphQLErrors, networkError }) => {
       if (graphQLErrors) {
-        graphQLErrors.forEach(({ message, locations, path }) =>
-          console.log(
+        graphQLErrors.forEach(({ message, locations, path }) => {
+          if (message === "Forbidden") {
+            store.dispatch({ type: AUTH_ACTIONS.LOGOUT });
+          }
+          return console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
-          )
-        );
+          );
+        });
       }
       if (networkError) console.log(`[Network error]: ${networkError}`);
     }),

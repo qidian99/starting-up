@@ -47,6 +47,9 @@ const userStyles = makeStyles((theme) => ({
     position: "absolute",
     top: 28,
     right: 40,
+    [theme.breakpoints.down("sm")]: {
+      display: "none",
+    },
   },
 }));
 

@@ -26,7 +26,13 @@ import {
   Typography,
   makeStyles,
   Button,
+  Modal,
 } from "@material-ui/core";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
+import DialogTitle from "@material-ui/core/DialogTitle";
 import { useToasts } from "react-toast-notifications";
 
 import { useMutation } from "@apollo/client";
@@ -56,9 +62,11 @@ import {
   TYPE_GAME_REGION_UPDATE,
   TYPE_GAME_COMPANY_UPDATE,
   TYPE_GAME_FUNDING_UPDATE,
+  MSG_TYPES,
 } from "starting-up-common";
 import { GridLoader } from "react-spinners";
 import { appTheme } from "../../theme";
+import withGameValidator from "../../hoc/withGameValidator";
 
 const GameSubscription = ({
   company,
@@ -79,6 +87,9 @@ const GameSubscription = ({
     }
   );
 
+  const history = useHistory();
+  const [gameOver, setGameOver] = useState(false);
+
   useEffect(() => {
     if (!gameSubscription) {
       return;
@@ -91,6 +102,9 @@ const GameSubscription = ({
           // console.log(update);
           // console.log('setting game logs', gameInstance.logs)
           setGameCycle(update.cycle);
+          if (update.message === MSG_TYPES.GAME_OVER) {
+            setGameOver(true);
+          }
           break;
         }
         case TYPE_GAME_REGION_UPDATE: {
@@ -124,14 +138,47 @@ const GameSubscription = ({
     setGameStatus,
   ]);
 
-  return <></>;
+  return (
+    <Dialog
+      open={gameOver}
+      onClose={() => {}}
+      aria-labelledby="alert-dialog-title"
+      aria-describedby="alert-dialog-description"
+    >
+      <DialogTitle id="alert-dialog-title">{"Game Over"}</DialogTitle>
+      <DialogContent>
+        <DialogContentText id="alert-dialog-description">
+          The game has ended. Thanks for taking your time.
+        </DialogContentText>
+      </DialogContent>
+      <DialogActions>
+        <Button
+          onClick={() => {
+            history.push("/");
+          }}
+          color="primary"
+        >
+          Back
+        </Button>
+        <Button
+          onClick={() => {
+            history.push("/history/" + gameInstance.id);
+          }}
+          color="primary"
+          autoFocus
+        >
+          Replay
+        </Button>
+      </DialogActions>
+    </Dialog>
+  );
 };
 
 GameSubscription.prototype = {
   gameInstance: Game,
 };
 
-export default () => {
+const SimpleGame = () => {
   const gameState = useSelector((state) => state.game);
   const companyState = useSelector((state) => state.company);
   const [createSimpleGame, { data: gameResponse }] = useMutation(
@@ -158,7 +205,10 @@ export default () => {
 
   const [strategy, setStrategy] = useState({});
 
-  const gameSetting = Object.keys(strategy).map((s) => ({ name: s, value: strategy[s] }));
+  const gameSetting = Object.keys(strategy).map((s) => ({
+    name: s,
+    value: strategy[s],
+  }));
 
   const [gameError, setGameError] = useState(null);
   const [logs, setLogs] = useState([]);
@@ -276,7 +326,8 @@ export default () => {
     );
   }
 
-  console.log("Fundings", gameInstance.fundings);
+  // console.log("Fundings", gameInstance.fundings);
+  // console.log(gameInstance.end);
 
   return (
     <>
@@ -351,3 +402,5 @@ export default () => {
     </>
   );
 };
+
+export default withGameValidator(SimpleGame);

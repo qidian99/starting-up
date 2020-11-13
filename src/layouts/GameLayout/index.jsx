@@ -125,7 +125,6 @@ const GameLogButton = ({ logs }) => {
   );
 };
 
-
 const GameStatusButton = ({ status }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
@@ -182,14 +181,21 @@ const GameStatusButton = ({ status }) => {
                       <ListItemText primary={company.name} />
                     </ListItem>
                     <ListItem button>
-                      <ListItemText primary="Total Revenue" secondary={revenue} />
-                    </ListItem>
-                    <ListItem button>
-                      <ListItemText primary="Number of Users" secondary={numUsers} />
+                      <ListItemText
+                        primary="Total Revenue"
+                        secondary={revenue}
+                      />
                     </ListItem>
                     <ListItem button>
                       <ListItemText
-                        primary="Number of Regions" secondary={numRegions}
+                        primary="Number of Users"
+                        secondary={numUsers}
+                      />
+                    </ListItem>
+                    <ListItem button>
+                      <ListItemText
+                        primary="Number of Regions"
+                        secondary={numRegions}
                       />
                     </ListItem>
                   </React.Fragment>
@@ -203,6 +209,9 @@ const GameStatusButton = ({ status }) => {
   );
 };
 
+GameStatusButton.defaultProps = {
+  status: [],
+};
 
 const GameProgressButton = ({ progress }) => {
   const classes = useStyles();
@@ -219,11 +228,7 @@ const GameProgressButton = ({ progress }) => {
   const open = Boolean(anchorEl);
   const id = "game-status-button";
 
-  const {
-    cycle,
-    numCycles,
-    fundings = [],
-  } = progress
+  const { cycle, numCycles, fundings = [] } = progress;
 
   return (
     <>
@@ -262,7 +267,10 @@ const GameProgressButton = ({ progress }) => {
             </ListItem>
             {fundings.map(({ name, amount, cycle }, index) => (
               <ListItem button key={"game-progress-funding" + index}>
-                <ListItemText primary={name || `Funding ${index}`} secondary={`Cycle: ${cycle}, Amount: ${amount}`} />
+                <ListItemText
+                  primary={name || `Funding ${index}`}
+                  secondary={`Cycle: ${cycle}, Amount: ${amount}`}
+                />
               </ListItem>
             ))}
           </List>
@@ -272,6 +280,13 @@ const GameProgressButton = ({ progress }) => {
   );
 };
 
+GameProgressButton.defaultProps = {
+  progress: {
+    cycle: -1,
+    numCycles: -1,
+    fundings: [],
+  },
+};
 
 const GameSettingButton = ({ setting }) => {
   const classes = useStyles();
@@ -324,7 +339,10 @@ const GameSettingButton = ({ setting }) => {
                   <ListItemIcon>
                     <AttachMoneyIcon />
                   </ListItemIcon>
-                  <ListItemText primary={setting.name} secondary={setting.value} />
+                  <ListItemText
+                    primary={setting.name}
+                    secondary={setting.value}
+                  />
                 </ListItem>
               ))}
             </List>
@@ -334,6 +352,12 @@ const GameSettingButton = ({ setting }) => {
     </>
   );
 };
+
+GameSettingButton.defaultProps = {
+  setting: [],
+};
+
+
 const GameLayout = ({
   onLogClick,
   logs,

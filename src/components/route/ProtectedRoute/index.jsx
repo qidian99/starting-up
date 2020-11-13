@@ -1,12 +1,14 @@
 import React from "react";
+import { connect } from "react-redux";
 import { Route, Redirect } from "react-router-dom";
 
-const ProtectedRoute = ({ component: Component, user, ...rest }) => {
+const ProtectedRoute = ({ component: Component, auth, ...rest }) => {
+console.log({ auth })
   return (
     <Route
       {...rest}
       render={(props) => {
-        if (user) {
+        if (auth.jwt) {
           return <Component {...rest} {...props} />;
         } else {
           return (
@@ -25,4 +27,10 @@ const ProtectedRoute = ({ component: Component, user, ...rest }) => {
   );
 };
 
-export default ProtectedRoute;
+const mapStateToProps = (state) => {
+  return {
+    auth: state.auth,
+  };
+};
+
+export default connect(mapStateToProps)(ProtectedRoute);

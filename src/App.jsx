@@ -27,21 +27,23 @@ import AuthRoute from "./components/route/AuthRoute";
 import { store } from "./reducers";
 import Company from "./views/Company";
 import SimpleGame from "./views/SimpleGame";
+import History from "./views/History";
 
 function App(props) {
   const user = store.getState().auth.user;
   console.log('In App', { user })
   return (
     <Switch>
-      <AuthRoute exact path="/" user={user} component={Auth} />
+      <AuthRoute exact path="/" component={Auth} />
       <ProtectedRoute
         exact
         path="/dashboard"
         user={user}
         component={Dashboard}
       />
-      <ProtectedRoute exact path="/company" user={user} component={Company} />
-      <ProtectedRoute exact path="/simplegame" user={user} component={SimpleGame} />
+      <ProtectedRoute exact path="/company" component={Company} />
+      <ProtectedRoute path="/history/:gameId" component={History} />
+      <ProtectedRoute exact path="/simplegame" component={SimpleGame} />
       <Route exact path="/unauthorized" component={Unauthorized} />
     </Switch>
   );

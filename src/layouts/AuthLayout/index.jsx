@@ -10,9 +10,9 @@ import {ReactComponent as UserIcon} from "../../assets/profile.svg";
 
 const useStyles = makeStyles((theme) => ({
   flex: {
-    display: 'flex',
-    justifyContent: 'center',
-    alignItems: 'center',
+    display: "flex",
+    justifyContent: "center",
+    alignItems: "center",
   },
   root: {
     height: "100vh",
@@ -27,6 +27,9 @@ const useStyles = makeStyles((theme) => ({
     position: "absolute",
     width: theme.spacing(16),
     height: theme.spacing(16),
+    [theme.breakpoints.down("xs")]: {
+      display: "none",
+    },
   },
   company: {
     top: -theme.spacing(8),
@@ -46,7 +49,7 @@ const useStyles = makeStyles((theme) => ({
   },
   children: {
     padding: theme.spacing(2),
-  }
+  },
 }));
 
 const AuthLayout = ({ children }) => {
