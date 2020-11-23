@@ -26,39 +26,39 @@ import { GAME_ACTIONS } from "../../util/game";
 import { useDispatch } from "react-redux";
 
 const columns = [
-  { id: "name", label: "Simulation", minWidth: 170 },
-  { id: "numCompanies", label: "# Companies", minWidth: 100 },
+  { id: "name", label: "Simulation", minWidth: 160 },
+  { id: "numCompanies", label: "# Companies", minWidth: 50, align: "center" },
   {
     id: "width",
     label: "Width",
-    minWidth: 170,
+    minWidth: 50,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "height",
     label: "Height",
-    minWidth: 170,
+    minWidth: 50,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "numCycles",
     label: "# Cycles",
-    minWidth: 170,
+    minWidth: 50,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "finished",
     label: "Finished",
-    minWidth: 170,
+    minWidth: 50,
     align: "center",
   },
   {
     id: "action",
     label: "Action",
-    minWidth: 170,
+    minWidth: 50,
     align: "center",
   },
 ];
