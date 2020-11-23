@@ -65,6 +65,8 @@ const GameFragment = gql`
 fragment GameFragment on Game {
   id
   name
+  started
+  finished
   width
   height
   numCycles
@@ -78,7 +80,6 @@ fragment GameFragment on Game {
       ...StrategyFragment
     }
   }
-  started
   update {
     ...on ComponentGameInfoUpdate {
       cycle
@@ -252,6 +253,16 @@ query game($gameId: ID!) {
   }
 }
 ${GameFragment}`
+
+
+export const HISTORY_QUERY = gql`
+query gameHistory {
+  gameHistory {
+    ...GameFragment
+  }
+}
+${GameFragment}`
+
 
 export const COMPANY_QUERY = gql`
 query company($companyId: ID!) {

@@ -33,6 +33,7 @@ import { AUTH_ACTIONS } from "./util";
 // Create an http link:
 const httpLink = new HttpLink({
   uri: "http://localhost:1337/graphql",
+  // uri: "https://startup-qidian99.herokuapp.com/graphql",
 });
 
 const authLink = setContext((_, { headers }) => {

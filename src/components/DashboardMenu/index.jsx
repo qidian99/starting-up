@@ -65,10 +65,20 @@ const DashboardMenu = () => {
             />
           </Grid>
           <Grid item sm={12} md={6}>
-            <MenuItem title="History" onMenuClick={() => {}} />
+            <MenuItem
+              title="History"
+              onMenuClick={() => {
+                history.push("/history");
+              }}
+            />
           </Grid>
           <Grid item sm={12} md={6}>
-            <MenuItem title="Settings" onMenuClick={() => {}} />
+            <MenuItem
+              title="Settings"
+              onMenuClick={() => {
+                history.push("/settings");
+              }}
+            />
           </Grid>
           <Grid item sm={12} md={6}>
             <MenuItem

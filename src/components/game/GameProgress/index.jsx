@@ -44,6 +44,9 @@ const useStyles = makeStyles((theme) => ({
   title: {
     backgroundColor: "#FFF",
   },
+  titleButton: {
+    padding: theme.spacing(1),
+  },
   icon: {
     width: theme.spacing(7),
     height: theme.spacing(7),
@@ -105,15 +108,33 @@ const GameProgress = ({ cycle, fundings }) => {
         display="flex"
         justifyContent="center"
         alignItems="center"
-        padding={1}
       >
-        <Typography>Timeline</Typography>
+        <Button
+          variant="contained"
+          color="primary"
+          fullWidth
+          className={classes.titleButton}
+        >
+          <Typography>Timeline</Typography>
+        </Button>
       </Box>
       <Box padding={2}>
         <Grid container>
-          <GameProgressEntry Icon={CycleIcon} text={cycle} tooltip={"Current cycle"} />
-          <GameProgressEntry Icon={ScheduleIcon} text={schedule} tooltip={"How many cycles until next funding phase"} />
-          <GameProgressEntry Icon={FundingIcon} text={amount} tooltip={"Funding amount in next funding phase"} />
+          <GameProgressEntry
+            Icon={CycleIcon}
+            text={cycle}
+            tooltip={"Current cycle"}
+          />
+          <GameProgressEntry
+            Icon={ScheduleIcon}
+            text={schedule}
+            tooltip={"How many cycles until next funding phase"}
+          />
+          <GameProgressEntry
+            Icon={FundingIcon}
+            text={amount}
+            tooltip={"Funding amount in next funding phase"}
+          />
         </Grid>
       </Box>
     </Box>

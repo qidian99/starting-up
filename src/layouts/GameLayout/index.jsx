@@ -14,6 +14,7 @@ import {
   ListItem,
   ListItemIcon,
   ListItemText,
+  Tooltip,
 } from "@material-ui/core";
 import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import clsx from "clsx";
@@ -21,7 +22,10 @@ import PropTypes from "prop-types";
 import Popover from "@material-ui/core/Popover";
 import { AccessTime } from "@material-ui/icons";
 import PersonIcon from "@material-ui/icons/Person";
-
+import { useHistory } from "react-router-dom";
+import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
+import { STRATEGY_TIPS } from "starting-up-common";
+console.log(STRATEGY_TIPS);
 const useStyles = makeStyles((theme) => ({
   flex: {
     display: "flex",
@@ -47,12 +51,14 @@ const useStyles = makeStyles((theme) => ({
     padding: theme.spacing(2),
   },
   exitButton: {
+    // backgroundColor: theme.palette.primary.main,
     minWidth: 120,
     marginLeft: theme.spacing(3),
     marginRight: theme.spacing(2),
   },
   actionButton: {
-    border: "1px dashed rgba(0, 0, 0, 0.23)",
+    border: "1px solid rgba(0, 0, 0, 0.23)",
+    // border: "1px dashed rgba(0, 0, 0, 0.23)",
     minWidth: 100,
     marginLeft: theme.spacing(1),
     marginRight: theme.spacing(1),
@@ -288,7 +294,7 @@ GameProgressButton.defaultProps = {
   },
 };
 
-const GameSettingButton = ({ setting }) => {
+const GameStrategyButton = ({ setting }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -311,7 +317,7 @@ const GameSettingButton = ({ setting }) => {
         color="inherit"
         className={classes.actionButton}
       >
-        Setting
+        Strategy
       </Button>
       <Popover
         id={id}
@@ -335,7 +341,11 @@ const GameSettingButton = ({ setting }) => {
           ) : (
             <List>
               {setting.map((setting, index) => (
-                <ListItem button key={"setting" + index}>
+                <ListItem
+                  button
+                  key={"setting" + index}
+                  onClick={() => window.open(STRATEGY_TIPS[index].link)}
+                >
                   <ListItemIcon>
                     <AttachMoneyIcon />
                   </ListItemIcon>
@@ -343,6 +353,9 @@ const GameSettingButton = ({ setting }) => {
                     primary={setting.name}
                     secondary={setting.value}
                   />
+                  <Tooltip title={STRATEGY_TIPS[index].text} aria-label="info">
+                    <InfoOutlinedIcon />
+                  </Tooltip>
                 </ListItem>
               ))}
             </List>
@@ -353,7 +366,7 @@ const GameSettingButton = ({ setting }) => {
   );
 };
 
-GameSettingButton.defaultProps = {
+GameStrategyButton.defaultProps = {
   setting: [],
 };
 
@@ -371,6 +384,7 @@ const GameLayout = ({
   children,
 }) => {
   const classes = useStyles();
+  const history = useHistory();
 
   useEffect(() => {
     // console.log("GameLayout logs", logs);
@@ -378,19 +392,22 @@ const GameLayout = ({
 
   return (
     <Box className={clsx(classes.root, classes.flex)}>
-      <AppBar position="fixed" color="default">
+      <AppBar position="fixed" color="default" elevation={2}>
         <Toolbar>
-          <Typography variant="h6" className={classes.title}>
-            STARTING UP
-          </Typography>
+          <Box className={classes.title}>
+            <Button onClick={() => history.push("/")}>
+              <Typography variant="h6" style={{ fontWeight: 'bold' }}>STARTING UP</Typography>
+            </Button>
+          </Box>
           <GameLogButton logs={logs} />
           <GameStatusButton status={status} />
           <GameProgressButton progress={progress} />
-          <GameSettingButton setting={setting} />
+          <GameStrategyButton setting={setting} />
           <Button
             onClick={onExitClick}
-            variant="outlined"
-            color="inherit"
+            variant="contained"
+            // color="inherit"
+            color="primary"
             className={classes.exitButton}
           >
             Exit

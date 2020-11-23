@@ -28,6 +28,7 @@ import { store } from "./reducers";
 import Company from "./views/Company";
 import SimpleGame from "./views/SimpleGame";
 import History from "./views/History";
+import HistoryList from "./views/HistoryList";
 
 function App(props) {
   const user = store.getState().auth.user;
@@ -43,6 +44,7 @@ function App(props) {
       />
       <ProtectedRoute exact path="/company" component={Company} />
       <ProtectedRoute path="/history/:gameId" component={History} />
+      <ProtectedRoute exact path="/history" component={HistoryList} />
       <ProtectedRoute exact path="/simplegame" component={SimpleGame} />
       <Route exact path="/unauthorized" component={Unauthorized} />
     </Switch>
