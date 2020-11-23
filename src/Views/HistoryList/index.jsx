@@ -22,9 +22,11 @@ import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
 import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
+import { GAME_ACTIONS } from "../../util/game";
+import { useDispatch } from "react-redux";
 
 const columns = [
-  { id: "name", label: "Game", minWidth: 170 },
+  { id: "name", label: "Simulation", minWidth: 170 },
   { id: "numCompanies", label: "# Companies", minWidth: 100 },
   {
     id: "width",
@@ -92,6 +94,7 @@ const HistoryList = () => {
   );
 
   const history = useHistory();
+  const dispatch = useDispatch();
 
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -148,11 +151,14 @@ const HistoryList = () => {
                                 onClick={() =>
                                   row.finished
                                     ? history.push(`/history/${row.id}`)
-                                    : null
+                                    : dispatch({
+                                        type: GAME_ACTIONS.ENTER_GAME,
+                                        game: row,
+                                      })
                                 }
                               >
-                                <Typography style={{ fontWeight: 'bold' }}>
-                                  {row.finished ? "Replay" : "Go to"}
+                                <Typography style={{ fontWeight: "bold" }}>
+                                  {row.finished ? "Replay" : "Go To"}
                                 </Typography>
                               </Button>
                             </StyledTableCell>

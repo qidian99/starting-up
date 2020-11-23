@@ -264,6 +264,14 @@ query gameHistory {
 ${GameFragment}`
 
 
+export const MY_COMPANIES_QUERY = gql`
+query myCompanies {
+  myCompanies {
+    ...CompanyFragment
+  }
+}
+${CompanyFragment}`
+
 export const COMPANY_QUERY = gql`
 query company($companyId: ID!) {
   company(id: $companyId) {

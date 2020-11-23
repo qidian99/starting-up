@@ -149,7 +149,7 @@ const GameSubscription = ({
       <DialogTitle id="alert-dialog-title">{"Game Over"}</DialogTitle>
       <DialogContent>
         <DialogContentText id="alert-dialog-description">
-          The game has ended. Thanks for taking your time.
+          The simulation has ended. Thanks for your time.
         </DialogContentText>
       </DialogContent>
       <DialogActions>

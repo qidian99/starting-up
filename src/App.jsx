@@ -29,6 +29,7 @@ import Company from "./views/Company";
 import SimpleGame from "./views/SimpleGame";
 import History from "./views/History";
 import HistoryList from "./views/HistoryList";
+import CompanyList from "./views/CompanyList";
 
 function App(props) {
   const user = store.getState().auth.user;
@@ -43,6 +44,7 @@ function App(props) {
         component={Dashboard}
       />
       <ProtectedRoute exact path="/company" component={Company} />
+      <ProtectedRoute exact path="/companies" component={CompanyList} />
       <ProtectedRoute path="/history/:gameId" component={History} />
       <ProtectedRoute exact path="/history" component={HistoryList} />
       <ProtectedRoute exact path="/simplegame" component={SimpleGame} />

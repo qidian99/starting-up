@@ -74,9 +74,9 @@ const DashboardMenu = () => {
           </Grid>
           <Grid item sm={12} md={6}>
             <MenuItem
-              title="Settings"
+              title="Companies"
               onMenuClick={() => {
-                history.push("/settings");
+                history.push("/companies");
               }}
             />
           </Grid>
