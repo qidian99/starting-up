@@ -100,7 +100,7 @@ const History = () => {
       })
       .maxBy("cycle")
       .value();
-
+    if (!maxCycles) return;
     console.log({ updates, maxCycles });
     setCycles(maxCycles.cycle);
   }, [gameQueryResult]);

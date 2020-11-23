@@ -155,7 +155,8 @@ const GameSubscription = ({
       <DialogActions>
         <Button
           onClick={() => {
-            history.push("/");
+            // history.push("/");
+            setGameOver(false);
           }}
           color="primary"
         >
