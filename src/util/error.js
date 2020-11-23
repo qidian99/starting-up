@@ -1,0 +1,4 @@
+export const ERROR_ACTIONS = {
+  NEW_ERROR: 'NEW_ERROR',
+  CLEAR_ERROR: 'CLEAR_ERROR',
+}

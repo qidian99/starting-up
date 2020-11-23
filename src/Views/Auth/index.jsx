@@ -122,6 +122,14 @@ export default (props) => {
       history.push("/dashboard");
     }
 
+    if (signupResponse) {
+      const {
+        register: { user, jwt },
+      } = signupResponse;
+      dispatch({ type: AUTH_ACTIONS.LOGIN, user, jwt });
+      history.push("/dashboard");
+    }
+
     return () => {};
   }, [loginResponse, signupResponse, dispatch, history]);
 

@@ -12,6 +12,7 @@ import React, {
   useEffect,
   useState,
   useReducer,
+  useRef,
 } from "react";
 import Radio from "@material-ui/core/Radio";
 import RadioGroup from "@material-ui/core/RadioGroup";
@@ -43,7 +44,7 @@ import {
   LOGIN_MUTATION,
   SIGNUP_MUTATION,
 } from "../../gql";
-import { AUTH_ACTIONS, AUTH_FORM_MODE } from "../../util";
+import { AUTH_ACTIONS, AUTH_FORM_MODE, ERROR_ACTIONS } from "../../util";
 import { useSelector, useDispatch } from "react-redux";
 import DashboardMenu from "../../components/DashboardMenu";
 
@@ -189,7 +190,7 @@ const SimpleGame = () => {
 
   const { loading: gameLoading, data: gameQueryResult } = useQuery(GAME_QUERY, {
     variables: {
-      gameId: _.get(gameState, ["game", "id"]),
+      gameId: _.get(gameState, ["game", "id"]) || '',
     },
   });
 
@@ -204,6 +205,7 @@ const SimpleGame = () => {
 
   const dispatch = useDispatch();
   const { addToast } = useToasts();
+  const errorState = useSelector((state) => state.error);
 
   const [strategy, setStrategy] = useState({});
 
@@ -220,8 +222,26 @@ const SimpleGame = () => {
   const [gameStatus, setGameStatus] = useState([]);
   const [currentPlayer, setCurrentPlayer] = useState(companyState.active.id);
   // console.log({ currentPlayer });
-
   const history = useHistory();
+  const errorRef = useRef(null);
+
+  useEffect(() => {
+    if (errorState.error) {
+        if (errorRef.current ===  errorState.error) return;
+        errorRef.current = errorState.error;
+        dispatch({
+          type: ERROR_ACTIONS.CLEAR_ERROR
+        });
+        addToast(errorState.error, {
+        appearance: "error",
+        onDismiss: () => {
+          history.push('/');
+        },
+      });
+        
+    }
+  }, [addToast, dispatch, errorState, history]);
+
   const setGameLogs = useCallback(
     (lgs) => {
       setLogs(lgs);
@@ -305,7 +325,7 @@ const SimpleGame = () => {
     if (gameError) {
       addToast(gameError, {
         appearance: "error",
-        onDismiss: setGameError(null),
+        onDismiss: () => setGameError(null),
       });
     }
     return () => {};

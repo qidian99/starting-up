@@ -18,5 +18,8 @@ export const menuTheme = createMuiTheme({
     primary: {
       main: '#FFF',
     },
+    secondary: {
+      main: purple[500],
+    },
   },
 });

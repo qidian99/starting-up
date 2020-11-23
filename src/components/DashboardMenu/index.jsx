@@ -28,6 +28,8 @@ import { menuTheme } from "../../theme";
 import useMediaQuery from "@material-ui/core/useMediaQuery";
 import { GAME_ACTIONS } from "../../util/game";
 
+import StartMenuButton from "../MenuItem/StartMenuButton";
+
 const useStyles = makeStyles((theme) => ({
   root: {
     // width: "fit-content",
@@ -54,7 +56,35 @@ const DashboardMenu = () => {
       <Box width="50%">
         <Grid container className={classes.root} spacing={isSmall ? 2 : 10}>
           <Grid item sm={12} md={6}>
-            <MenuItem
+            <StartMenuButton
+              onMenuClick={async (index) => {
+                dispatch({
+                  type: GAME_ACTIONS.REGISTER_GAME,
+                });
+                switch (index) {
+                  case 0: {
+                    history.push("/company");
+                    break;
+                  }
+                  case 1: {
+                    await dispatch({
+                      type: GAME_ACTIONS.SET_NEW_GAME,
+                      value: false, // TODO: only in dev mode
+                    });
+                    history.push("/simplegame");
+                    break;
+                  }
+                  default: {
+                    await dispatch({
+                      type: GAME_ACTIONS.SET_NEW_GAME,
+                      value: true,
+                    });
+                    history.push("/simplegame");
+                  }
+                }
+              }}
+            ></StartMenuButton>
+            {/* <MenuItem
               title="Start"
               onMenuClick={() => {
                 dispatch({
@@ -62,7 +92,7 @@ const DashboardMenu = () => {
                 });
                 history.push("/company");
               }}
-            />
+            /> */}
           </Grid>
           <Grid item sm={12} md={6}>
             <MenuItem

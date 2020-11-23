@@ -15,9 +15,9 @@ const companyReducer = (state = DEFAULT_COMPANY_STATE, action) => {
       };
     }
     case COMPANY_ACTIONS.REGISTER_COMPANY: {
-      const { company } = action;
+      // const { company } = action;
       const newList = [...state.list];
-      newList.push(company)
+      // newList.push(company)
       return {
         ...state,
         list: newList,

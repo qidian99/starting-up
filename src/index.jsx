@@ -20,7 +20,11 @@ import { getMainDefinition } from "@apollo/client/utilities";
 
 import { setContext } from "apollo-link-context";
 import { WebSocketLink } from "@apollo/client/link/ws";
-import { ToastProvider, DefaultToast } from "react-toast-notifications";
+import {
+  ToastProvider,
+  DefaultToast,
+  DefaultToastContainer,
+} from "react-toast-notifications";
 
 import { Provider } from "react-redux";
 import { PersistGate } from "redux-persist/integration/react";
@@ -28,7 +32,8 @@ import { PersistGate } from "redux-persist/integration/react";
 // For generating possible types
 // import './gql/possibleTypes';
 import possibleTypes from "./gql/possibleTypes.json";
-import { AUTH_ACTIONS } from "./util";
+import { AUTH_ACTIONS, ERROR_ACTIONS } from "./util";
+import { GAME_ERRORS } from "starting-up-common";
 
 // Create an http link:
 const httpLink = new HttpLink({
@@ -86,6 +91,19 @@ const client = new ApolloClient({
           if (message === "Forbidden") {
             store.dispatch({ type: AUTH_ACTIONS.LOGOUT });
           }
+          switch (message) {
+            case GAME_ERRORS.ALREADY_ENDED:
+              store.dispatch({
+                type: ERROR_ACTIONS.NEW_ERROR,
+                error: message,
+              });
+
+              break;
+
+            default: {
+              break;
+            }
+          }
           return console.log(
             `[GraphQL error]: Message: ${message}, Location: ${locations}, Path: ${path}`
           );
@@ -98,6 +116,15 @@ const client = new ApolloClient({
   cache,
 });
 
+const ToastContainer = (props) => (
+  <DefaultToastContainer
+    className="toast-container"
+    // css={{ outline: "4px dashed green" }}
+    style={{ zIndex: 2000 }}
+    {...props}
+  />
+);
+
 ReactDOM.render(
   <React.StrictMode>
     <ApolloProvider client={client}>
@@ -106,8 +133,9 @@ ReactDOM.render(
           <ThemeProvider theme={appTheme}>
             <ToastProvider
               autoDismiss={true}
-              autoDismissTimeout={2000}
+              autoDismissTimeout={3000}
               transitionDuration={200}
+              components={{ ToastContainer }}
               placement="top-center"
             >
               <BrowserRouter>

@@ -1,12 +1,34 @@
 import React from "react";
-import { Box, makeStyles, Paper, Typography } from "@material-ui/core";
+import {
+  Box,
+  makeStyles,
+  Paper,
+  Typography,
+  useTheme,
+} from "@material-ui/core";
 import clsx from "clsx";
 
-
+import Drawer from "@material-ui/core/Drawer";
+import AppBar from "@material-ui/core/AppBar";
+import Toolbar from "@material-ui/core/Toolbar";
+import CssBaseline from "@material-ui/core/CssBaseline";
+import List from "@material-ui/core/List";
+import Divider from "@material-ui/core/Divider";
+import IconButton from "@material-ui/core/IconButton";
+import MenuIcon from "@material-ui/icons/Menu";
+import ChevronLeftIcon from "@material-ui/icons/ChevronLeft";
+import ChevronRightIcon from "@material-ui/icons/ChevronRight";
+import ListItem from "@material-ui/core/ListItem";
+import ListItemIcon from "@material-ui/core/ListItemIcon";
+import ListItemText from "@material-ui/core/ListItemText";
+import InboxIcon from "@material-ui/icons/MoveToInbox";
+import MailIcon from "@material-ui/icons/Mail";
 import {ReactComponent as CompanyIcon} from "../../assets/buildings.svg";
 import {ReactComponent as RegionIcon} from "../../assets/tiles.svg";
 import {ReactComponent as RevenueIcon} from "../../assets/money-bag.svg";
 import {ReactComponent as UserIcon} from "../../assets/profile.svg";
+
+const drawerWidth = 240;
 
 const useStyles = makeStyles((theme) => ({
   flex: {

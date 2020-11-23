@@ -108,11 +108,10 @@ const HistoryList = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  if (historyLoading) {
+  if (historyLoading || !historyQueryResult) {
     return <Spinner />;
   }
 
-  console.log(historyQueryResult);
   const rows = historyQueryResult.gameHistory;
 
   return (
@@ -148,13 +147,20 @@ const HistoryList = () => {
                             >
                               <Button
                                 color={row.finished ? "primary" : "secondary"}
-                                onClick={() =>
+                                onClick={
                                   row.finished
-                                    ? history.push(`/history/${row.id}`)
-                                    : dispatch({
-                                        type: GAME_ACTIONS.ENTER_GAME,
-                                        game: row,
-                                      })
+                                    ? () => history.push(`/history/${row.id}`)
+                                    : async () => {
+                                        await dispatch({
+                                          type: GAME_ACTIONS.SET_NEW_GAME,
+                                          value: false,
+                                        });
+                                        await dispatch({
+                                          type: GAME_ACTIONS.ENTER_GAME,
+                                          game: row,
+                                        });
+                                        history.push("/simplegame");
+                                      }
                                 }
                               >
                                 <Typography style={{ fontWeight: "bold" }}>
