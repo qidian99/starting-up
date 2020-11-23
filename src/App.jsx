@@ -49,6 +49,15 @@ function App(props) {
       <ProtectedRoute exact path="/history" component={HistoryList} />
       <ProtectedRoute exact path="/simplegame" component={SimpleGame} />
       <Route exact path="/unauthorized" component={Unauthorized} />
+      {/* Project specific */}
+      <Route exact path="/project/introduction" component={Unauthorized} />
+      <Route exact path="/project/model" component={Unauthorized} />
+      <Route exact path="/project/demo" component={Unauthorized} />
+      <Route exact path="/project/evaluation" component={Unauthorized} />
+      <Route exact path="/project/conclusion" component={Unauthorized} />
+      {/* Contact forms */}
+      <Route exact path="/forms/contact" component={Unauthorized} />
+      <Route exact path="/forms/report" component={Unauthorized} />
     </Switch>
   );
 }
