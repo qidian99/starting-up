@@ -1,6 +1,7 @@
 import React from "react";
 import {
   Box,
+  Button,
   makeStyles,
   Paper,
   Typography,
@@ -22,13 +23,20 @@ import ListItem from "@material-ui/core/ListItem";
 import ListItemIcon from "@material-ui/core/ListItemIcon";
 import ListItemText from "@material-ui/core/ListItemText";
 import InboxIcon from "@material-ui/icons/MoveToInbox";
+import OutlinedFlagIcon from "@material-ui/icons/OutlinedFlag";
+import PolymerIcon from "@material-ui/icons/Polymer";
+import BuildIcon from "@material-ui/icons/Build";
+import PresentToAllIcon from "@material-ui/icons/PresentToAll";
+import BugReportIcon from "@material-ui/icons/BugReport";
+import StopOutlinedIcon from "@material-ui/icons/StopOutlined";
 import MailIcon from "@material-ui/icons/Mail";
 import { ReactComponent as CompanyIcon } from "../../assets/buildings.svg";
 import { ReactComponent as RegionIcon } from "../../assets/tiles.svg";
 import { ReactComponent as RevenueIcon } from "../../assets/money-bag.svg";
 import { ReactComponent as UserIcon } from "../../assets/profile.svg";
+import { useHistory } from "react-router-dom";
 
-const drawerWidth = 240;
+const drawerWidth = 320;
 
 const useStyles = makeStyles((theme) => ({
   flex: {
@@ -109,7 +117,7 @@ const useStyles = makeStyles((theme) => ({
   },
   content: {
     flexGrow: 1,
-    padding: theme.spacing(3),
+    // padding: theme.spacing(3),
     transition: theme.transitions.create("margin", {
       easing: theme.transitions.easing.sharp,
       duration: theme.transitions.duration.leavingScreen,
@@ -125,11 +133,11 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-const AuthLayout = ({ children }) => {
+const PersistentDrawer = ({ children }) => {
   const classes = useStyles();
   const theme = useTheme();
   const [open, setOpen] = React.useState(false);
-
+  const history = useHistory();
   const handleDrawerOpen = () => {
     setOpen(true);
   };
@@ -148,9 +156,17 @@ const AuthLayout = ({ children }) => {
         })}
       >
         <Toolbar>
-          <Typography variant="h6" style={{ color: '#FFF', fontWeight: 'bold' }} noWrap className={classes.title}>
-            Starting Up
-          </Typography>
+          <Box className={classes.title}>
+            <Button onClick={() => history.push("/")}>
+              <Typography
+                variant="h6"
+                style={{ color: "#FFF", fontWeight: "bold" }}
+                noWrap
+              >
+                Starting Up
+              </Typography>
+            </Button>
+          </Box>
           <IconButton
             color="inherit"
             aria-label="open drawer"
@@ -163,17 +179,12 @@ const AuthLayout = ({ children }) => {
         </Toolbar>
       </AppBar>
       <Box
-        width="100%"
-        height="60%"
-        className={clsx(classes.content, classes.container, classes.flex, {
+        padding={0}
+        className={clsx(classes.content, {
           [classes.contentShift]: open,
         })}
       >
-        <CompanyIcon className={clsx(classes.company, classes.icon)} />
-        <RegionIcon className={clsx(classes.region, classes.icon)} />
-        <RevenueIcon className={clsx(classes.revenue, classes.icon)} />
-        <UserIcon className={clsx(classes.user, classes.icon)} />
-        <Box className={clsx(classes.children, classes.flex)}>{children}</Box>
+        {children}
       </Box>
       <Drawer
         className={classes.drawer}
@@ -192,25 +203,26 @@ const AuthLayout = ({ children }) => {
               <ChevronRightIcon />
             )}
           </IconButton>
+          <Typography>
+            UCSD Math 111A Project
+          </Typography>
         </div>
         <Divider />
         <List>
-          {["Inbox", "Starred", "Send email", "Drafts"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {["Introduction", "Model", "Demo", "Evaluation", "Conclusion"].map(
+            (text, index) => (
+              <ListItem button key={text}>
+                <ListItemIcon>{getDrawerIcon(text)}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            )
+          )}
         </List>
         <Divider />
         <List>
-          {["All mail", "Trash", "Spam"].map((text, index) => (
+          {["Contact Information", "Report a Bug"].map((text, index) => (
             <ListItem button key={text}>
-              <ListItemIcon>
-                {index % 2 === 0 ? <InboxIcon /> : <MailIcon />}
-              </ListItemIcon>
+              <ListItemIcon>{getDrawerIcon(text)}</ListItemIcon>
               <ListItemText primary={text} />
             </ListItem>
           ))}
@@ -220,4 +232,24 @@ const AuthLayout = ({ children }) => {
   );
 };
 
-export default AuthLayout;
+const getDrawerIcon = (text) => {
+  switch (text) {
+    case "Introduction":
+      return <OutlinedFlagIcon />;
+    case "Model":
+      return <PolymerIcon />;
+    case "Demo":
+      return <PresentToAllIcon />;
+    case "Evaluation":
+      return <BuildIcon />;
+    case "Conclusion":
+      return <StopOutlinedIcon />;
+    case "Contact Information":
+      return <MailIcon />;
+    case "Report a Bug":
+      return <BugReportIcon />;
+    default:
+      return <MailIcon />;
+  }
+};
+export default PersistentDrawer;

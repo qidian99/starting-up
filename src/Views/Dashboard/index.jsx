@@ -2,7 +2,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import gql from "graphql-tag";
 import { useSubscription, useQuery } from "@apollo/client";
-import AuthLayout from "../../layouts/AuthLayout";
+import MainLayout from "../../layouts/MainLayout";
 import AuthForm from "../../components/AuthForm";
 import { useHistory } from "react-router-dom";
 
@@ -31,5 +31,5 @@ import DashboardMenu from "../../components/DashboardMenu";
 
 
 export default () => {
-  return <AuthLayout><DashboardMenu /></AuthLayout>;
+  return <MainLayout><DashboardMenu /></MainLayout>;
 }

@@ -2,7 +2,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import gql from "graphql-tag";
 import { useSubscription, useQuery } from "@apollo/client";
-import AuthLayout from "../../layouts/AuthLayout";
+import MainLayout from "../../layouts/MainLayout";
 import AuthForm from "../../components/AuthForm";
 import { useHistory } from "react-router-dom";
 
@@ -89,8 +89,8 @@ export default () => {
   }, [companyResponse, dispatch, history]);
 
   return (
-    <AuthLayout>
+    <MainLayout>
       <CompanyForm onButtonClick={onButtonClick} />
-    </AuthLayout>
+    </MainLayout>
   );
 };

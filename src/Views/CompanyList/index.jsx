@@ -2,7 +2,7 @@ import { useQuery } from "@apollo/client";
 import React, { useCallback, useEffect, useState } from "react";
 import Spinner from "../../components/Spinner";
 import { HISTORY_QUERY, MY_COMPANIES_QUERY } from "../../gql";
-import AuthLayout from "../../layouts/AuthLayout";
+import MainLayout from "../../layouts/MainLayout";
 import clsx from "clsx";
 import {
   createStyles,
@@ -114,7 +114,7 @@ const CompanyList = () => {
   const rows = companiesQueryResult.myCompanies;
 
   return (
-    <AuthLayout>
+    <MainLayout>
       <Paper className={classes.root}>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
@@ -207,7 +207,7 @@ const CompanyList = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-    </AuthLayout>
+    </MainLayout>
   );
 
   // return <Spinner />;

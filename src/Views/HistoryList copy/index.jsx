@@ -20,45 +20,43 @@ import TableContainer from "@material-ui/core/TableContainer";
 import TableHead from "@material-ui/core/TableHead";
 import TablePagination from "@material-ui/core/TablePagination";
 import TableRow from "@material-ui/core/TableRow";
-import { Box, Button, Typography } from "@material-ui/core";
+import { Button, Typography } from "@material-ui/core";
 import { useHistory } from "react-router-dom";
-import { GAME_ACTIONS } from "../../util/game";
-import { useDispatch } from "react-redux";
 
 const columns = [
-  { id: "name", label: "Simulation", minWidth: 160 },
-  { id: "numCompanies", label: "# Companies", minWidth: 50, align: "center" },
+  { id: "name", label: "Simulation", minWidth: 170 },
+  { id: "numCompanies", label: "# Companies", minWidth: 100 },
   {
     id: "width",
     label: "Width",
-    minWidth: 50,
+    minWidth: 170,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "height",
     label: "Height",
-    minWidth: 50,
+    minWidth: 170,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "numCycles",
     label: "# Cycles",
-    minWidth: 50,
+    minWidth: 170,
     align: "center",
     format: (value) => value.toLocaleString("en-US"),
   },
   {
     id: "finished",
     label: "Finished",
-    minWidth: 50,
+    minWidth: 170,
     align: "center",
   },
   {
     id: "action",
     label: "Action",
-    minWidth: 50,
+    minWidth: 170,
     align: "center",
   },
 ];
@@ -88,15 +86,12 @@ const StyledTableCell = withStyles((theme) => ({
   },
 }))(TableCell);
 
-const Spacer = () => (<Box display="flex" flexDirection="column" flex="1"></Box>)
-
 const HistoryList = () => {
   const { loading: historyLoading, data: historyQueryResult } = useQuery(
     HISTORY_QUERY
   );
 
   const history = useHistory();
-  const dispatch = useDispatch();
 
   const classes = useStyles();
   const [page, setPage] = React.useState(0);
@@ -110,16 +105,15 @@ const HistoryList = () => {
     setRowsPerPage(+event.target.value);
     setPage(0);
   };
-  if (historyLoading || !historyQueryResult) {
+  if (historyLoading) {
     return <Spinner />;
   }
 
+  console.log(historyQueryResult);
   const rows = historyQueryResult.gameHistory;
 
   return (
     <MainLayout>
-      {" "}
-      <Spacer />
       <Paper className={classes.root}>
         <TableContainer className={classes.container}>
           <Table stickyHeader aria-label="sticky table">
@@ -151,24 +145,14 @@ const HistoryList = () => {
                             >
                               <Button
                                 color={row.finished ? "primary" : "secondary"}
-                                onClick={
+                                onClick={() =>
                                   row.finished
-                                    ? () => history.push(`/history/${row.id}`)
-                                    : async () => {
-                                        await dispatch({
-                                          type: GAME_ACTIONS.SET_NEW_GAME,
-                                          value: false,
-                                        });
-                                        await dispatch({
-                                          type: GAME_ACTIONS.ENTER_GAME,
-                                          game: row,
-                                        });
-                                        history.push("/simplegame");
-                                      }
+                                    ? history.push(`/history/${row.id}`)
+                                    : null
                                 }
                               >
-                                <Typography style={{ fontWeight: "bold" }}>
-                                  {row.finished ? "Replay" : "Go To"}
+                                <Typography style={{ fontWeight: 'bold' }}>
+                                  {row.finished ? "Replay" : "Go to"}
                                 </Typography>
                               </Button>
                             </StyledTableCell>
@@ -204,7 +188,6 @@ const HistoryList = () => {
           onChangeRowsPerPage={handleChangeRowsPerPage}
         />
       </Paper>
-      <Spacer />
     </MainLayout>
   );
 

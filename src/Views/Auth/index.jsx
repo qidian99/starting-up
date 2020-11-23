@@ -2,7 +2,7 @@ import { compose } from "redux";
 import { connect } from "react-redux";
 import gql from "graphql-tag";
 import { useSubscription, useQuery } from "@apollo/client";
-import AuthLayout from "../../layouts/AuthLayout";
+import MainLayout from "../../layouts/MainLayout";
 import AuthForm from "../../components/AuthForm";
 import { useHistory } from "react-router-dom";
 
@@ -143,7 +143,7 @@ export default (props) => {
   }, [addToast, error]);
 
   return (
-    <AuthLayout>
+    <MainLayout>
       <AuthForm
         mode={mode}
         onButtonClick={onButtonClick}
@@ -152,7 +152,7 @@ export default (props) => {
         loginPrompt={getLoginPrompt(mode)}
         loginActionText={getLoginAction(mode)}
       />
-    </AuthLayout>
+    </MainLayout>
   );
 };
 
