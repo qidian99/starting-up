@@ -4,7 +4,7 @@ import React, {
   useRef,
   useState,
 } from "react";
-import Frame from "../../components/Frame";
+import Frame from "../Frame";
 import {
   ProjectContainer,
   ProjectText,

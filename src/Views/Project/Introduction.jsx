@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import {
   ChartController,
@@ -12,10 +12,14 @@ import {
 } from "../../components/Charts/data";
 import PersistentDrawer from "../../components/DrawerMenu/PersistentDrawer";
 import { INTRODUCTION_FRAMES } from "./frames";
-import Visualizer from "./Visualizer";
+import Visualizer from "../../components/Charts/Visualizer";
 
 const Introduction = () => {
   const history = useHistory();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   return (
     <PersistentDrawer>
