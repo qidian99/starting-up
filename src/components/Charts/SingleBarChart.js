@@ -20,6 +20,7 @@ const SingleBarChart = ({
   data,
   dataKey,
   margin,
+  name,
   active,
 }) => {
   return (
@@ -34,7 +35,7 @@ const SingleBarChart = ({
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey={dataKey} fill="#8884d8" isAnimationActive={active} />
+      <Bar dataKey={dataKey} name={name || dataKey} fill="#8884d8" isAnimationActive={active} />
     </BarChart>
   );
 };
@@ -44,6 +45,7 @@ SingleBarChart.defaultProps = {
   ...CHART_DEFAULT_PROPS,
   data: startupExitData,
   dataKey: "amount",
+  name: "Amount",
   limit: 5,
   margin: { top: 5, right: 20, bottom: 5, left: 0 },
 };

@@ -34,7 +34,19 @@ export const ProjectPlot = styled.div`
 `;
 
 export const PlotContainer = styled.div`
-  display: ${props => props.active ? 'flex' : 'none'};
+  display: ${(props) => (props.active ? "flex" : "none")};
+  opacity: ${(props) => (props.opacity ? props.opacity : 1)};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+
+
+export const ActionButtonContainer = styled.div`
+  diplay: flex;
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -61,7 +73,8 @@ export const FrameTitle = styled.h1`
   line-height: 2;
   border-bottom: 2px solid black;
 `;
-export const FrameText = styled.p`
+
+export const FrameText = styled.div`
   line-height: 1.5;
   margin: 5px 0px;
 `;

@@ -33,7 +33,7 @@ const Frame = (props) => {
       const key = `frame-body${index}`;
 
       switch (val.type) {
-        case "latex":
+        case "tex":
           return (
             <FrameText key={key}>
               <MathJax.Node formula={val.text} />
@@ -53,7 +53,7 @@ const Frame = (props) => {
         case "text":
           return <FrameText key={key}>{val.text}</FrameText>;
         default:
-          return <FrameText key={key}>{val.text}</FrameText>;
+          return <FrameText key={key}>{val}</FrameText>;
       }
     });
   }, [body]);

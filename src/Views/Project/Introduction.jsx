@@ -1,4 +1,5 @@
 import { Box, Typography } from "@material-ui/core";
+import { tuple } from "antd/lib/_util/type";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import { Controller, Scene } from "react-scrollmagic";
 import {
@@ -33,6 +34,14 @@ import {
 } from "../../styled";
 import { INTRODUCTION_FRAMES } from "./frames";
 
+const canRender = (arr = []) => {
+  let ret = true;
+  arr.forEach(v => {
+    if (v <= 0) ret = false;
+  })
+  return ret;
+
+}
 const Introduction = () => {
   const [heights, setHeights] = useState(
     Array(INTRODUCTION_FRAMES.length).fill(0)
@@ -49,6 +58,8 @@ const Introduction = () => {
   );
 
   const [top, setTop] = useState(0);
+
+  // console.log(heights);
 
   const textRef = useRef(null);
 
@@ -82,23 +93,29 @@ const Introduction = () => {
             />
           ))}
         </ProjectText>
-        <ProjectPlot>
-          <ChartController
-            ChartComponent={StackedBarChart}
-            names={["Projected Totals"]}
-            dataKeys={["total"]}
-            title={"Projected Global Venture Dollar Volume (in billion $)"}
-            data={startupDollarValueData}
-            trigger={"#frame0"}
-          />
-          <ChartController
-            dataKey={"amount"}
-            data={startupExitData}
-            ChartComponent={SingleBarChart}
-            trigger={"#frame1"}
-            isLast
-          />
-        </ProjectPlot>
+        {canRender(heights) && (
+          <ProjectPlot>
+            <ChartController
+              duration={heights[0] || 300}
+              ChartComponent={StackedBarChart}
+              names={["Projected Totals"]}
+              dataKeys={["total"]}
+              title={"Projected Global Venture Dollar Volume (in billion $)"}
+              data={startupDollarValueData}
+              trigger={"#frame0"}
+            />
+            <ChartController
+              duration={heights[1] || 300}
+              dataKey={"amount"}
+              name={"Global Startup Exits"}
+              title={"Volume of Global Startup Exits"}
+              data={startupExitData}
+              ChartComponent={SingleBarChart}
+              trigger={"#frame1"}
+              isLast
+            />
+          </ProjectPlot>
+        )}
       </ProjectContainer>
     </PersistentDrawer>
   );

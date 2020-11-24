@@ -8,3 +8,10 @@ export const CHART_DEFAULT_PROPS = {
   limit: 100,
   title: null,
 };
+
+
+export const TRIGGER_OFFSET = 0.01; // To make the first chart show up
+
+
+export const FADE_OUT_OFFSET = 0.2;
+export const FADE_IN_OFFSET = 0.1;
