@@ -2,14 +2,7 @@ import { Link } from "@material-ui/core";
 import React, { Component, useCallback, useEffect, useRef } from "react";
 import MathJax from "react-mathjax";
 import { FrameContainer, FrameText, FrameTitle } from "../../styled";
-
-function getOuterHeight(elm) {
-  var styles = window.getComputedStyle(elm);
-  var margin =
-    parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
-
-  return Math.ceil(elm.offsetHeight + margin);
-}
+import { getFrameEndId } from "../../Utils";
 
 const Frame = (props) => {
   const {
@@ -18,17 +11,9 @@ const Frame = (props) => {
     id,
     isLast,
     setHeight,
-    // frameRef,
   } = props;
 
   const frameRef = useRef(null);
-
-  // useEffect(() => {
-  //   function handleResize() {
-  //     setHeight(id, getOuterHeight(elementRef.current));
-  //   }
-  //   window.addEventListener("resize", handleResize);
-  // }, [id, setHeight]);
 
   const renderBody = useCallback(() => {
     return body.map((val, index) => {
@@ -81,7 +66,7 @@ const Frame = (props) => {
       </FrameContainer>
       {!isLast ? (
         <div
-          id={`frame-end${position}`}
+          id={getFrameEndId(position)}
           //  style={{ border: "1px solid black" }}
         />
       ) : (

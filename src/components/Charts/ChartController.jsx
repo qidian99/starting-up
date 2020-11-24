@@ -1,26 +1,11 @@
-import { Box, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Tween } from "react-gsap";
+import { Typography } from "@material-ui/core";
+import React, { useRef, useState } from "react";
 import { Controller, Scene } from "react-scrollmagic";
 import {
-  BarChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Bar,
-} from "recharts";
-import {
-  ProjectContainer,
-  ProjectText,
-  ProjectPlot,
   APP_BAR_HEIGHT_INT,
   PlotContainer,
 } from "../../styled";
-import { startupDollarValueData, startupExitData } from "./data";
+import { startupDollarValueData } from "./data";
 import {
   CHART_DEFAULT_PROPS,
   FADE_OUT_OFFSET,

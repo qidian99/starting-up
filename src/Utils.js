@@ -78,3 +78,13 @@ export const calculateXRange = (mean, sd) => {
 };
 
 export const getFrameId = (id) => `frame${id}`;
+export const getFrameEndId = (id) => `frame-end${id}`;
+
+
+export const getOuterHeight = (elm) => {
+  var styles = window.getComputedStyle(elm);
+  var margin =
+    parseFloat(styles["marginTop"]) + parseFloat(styles["marginBottom"]);
+
+  return Math.ceil(elm.offsetHeight + margin);
+}

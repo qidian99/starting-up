@@ -1,32 +1,13 @@
-import { Box, Button, Typography } from "@material-ui/core";
-import React, { useCallback, useEffect, useRef, useState } from "react";
-import { PlayState, Reveal, Tween } from "react-gsap";
+import { Button } from "@material-ui/core";
+import React, {  } from "react";
+import { PlayState, Tween } from "react-gsap";
 import { Controller, Scene } from "react-scrollmagic";
 import {
-  BarChart,
-  CartesianGrid,
-  Line,
-  LineChart,
-  XAxis,
-  YAxis,
-  Tooltip,
-  Legend,
-  Bar,
-} from "recharts";
-import {
-  ProjectContainer,
-  ProjectText,
-  ProjectPlot,
   APP_BAR_HEIGHT_INT,
-  PlotContainer,
   ActionButtonContainer,
 } from "../../styled";
-import { FadeInRight } from "../gsap";
-import { startupDollarValueData, startupExitData } from "./data";
 import {
-  CHART_DEFAULT_PROPS,
   FADE_OUT_OFFSET,
-  FADE_IN_OFFSET,
   TRIGGER_OFFSET,
 } from "./default";
 
@@ -44,7 +25,7 @@ const ActionButton = ({ duration, trigger, title, onClick }) => {
           FADE_OUT_OFFSET
         }
       >
-        {(progress, event) => {
+        {(progress) => {
           if (progress === 0) return <div />;
           return (
             <ActionButtonContainer>
