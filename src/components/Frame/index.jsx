@@ -17,9 +17,10 @@ const Frame = (props) => {
     id,
     isLast,
     setHeight,
+    // frameRef,
   } = props;
 
-  const elementRef = useRef(null);
+  const frameRef = useRef(null);
 
   // useEffect(() => {
   //   function handleResize() {
@@ -54,30 +55,31 @@ const Frame = (props) => {
         default:
           body = <FrameText key={key}>{val}</FrameText>;
       }
-      return (
-        <FrameText key={key}>
-          {body}
-        </FrameText>
-      );
+      return <FrameText key={key}>{body}</FrameText>;
     });
   }, [body]);
 
   useEffect(() => {
-    const el = elementRef.current;
+    const el = frameRef.current;
     if (el) {
       setHeight(id, el.clientHeight);
-      new ResizeObserver(() => setHeight(id, el.clientHeight)).observe(el);
+      const observer = new ResizeObserver(() => setHeight(id, el.clientHeight));
+      observer.observe(el);
+      return () => observer.disconnect();
     }
-  }, [id, setHeight]);
+  }, [frameRef, id, setHeight]);
 
   return (
     <MathJax.Provider>
-      <FrameContainer id={`frame${id}`} ref={elementRef}>
+      <FrameContainer id={`frame${id}`} ref={frameRef}>
         <FrameTitle>{title}</FrameTitle>
         {renderBody()}
       </FrameContainer>
       {!isLast ? (
-        <div id={`frame-end${id}`} style={{ border: "1px solid black" }} />
+        <div
+          id={`frame-end${id}`}
+          //  style={{ border: "1px solid black" }}
+        />
       ) : (
         <div style={{ height: 100 }} />
       )}

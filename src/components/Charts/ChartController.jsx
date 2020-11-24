@@ -60,7 +60,7 @@ const ChartController = ({
         <Scene
           duration={duration}
           triggerElement={trigger}
-          indicators
+          // indicators
           // triggerHook={0.5}
           triggerHook={
             APP_BAR_HEIGHT_INT / window.innerHeight +

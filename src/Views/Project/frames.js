@@ -16,7 +16,9 @@ export const INTRODUCTION_FRAMES = [
     ],
   },
   {
-    title: 'Thank you!',
-    body: [{ type: 'tex', text: '\\hat{y} = \\beta_0+ X\\beta_1' },],
+    title: 'End of introduction!',
+    body: [
+      // { type: 'tex', text: '\\hat{y} = \\beta_0+ X\\beta_1' },
+    ],
   }
 ];

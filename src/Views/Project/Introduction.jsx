@@ -1,7 +1,14 @@
 import { Box, Typography } from "@material-ui/core";
 import { tuple } from "antd/lib/_util/type";
-import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
+import React, {
+  createRef,
+  useCallback,
+  useEffect,
+  useRef,
+  useState,
+} from "react";
 import { Reveal } from "react-gsap";
+import { useHistory } from "react-router-dom";
 import { Controller, Scene } from "react-scrollmagic";
 import {
   BarChart,
@@ -19,6 +26,7 @@ import {
   SingleBarChart,
   StackedBarChart,
 } from "../../components/Charts";
+import ActionButton from "../../components/Charts/ActionButton";
 import {
   startupDollarValueData,
   startupExitData,
@@ -38,16 +46,17 @@ import { INTRODUCTION_FRAMES } from "./frames";
 
 const canRender = (arr = []) => {
   let ret = true;
-  arr.forEach(v => {
+  arr.forEach((v) => {
     if (v <= 0) ret = false;
-  })
+  });
   return ret;
-
-}
+};
 const Introduction = () => {
   const [heights, setHeights] = useState(
     Array(INTRODUCTION_FRAMES.length).fill(0)
   );
+
+  const history = useHistory();
 
   const setHeight = useCallback(
     (index, height) => {
@@ -81,9 +90,11 @@ const Introduction = () => {
 
   useEffect(() => {
     const container = textRef.current;
-    new ResizeObserver(setTopPosition).observe(container);
-  }, [setTopPosition, textRef]);
+    const observer = new ResizeObserver(setTopPosition);
+    observer.observe(container);
 
+    return () => observer.disconnect();
+  }, [setTopPosition, textRef]);
 
   return (
     <PersistentDrawer>
@@ -119,13 +130,8 @@ const Introduction = () => {
               data={startupExitData}
               ChartComponent={SingleBarChart}
               trigger={"#frame1"}
-              isLast
             />
-            <Reveal repeat trigger={<div />}>
-              <FadeInRight>
-                <h3>This headline is coming from left</h3>
-              </FadeInRight>
-            </Reveal>
+            <ActionButton trigger={"#frame2"} title={"Next section: Model"} onClick={() => history.push('/project/model')} />
           </ProjectPlot>
         )}
       </ProjectContainer>

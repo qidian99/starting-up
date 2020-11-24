@@ -12,7 +12,6 @@ export const ProjectContainer = styled.div`
 
 export const ProjectText = styled.div`
   position: relative;
-  border: 1px solid red;
   background-color: white;
   z-index: 1;
 `;
@@ -28,7 +27,6 @@ export const ProjectPlot = styled.div`
   right: 0;
   height: calc(100vh - ${APP_BAR_HEIGHT});
   width: 60%;
-  border: 1px solid black;
   top: ${APP_BAR_HEIGHT};
   background: rgba(255,0,0,0.01);
 `;
@@ -46,13 +44,14 @@ export const PlotContainer = styled.div`
 
 
 export const ActionButtonContainer = styled.div`
-  diplay: flex;
+  display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  justify-content: flex-end;
+  align-items: flex-end;
   height: 100%;
   width: 100%;
   position: absolute;
+  padding: 32px;
 `;
 
 
@@ -67,7 +66,7 @@ export const Plot = styled.div`
 
 
 export const FrameContainer = styled.div`
-padding: 300px 24px;
+  padding: 300px 24px;
 `;
 export const FrameTitle = styled.h1`
   line-height: 2;
