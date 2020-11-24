@@ -1,0 +1,14 @@
+#container form {
+  display: flex;
+  justify-content: center;
+}
+
+#container label {
+  margin: 20px;
+}
+
+#container label input {
+  margin-left: 10px;
+  width: 50px;
+}
+

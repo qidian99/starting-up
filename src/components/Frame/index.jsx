@@ -45,9 +45,10 @@ const Frame = (props) => {
   }, [body]);
 
   useEffect(() => {
-    if (elementRef.current) {
-      // console.log(getOuterHeight(elementRef.current));
-      setHeight(id, getOuterHeight(elementRef.current));
+    const el = elementRef.current
+    if (el) {
+      setHeight(id, el.clientHeight);
+      new ResizeObserver(() => setHeight(id, el.clientHeight)).observe(el);
     }
   }, [id, setHeight]);
 

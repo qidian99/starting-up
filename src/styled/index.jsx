@@ -25,13 +25,24 @@ export const ProjectPlot = styled.div`
   position: -webkit-fixed; /* for safari */
   position: fixed;
   top: 0;
-  left: 0;
+  right: 0;
   height: calc(100vh - ${APP_BAR_HEIGHT});
-  width: 100%;
+  width: 60%;
   border: 1px solid black;
   top: ${APP_BAR_HEIGHT};
-  background: red;
+  background: rgba(255,0,0,0.01);
 `;
+
+export const PlotContainer = styled.div`
+  display: ${props => props.active ? 'flex' : 'none'};
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  height: 100%;
+  width: 100%;
+  position: absolute;
+`;
+
 
 export const Plot = styled.div`
   display: flex;
