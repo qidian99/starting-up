@@ -40,6 +40,7 @@ const userStyles = makeStyles((theme) => ({
   action: {
     textDecoration: "underline",
     cursor: "pointer",
+    marginLeft: theme.spacing(1),
   },
 }));
 

@@ -30,6 +30,13 @@ import SimpleGame from "./views/SimpleGame";
 import History from "./views/History";
 import HistoryList from "./views/HistoryList";
 import CompanyList from "./views/CompanyList";
+import Introduction from "./views/Project/Introduction";
+import Model from "./views/Project/Model";
+import Evaluation from "./views/Project/Evaluation";
+import Demo from "./views/Project/Demo";
+import Conclusion from "./views/Project/Conclusion";
+import Contact from "./views/Forms/Contact";
+import Report from "./views/Forms/Report";
 
 function App(props) {
   const user = store.getState().auth.user;
@@ -50,14 +57,14 @@ function App(props) {
       <ProtectedRoute exact path="/simplegame" component={SimpleGame} />
       <Route exact path="/unauthorized" component={Unauthorized} />
       {/* Project specific */}
-      <Route exact path="/project/introduction" component={Unauthorized} />
-      <Route exact path="/project/model" component={Unauthorized} />
-      <Route exact path="/project/demo" component={Unauthorized} />
-      <Route exact path="/project/evaluation" component={Unauthorized} />
-      <Route exact path="/project/conclusion" component={Unauthorized} />
+      <Route exact path="/project/introduction" component={Introduction} />
+      <Route exact path="/project/model" component={Model} />
+      <Route exact path="/project/demo" component={Demo} />
+      <Route exact path="/project/evaluation" component={Evaluation} />
+      <Route exact path="/project/conclusion" component={Conclusion} />
       {/* Contact forms */}
-      <Route exact path="/forms/contact" component={Unauthorized} />
-      <Route exact path="/forms/report" component={Unauthorized} />
+      <Route exact path="/forms/contact" component={Contact} />
+      <Route exact path="/forms/report" component={Report} />
     </Switch>
   );
 }

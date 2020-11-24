@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useCallback } from "react";
 import {
   Box,
   Button,
@@ -29,6 +29,7 @@ import BuildIcon from "@material-ui/icons/Build";
 import PresentToAllIcon from "@material-ui/icons/PresentToAll";
 import BugReportIcon from "@material-ui/icons/BugReport";
 import StopOutlinedIcon from "@material-ui/icons/StopOutlined";
+import GitHubIcon from "@material-ui/icons/GitHub";
 import MailIcon from "@material-ui/icons/Mail";
 import { ReactComponent as CompanyIcon } from "../../assets/buildings.svg";
 import { ReactComponent as RegionIcon } from "../../assets/tiles.svg";
@@ -146,6 +147,18 @@ const PersistentDrawer = ({ children }) => {
     setOpen(false);
   };
 
+  const onMenuClick = useCallback(
+    (text) => () => {
+      const route = getRoute(text);
+      if (route.startsWith("http")) {
+        window.open(route);
+      } else {
+        history.push(route)
+      }
+    },
+    [history],
+  )
+
   return (
     <Box className={clsx(classes.root, classes.flex)}>
       <CssBaseline />
@@ -203,15 +216,13 @@ const PersistentDrawer = ({ children }) => {
               <ChevronRightIcon />
             )}
           </IconButton>
-          <Typography>
-            UCSD Math 111A Project
-          </Typography>
+          <Typography>UCSD Math 111A Project</Typography>
         </div>
         <Divider />
         <List>
           {["Introduction", "Model", "Demo", "Evaluation", "Conclusion"].map(
             (text, index) => (
-              <ListItem button key={text}>
+              <ListItem button key={text} onClick={onMenuClick(text)}>
                 <ListItemIcon>{getDrawerIcon(text)}</ListItemIcon>
                 <ListItemText primary={text} />
               </ListItem>
@@ -220,17 +231,42 @@ const PersistentDrawer = ({ children }) => {
         </List>
         <Divider />
         <List>
-          {["Contact Information", "Report a Bug"].map((text, index) => (
-            <ListItem button key={text}>
-              <ListItemIcon>{getDrawerIcon(text)}</ListItemIcon>
-              <ListItemText primary={text} />
-            </ListItem>
-          ))}
+          {["Contact Information", "Report a Bug", "Github"].map(
+            (text, index) => (
+              <ListItem button key={text} onClick={onMenuClick(text)}>
+                <ListItemIcon>{getDrawerIcon(text)}</ListItemIcon>
+                <ListItemText primary={text} />
+              </ListItem>
+            )
+          )}
         </List>
       </Drawer>
     </Box>
   );
 };
+
+const getRoute = (text) => {
+switch (text) {
+  case "Introduction":
+    return '/project/introduction';
+  case "Model":
+    return '/project/model';
+  case "Demo":
+    return '/project/demo';
+  case "Evaluation":
+    return '/project/evaluation';
+  case "Conclusion":
+    return '/project/conclusion';
+  case "Contact Information":
+    return '/forms/contact';
+  case "Report a Bug":
+    return "/forms/report";
+  case "Github":
+    return "https://github.com/qidian99/starting-up";
+  default:
+    return '/';
+}
+}
 
 const getDrawerIcon = (text) => {
   switch (text) {
@@ -248,6 +284,8 @@ const getDrawerIcon = (text) => {
       return <MailIcon />;
     case "Report a Bug":
       return <BugReportIcon />;
+    case "Github":
+      return <GitHubIcon />
     default:
       return <MailIcon />;
   }

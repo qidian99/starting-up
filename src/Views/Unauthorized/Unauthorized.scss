@@ -19,6 +19,10 @@ $fire-reverse:#EFAC41, #DE8531, #6C1305, black;
 }
  
 .container {
+  height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
   background-color: $white;
   color: $black;
   text-align: center;
