@@ -41,8 +41,11 @@ const Frame = (props) => {
           body = (
             <Link
               key={key}
-              href={"#"}
-              onClick={() => window.open(val.href)}
+              href={val.href}
+              onClick={(event) => {
+                event.preventDefault();
+                window.open(val.href);
+              }}
               color="primary"
             >
               {val.text}
