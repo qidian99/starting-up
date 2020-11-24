@@ -21,6 +21,7 @@ const StackedBarChart = ({
   data,
   colors,
   dataKeys,
+  names,
 }) => {
 
   return (
@@ -36,7 +37,7 @@ const StackedBarChart = ({
       <Tooltip />
       <Legend />
       {
-        dataKeys.map((key, index) => <Bar key={key} dataKey={key} stackId={key} fill={colors[index % colors.length]} />)
+        dataKeys.map((key, index) => <Bar key={key} name={names[index] || key} dataKey={key} stackId={key} fill={colors[index % colors.length]} />)
       }
     </BarChart>
   );
@@ -46,6 +47,7 @@ StackedBarChart.defaultProps = {
   ...CHART_DEFAULT_PROPS,
   data: startupDollarValueData,
   dataKeys: ["total"],
+  names: ["Total"],
   colors: ["#9c27b0", "#8884d8", "#82ca9d"],
   limit: 5,
   margin: {

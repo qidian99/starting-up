@@ -1,3 +1,4 @@
+import { Link } from "@material-ui/core";
 import React, { Component, useCallback, useEffect, useRef } from "react";
 import MathJax from "react-mathjax";
 import { FrameContainer, FrameText, FrameTitle } from "../../styled";
@@ -28,24 +29,37 @@ const Frame = (props) => {
   // }, [id, setHeight]);
 
   const renderBody = useCallback(() => {
-    return body.map((text, index) => {
+    return body.map((val, index) => {
       const key = `frame-body${index}`;
 
-      // check extra property
-      if (text.tex) {
-        return (
-          <FrameText key={key}>
-            <MathJax.Node formula={text.tex} />
-          </FrameText>
-        );
+      switch (val.type) {
+        case "latex":
+          return (
+            <FrameText key={key}>
+              <MathJax.Node formula={val.text} />
+            </FrameText>
+          );
+        case "link":
+          return (
+            <Link
+              key={key}
+              href={"#"}
+              onClick={() => window.open(val.href)}
+              color="primary"
+            >
+              {val.text}
+            </Link>
+          );
+        case "text":
+          return <FrameText key={key}>{val.text}</FrameText>;
+        default:
+          return <FrameText key={key}>{val.text}</FrameText>;
       }
-
-      return <FrameText key={key}>{text}</FrameText>;
     });
   }, [body]);
 
   useEffect(() => {
-    const el = elementRef.current
+    const el = elementRef.current;
     if (el) {
       setHeight(id, el.clientHeight);
       new ResizeObserver(() => setHeight(id, el.clientHeight)).observe(el);

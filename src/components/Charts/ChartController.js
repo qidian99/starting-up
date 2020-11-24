@@ -31,6 +31,11 @@ const ChartController = ({ ChartComponent, duration, trigger, limit, isLast, tit
     duration / (data.length - limit > 0 ? data.length - limit + 1 : 1)
   );
 
+  const [rendered, setRendered] = useState(false)
+  useEffect(() => {
+    setRendered(true);
+  }, [])
+
 
   // console.log({ data: data.slice(0, offset + limit)})
 
@@ -46,6 +51,7 @@ const ChartController = ({ ChartComponent, duration, trigger, limit, isLast, tit
           triggerHook={APP_BAR_HEIGHT_INT / window.innerHeight}
         >
           {(progress, event) => {
+            if (!rendered) return <div />;
             // console.log({ progress, event });
             const ref = rootRef.current;
             const isDuring = event.state === "DURING";

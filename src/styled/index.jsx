@@ -61,7 +61,7 @@ export const FrameTitle = styled.h1`
   line-height: 2;
   border-bottom: 2px solid black;
 `;
-export const FrameText = styled.div`
+export const FrameText = styled.p`
   line-height: 1.5;
   margin: 5px 0px;
 `;

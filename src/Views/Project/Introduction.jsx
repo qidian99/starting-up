@@ -85,6 +85,7 @@ const Introduction = () => {
         <ProjectPlot>
           <ChartController
             ChartComponent={StackedBarChart}
+            names={["Projected Totals"]}
             dataKeys={["total"]}
             title={"Projected Global Venture Dollar Volume (in billion $)"}
             data={startupDollarValueData}
