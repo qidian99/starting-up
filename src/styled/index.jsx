@@ -1,18 +1,19 @@
 const { default: styled } = require("styled-components");
 
+export const APP_BAR_HEIGHT_INT = 64;
+export const APP_BAR_HEIGHT = APP_BAR_HEIGHT_INT + 'px';
 
 /* Components */
 export const ProjectContainer = styled.div`
-  margin-top: 64px;
+  margin-top: ${APP_BAR_HEIGHT};
   display: grid;
-  grid-template-columns: 40% 60%;
+  grid-template-columns: 40vw auto;
 `;
 
-export const ProjectContext = styled.div`
+export const ProjectText = styled.div`
   position: relative;
   border: 1px solid red;
   background-color: white;
-  padding-top: 20vh;
   z-index: 1;
 `;
 
@@ -21,13 +22,15 @@ export const ProjectPlot = styled.div`
   flex-direction: column;
   justify-content: center;
   align-items: center;
-  position: -webkit-sticky; /* for safari */
-  position: sticky;
+  position: -webkit-fixed; /* for safari */
+  position: fixed;
   top: 0;
   left: 0;
-  height: 100vh;
+  height: calc(100vh - ${APP_BAR_HEIGHT});
   width: 100%;
   border: 1px solid black;
+  top: ${APP_BAR_HEIGHT};
+  background: red;
 `;
 
 export const Plot = styled.div`

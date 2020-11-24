@@ -20,14 +20,12 @@ const Frame = (props) => {
 
   const elementRef = useRef(null);
 
-  useEffect(() => {
-    function handleResize() {
-      setHeight(id, getOuterHeight(elementRef.current));
-    }
-    window.addEventListener("resize", handleResize);
-
-    // return window.removeEventListener("resize", handleResize)
-  }, [id, setHeight]);
+  // useEffect(() => {
+  //   function handleResize() {
+  //     setHeight(id, getOuterHeight(elementRef.current));
+  //   }
+  //   window.addEventListener("resize", handleResize);
+  // }, [id, setHeight]);
 
   const renderBody = useCallback(() => {
     return body.map((text, index) => {

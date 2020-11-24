@@ -2,7 +2,12 @@ import { Box, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
 import PersistentDrawer from "../../components/DrawerMenu/PersistentDrawer";
 import Frame from "../../components/Frame";
-import { ProjectContainer, ProjectContext, ProjectPlot } from "../../styled";
+import {
+  ProjectContainer,
+  ProjectText,
+  ProjectPlot,
+  APP_BAR_HEIGHT_INT,
+} from "../../styled";
 import FRAMES from "./frames";
 
 const Introduction = () => {
@@ -14,23 +19,37 @@ const Introduction = () => {
         heights[index] = height;
         setHeights([...heights]);
       }
-      // console.log({ heights });
     },
     [heights]
   );
 
-  const contextRef = useRef(null);
-  const [paddingTop, setPaddingTop] = useState("20vh");
+  const [top, setTop] = useState(0);
+
+  const textRef = useRef(null);
+
+  const setTopPosition = useCallback(
+    () => {
+      const container = textRef.current;
+      if (!container) return;
+      const windowHeight = window.innerHeight;
+      const containerHeight = container.clientHeight;
+      const positionTop = Math.ceil(
+        (containerHeight - (windowHeight - APP_BAR_HEIGHT_INT)) / 2
+      );
+      setTop(positionTop);
+    },
+    []
+  );
+
   useEffect(() => {
-    setPaddingTop(
-      heights.reduce((sum, curr, index) => (index !== 0 ? sum + curr : sum), 0) + 367
-    );
-  }, [heights]);
+    const container = textRef.current;
+    new ResizeObserver(setTopPosition).observe(container);
+  }, [setTopPosition, textRef]);
 
   return (
     <PersistentDrawer>
       <ProjectContainer>
-        <ProjectContext style={{ paddingTop }}>
+        <ProjectText ref={textRef} style={{ top }}>
           {FRAMES.map((frame, index, arr) => (
             <Frame
               key={index.toString()}
@@ -40,7 +59,7 @@ const Introduction = () => {
               isLast={arr.length - 1 === index}
             />
           ))}
-        </ProjectContext>
+        </ProjectText>
         <ProjectPlot></ProjectPlot>
       </ProjectContainer>
     </PersistentDrawer>
