@@ -1,6 +1,7 @@
 import { Box, Typography } from "@material-ui/core";
 import { tuple } from "antd/lib/_util/type";
-import React, { useCallback, useEffect, useRef, useState } from "react";
+import React, { createRef, useCallback, useEffect, useRef, useState } from "react";
+import { Reveal } from "react-gsap";
 import { Controller, Scene } from "react-scrollmagic";
 import {
   BarChart,
@@ -25,6 +26,7 @@ import {
 import PersistentDrawer from "../../components/DrawerMenu/PersistentDrawer";
 import Frame from "../../components/Frame";
 import TTest from "../../components/Graphs/T-Test";
+import { FadeInRight } from "../../components/gsap";
 import {
   ProjectContainer,
   ProjectText,
@@ -74,10 +76,14 @@ const Introduction = () => {
     setTop(positionTop);
   }, []);
 
+  // const frameRefs = useRef(Array(INTRODUCTION_FRAMES.length).fill(createRef()));
+  // console.log(frameRefs);
+
   useEffect(() => {
     const container = textRef.current;
     new ResizeObserver(setTopPosition).observe(container);
   }, [setTopPosition, textRef]);
+
 
   return (
     <PersistentDrawer>
@@ -87,6 +93,7 @@ const Introduction = () => {
             <Frame
               key={index.toString()}
               id={index}
+              // frameRef={frameRefs.current[index]}
               frame={frame}
               setHeight={setHeight}
               isLast={arr.length - 1 === index}
@@ -114,6 +121,11 @@ const Introduction = () => {
               trigger={"#frame1"}
               isLast
             />
+            <Reveal repeat trigger={<div />}>
+              <FadeInRight>
+                <h3>This headline is coming from left</h3>
+              </FadeInRight>
+            </Reveal>
           </ProjectPlot>
         )}
       </ProjectContainer>

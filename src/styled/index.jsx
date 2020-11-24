@@ -76,5 +76,6 @@ export const FrameTitle = styled.h1`
 
 export const FrameText = styled.div`
   line-height: 1.5;
-  margin: 5px 0px;
+  font-size: 16px;
+  margin: 6px 0px;
 `;

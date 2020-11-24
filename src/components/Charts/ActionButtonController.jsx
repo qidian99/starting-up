@@ -1,6 +1,6 @@
 import { Box, Typography } from "@material-ui/core";
 import React, { useCallback, useEffect, useRef, useState } from "react";
-import { Tween } from "react-gsap";
+import { Reveal, Tween } from "react-gsap";
 import { Controller, Scene } from "react-scrollmagic";
 import {
   BarChart,
@@ -21,6 +21,7 @@ import {
   PlotContainer,
   ActionButtonContainer,
 } from "../../styled";
+import { FadeInRight } from "../gsap";
 import { startupDollarValueData, startupExitData } from "./data";
 import {
   CHART_DEFAULT_PROPS,
@@ -51,7 +52,13 @@ const ActionButtonController = ({
           }
         >
           {(progress, event) => {
-           
+            return (
+              <Reveal repeat trigger={trigger}>
+                <FadeInRight>
+                  <h3>This headline is coming from left</h3>
+                </FadeInRight>
+              </Reveal>
+            );
           }}
         </Scene>
       </Controller>

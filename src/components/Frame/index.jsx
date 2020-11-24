@@ -31,16 +31,13 @@ const Frame = (props) => {
   const renderBody = useCallback(() => {
     return body.map((val, index) => {
       const key = `frame-body${index}`;
-
+      let body;
       switch (val.type) {
         case "tex":
-          return (
-            <FrameText key={key}>
-              <MathJax.Node formula={val.text} />
-            </FrameText>
-          );
+          body = <MathJax.Node formula={val.text} />;
+          break;
         case "link":
-          return (
+          body = (
             <Link
               key={key}
               href={"#"}
@@ -50,11 +47,18 @@ const Frame = (props) => {
               {val.text}
             </Link>
           );
+          break;
         case "text":
-          return <FrameText key={key}>{val.text}</FrameText>;
+          body = <FrameText key={key}>{val.text}</FrameText>;
+          break;
         default:
-          return <FrameText key={key}>{val}</FrameText>;
+          body = <FrameText key={key}>{val}</FrameText>;
       }
+      return (
+        <FrameText key={key}>
+          {body}
+        </FrameText>
+      );
     });
   }, [body]);
 

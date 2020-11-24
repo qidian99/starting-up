@@ -1,5 +1,4 @@
-
-
+// https://news.crunchbase.com/news/the-q4-eoy-2019-global-vc-report-a-strong-end-to-a-good-but-not-fantastic-year/
 export const startupDollarValueData = [
   { name: "2010", total: 47.6, angel: 0, early: 0, late: 0, growth: 0 },
   { name: "2011", total: 64.5, angel: 0, early: 0, late: 0, growth: 0 },
