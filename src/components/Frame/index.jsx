@@ -14,6 +14,7 @@ function getOuterHeight(elm) {
 const Frame = (props) => {
   const {
     frame: { title, body },
+    position,
     id,
     isLast,
     setHeight,
@@ -65,22 +66,22 @@ const Frame = (props) => {
   useEffect(() => {
     const el = frameRef.current;
     if (el) {
-      setHeight(id, el.clientHeight);
-      const observer = new ResizeObserver(() => setHeight(id, el.clientHeight));
+      setHeight(position, el.clientHeight);
+      const observer = new ResizeObserver(() => setHeight(position, el.clientHeight));
       observer.observe(el);
       return () => observer.disconnect();
     }
-  }, [frameRef, id, setHeight]);
+  }, [frameRef, position, setHeight]);
 
   return (
     <MathJax.Provider>
-      <FrameContainer id={`frame${id}`} ref={frameRef}>
+      <FrameContainer id={id} ref={frameRef}>
         <FrameTitle>{title}</FrameTitle>
         {renderBody()}
       </FrameContainer>
       {!isLast ? (
         <div
-          id={`frame-end${id}`}
+          id={`frame-end${position}`}
           //  style={{ border: "1px solid black" }}
         />
       ) : (

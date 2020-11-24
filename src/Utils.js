@@ -76,3 +76,5 @@ export const calculateXRange = (mean, sd) => {
   const xTicks = generateTicks(xLow, 5, 2 * sd);
   return { xLow, xHigh, xTicks };
 };
+
+export const getFrameId = (id) => `frame${id}`;
