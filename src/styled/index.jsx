@@ -81,6 +81,19 @@ export const FrameText = styled.div`
 `;
 
 
+export const FrameInlineWrapper = styled.span`
+  line-height: 1.5;
+  margin: 6px 0 6px 0;
+  display: inline;
+  margin-left: ${(props) =>
+    props.first ? 0 : "2px"};
+`;
+
+
+export const FrameTextInline = styled(FrameInlineWrapper)`
+  font-size: ${FRAME_FONT_SIZE}px;
+`;
+
 export const FrameList = styled.ul`
   line-height: 1.5;
   font-size: ${FRAME_FONT_SIZE}px;

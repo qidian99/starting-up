@@ -1,3 +1,5 @@
+import { formatTex } from "../../Utils";
+
 export const INTRODUCTION_FRAMES = [
   {
     title: 'Introduction',
@@ -86,7 +88,7 @@ export const MODEL_FRAMES = [
       `Terrian is the market space of our simulation.`,
       {
         type: 'text', value: [`In the baseline model, the market is of size`,
-        { type: 'tex', value: 'N\\times N' },]
+          { type: 'tex', value: 'N\\times N' },]
       },
       `We assume that all population in the market are possible users of the product.`
     ],
@@ -94,6 +96,38 @@ export const MODEL_FRAMES = [
   {
     title: 'Region',
     body: [
+      {
+        type: 'text',
+        value: [
+          `Each block of the Terrian is called a Region, represented by`,
+          {
+            type: 'tex',
+            value: 'R_{ij}.',
+          },
+          `Each region has a total population of`,
+          {
+            type: 'tex',
+            value: `P_{ij},`,
+          },
+          `which is the maximum number of users.`
+        ],
+      },
+      {
+        type: 'text',
+        value: [
+          `Conversion rate, or growth rate, is`,
+          formatTex(`cr_{ij} = \\delta_{ij}\\alpha r_{ij}f(U_{ij})`),
+          `where`,
+          formatTex(`\\delta_{ij}`),
+          `is an indicator of whether the Region can gain new users,`,
+          formatTex(`r_{ij}`),
+          `is the empirical conversion rate,`,
+          formatTex(`\\alpha`),
+          `is a constant for adjustment, and`,
+          formatTex(`f(\\cdot)`),
+          `is a function of the number of users.`,
+        ],
+      }
     ],
   },
   {

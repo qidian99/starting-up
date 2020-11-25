@@ -1,7 +1,14 @@
 import { Link } from "@material-ui/core";
 import React, { Component, useCallback, useEffect, useRef } from "react";
 import MathJax from "react-mathjax";
-import { FrameContainer, FrameList, FrameText, FrameTitle } from "../../styled";
+import {
+  FrameContainer,
+  FrameList,
+  FrameText,
+  FrameTitle,
+  FrameTextInline,
+  FrameInlineWrapper,
+} from "../../styled";
 import { getFrameEndId } from "../../Utils";
 
 const getTextFrame = (item, index, inline = false) => {
@@ -9,7 +16,11 @@ const getTextFrame = (item, index, inline = false) => {
   let body;
   switch (item.type) {
     case "tex":
-      body = <MathJax.Node inline={inline} formula={item.value} />;
+      body = (
+        <FrameInlineWrapper first={index === 0}>
+          <MathJax.Node inline={inline} formula={item.value} />
+        </FrameInlineWrapper>
+      );
       break;
     case "link":
       body = (
@@ -44,7 +55,13 @@ const getTextFrame = (item, index, inline = false) => {
     default:
       body = item;
   }
-  return <FrameText inline={inline} key={key}>{body}</FrameText>;
+  return inline ? (
+    <FrameTextInline first={index === 0} key={key}>
+      {body}
+    </FrameTextInline>
+  ) : (
+    <FrameText key={key}>{body}</FrameText>
+  );
 };
 
 const Frame = (props) => {

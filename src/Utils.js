@@ -91,3 +91,7 @@ export const getOuterHeight = (elm) => {
 
 
 
+export const formatTex = (value) => ({
+  type: 'tex',
+  value,
+})
