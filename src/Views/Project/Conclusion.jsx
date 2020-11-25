@@ -11,7 +11,7 @@ import {
   startupExitData,
 } from "../../components/Charts/data";
 import PersistentDrawer from "../../components/DrawerMenu/PersistentDrawer";
-import { INTRODUCTION_FRAMES } from "./frames";
+import { CONCLUSION_FRAMES, INTRODUCTION_FRAMES } from "./frames";
 import Visualizer from "../../components/Charts/Visualizer";
 
 const Conclusion = () => {
@@ -23,21 +23,7 @@ const Conclusion = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={INTRODUCTION_FRAMES}>
-        <ChartController
-          ChartComponent={StackedBarChart}
-          names={["Projected Totals"]}
-          dataKeys={["total"]}
-          title={"Projected Global Venture Dollar Volume (in billion $)"}
-          data={startupDollarValueData}
-        />
-        <ChartController
-          dataKey={"amount"}
-          name={"Global Startup Exits"}
-          title={"Volume of Global Startup Exits"}
-          data={startupExitData}
-          ChartComponent={SingleBarChart}
-        />
+      <Visualizer frames={CONCLUSION_FRAMES}>
         <ActionButton
           title={"Go to simulation"}
           onClick={() => history.push("/")}

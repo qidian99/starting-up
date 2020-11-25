@@ -1,4 +1,5 @@
 import {
+  formatList,
   formatTex
 } from "../../Utils";
 
@@ -62,8 +63,8 @@ export const INTRODUCTION_FRAMES = [{
     ],
   },
   {
-    title: 'End of introduction',
-    body: [],
+    title: 'Outline',
+    body: [`The rest of this presentation are`, formatList(['Model: the baseline model and its data models', 'Demo: a simple simulation', 'Evaluation: baseline model and its variants', 'Conclusion: summary and applications'])],
   }
 ];
 
@@ -219,3 +220,26 @@ export const MODEL_FRAMES = [{
     ],
   },
 ];
+
+
+
+export const DEMO_FRAMES = [{
+  title: 'Demo',
+  body: [`This section will describe the steps to perform a simulation in this platform.`,
+    `The steps to simulate the baseline model are:`,
+    formatList(
+      ['Register a Company', 'Choose Strategy parameters', 'Join a simple simulation']),
+  ],
+}, ];
+
+
+export const EVALUATION_FRAMES = [{
+  title: 'Evaluation',
+  body: [`This section will first evaluate the best game plan in the baseline model. After that, I will introduce other novel variants of the model.`],
+}, ];
+
+
+export const CONCLUSION_FRAMES = [{
+  title: 'Conclusion',
+  body: [`After summarizing the models, I will discuss the possible applications of this project across multiple disciplinaries.`],
+}, ];

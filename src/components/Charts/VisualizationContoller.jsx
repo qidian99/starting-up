@@ -22,19 +22,27 @@ const VisualizationController = ({
 }) => {
   const rootRef = useRef(null);
   const [active, setActive] = useState(false);
-  const [opacity, setOpacity] = useState(1);
+  const [opacity, setOpacity] = useState(0);
   const [step, setStep] = useState(0);
 
   return (
-    <PlotContainer ref={rootRef} active={active} opacity={opacity}>
+    <PlotContainer
+      ref={rootRef}
+      active={active}
+      opacity={opacity}
+      style={{
+        display: opacity === 0 ? "none" : "flex",
+      }}
+    >
       {title && <Typography variant="h6">{title}</Typography>}
-      {React.Children.toArray(children).map((child, index) =>
-        React.cloneElement(child, {
+      {React.Children.toArray(children).map((child, index) => {
+        // console.log({ childStyle: child.props });
+        return React.cloneElement(child, {
           active: active,
           step: steps !== undefined ? step : undefined,
           ...rest,
-        })
-      )}
+        });
+      })}
       <Controller>
         <Scene
           duration={duration}

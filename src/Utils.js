@@ -1,6 +1,10 @@
 import _ from 'lodash';
 import BigNumber from 'bignumber.js';
-import { CHART, CHART_AREA, DEFAULT_VALUES } from './Constants';
+import {
+  CHART,
+  CHART_AREA,
+  DEFAULT_VALUES
+} from './Constants';
 
 const {
   MARGIN,
@@ -21,34 +25,51 @@ export const getY = (
 
 // ticks generator
 const generateTicks = (
-  start, length, step,
-) => Array
-  .from({ length }, (v, i) => BigNumber(start).plus(BigNumber(step).times(i)))
+    start, length, step,
+  ) => Array
+  .from({
+    length
+  }, (v, i) => BigNumber(start).plus(BigNumber(step).times(i)))
   .map((t) => t.toNumber());
 
 // data: data used to draw the graphs
 // yTicks: the values on y axis
 export const formatData = (params) => {
   const {
-    xLow, xHigh, sd, mean, levelLow, levelHigh,
-  } = { ...DEFAULT_VALUES, ...params };
+    xLow,
+    xHigh,
+    sd,
+    mean,
+    levelLow,
+    levelHigh,
+  } = {
+    ...DEFAULT_VALUES,
+    ...params
+  };
 
   const step = (xHigh - xLow) / 20;
   const data = _.range(xLow, xHigh + step, step).map((x) => {
     const y = getY(x, sd, mean);
 
     if (x <= levelLow || x >= levelHigh) {
-      return ({ x, y, area: y });
+      return ({
+        x,
+        y,
+        area: y
+      });
     }
 
-    return ({ x, y });
+    return ({
+      x,
+      y
+    });
   });
 
   const yMax = getY(mean, sd, mean);
   // const yStep = yMax < 5 ? (yMax / 5).toPrecision(1) : Math.ceil(yMax / 5);
-  const yStep = yMax < 5
-    ? BigNumber(yMax).dividedBy(5).toNumber().toPrecision(2)
-    : Math.ceil(BigNumber(yMax).dividedBy(5).toNumber());
+  const yStep = yMax < 5 ?
+    BigNumber(yMax).dividedBy(5).toNumber().toPrecision(2) :
+    Math.ceil(BigNumber(yMax).dividedBy(5).toNumber());
   const yTicks = generateTicks(0, 6, yStep);
 
   return {
@@ -74,7 +95,11 @@ export const calculateXRange = (mean, sd) => {
   const xLow = BigNumber(mean).minus(BigNumber(sd).times(4)).toNumber();
   const xHigh = BigNumber(mean).plus(BigNumber(sd).times(4)).toNumber();
   const xTicks = generateTicks(xLow, 5, 2 * sd);
-  return { xLow, xHigh, xTicks };
+  return {
+    xLow,
+    xHigh,
+    xTicks
+  };
 };
 
 export const getFrameId = (id) => `frame${id}`;
@@ -93,5 +118,15 @@ export const getOuterHeight = (elm) => {
 
 export const formatTex = (value) => ({
   type: 'tex',
+  value,
+})
+
+export const formatText = (value) => ({
+  type: 'text',
+  value,
+})
+
+export const formatList = (value) => ({
+  type: 'list',
   value,
 })

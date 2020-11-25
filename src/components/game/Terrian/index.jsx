@@ -50,8 +50,6 @@ const useStyles = makeStyles((theme) => ({
 const Terrian = ({ width, height, regions, counts }) => {
   const classes = useStyles();
 
-  console.log(counts);
-
   return (
     <table className={classes.table}>
       <tbody>
