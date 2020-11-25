@@ -76,7 +76,8 @@ export const FrameTitle = styled.h1`
 export const FrameText = styled.div`
   line-height: 1.5;
   font-size: ${FRAME_FONT_SIZE}px;
-  margin: 6px 0px;
+  margin: ${(props) => (props.inline ? "6px 3px" : "6px 0")};
+  display: ${(props) => (props.inline ? "inline-block" : "block")};
 `;
 
 

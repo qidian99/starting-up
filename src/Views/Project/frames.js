@@ -84,8 +84,10 @@ export const MODEL_FRAMES = [
     title: 'Terrian',
     body: [
       `Terrian is the market space of our simulation.`,
-      `In the baseline model, the market is of size`,
-      { type: 'tex', value: 'N\\times N' },
+      {
+        type: 'text', value: [`In the baseline model, the market is of size`,
+        { type: 'tex', value: 'N\\times N' },]
+      },
       `We assume that all population in the market are possible users of the product.`
     ],
   },
