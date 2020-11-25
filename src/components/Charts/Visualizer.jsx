@@ -1,9 +1,4 @@
-import React, {
-  useCallback,
-  useEffect,
-  useRef,
-  useState,
-} from "react";
+import React, { useCallback, useEffect, useRef, useState } from "react";
 import Frame from "../Frame";
 import {
   ProjectContainer,
@@ -77,12 +72,12 @@ const Visualizer = ({ frames, children }) => {
       </ProjectText>
       {canRender(heights) && (
         <ProjectPlot>
-          {React.Children.toArray(children).map((child, index) => {
-            return React.cloneElement(child, {
+          {React.Children.toArray(children).map((child, index) =>
+            React.cloneElement(child, {
               duration: heights[0] || 300,
               trigger: "#" + getFrameId(index),
-            });
-          })}
+            })
+          )}
         </ProjectPlot>
       )}
     </ProjectContainer>

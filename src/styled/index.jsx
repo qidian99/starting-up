@@ -2,7 +2,7 @@ const { default: styled } = require("styled-components");
 
 export const APP_BAR_HEIGHT_INT = 64;
 export const APP_BAR_HEIGHT = APP_BAR_HEIGHT_INT + 'px';
-
+export const FRAME_FONT_SIZE = 16;
 /* Components */
 export const ProjectContainer = styled.div`
   margin-top: ${APP_BAR_HEIGHT};
@@ -33,7 +33,7 @@ export const ProjectPlot = styled.div`
 
 export const PlotContainer = styled.div`
   display: ${(props) => (props.active ? "flex" : "none")};
-  opacity: ${(props) => (props.opacity ? props.opacity : 1)};
+  opacity: ${(props) => (props.opacity !== undefined ? props.opacity : 1)};
   flex-direction: column;
   justify-content: center;
   align-items: center;
@@ -69,12 +69,19 @@ export const FrameContainer = styled.div`
   padding: 300px 24px;
 `;
 export const FrameTitle = styled.h1`
-  line-height: 2;
+  line-height: 2.5;
   border-bottom: 2px solid black;
 `;
 
 export const FrameText = styled.div`
   line-height: 1.5;
-  font-size: 16px;
+  font-size: ${FRAME_FONT_SIZE}px;
   margin: 6px 0px;
+`;
+
+
+export const FrameList = styled.ul`
+  line-height: 1.5;
+  font-size: ${FRAME_FONT_SIZE}px;
+  margin: 8px 0px;
 `;
