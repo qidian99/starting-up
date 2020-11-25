@@ -41,7 +41,7 @@ import AttachMoneyIcon from "@material-ui/icons/AttachMoney";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 
 const columns = [
-  { id: "name", label: "Simulation", minWidth: 160 },
+  { id: "name", label: "Company Name", minWidth: 160 },
   { id: "strategy", label: "Strategy", align: "center" },
   {
     id: "createdAt",

@@ -40,7 +40,7 @@ import Report from "./views/Forms/Report";
 
 function App(props) {
   const user = store.getState().auth.user;
-  console.log('In App', { user })
+  // console.log('In App', { user })
   return (
     <Switch>
       <AuthRoute exact path="/" component={Auth} />

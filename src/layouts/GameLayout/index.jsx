@@ -25,7 +25,7 @@ import PersonIcon from "@material-ui/icons/Person";
 import { useHistory } from "react-router-dom";
 import InfoOutlinedIcon from "@material-ui/icons/InfoOutlined";
 import { STRATEGY_TIPS } from "starting-up-common";
-console.log(STRATEGY_TIPS);
+// console.log(STRATEGY_TIPS);
 const useStyles = makeStyles((theme) => ({
   flex: {
     display: "flex",
