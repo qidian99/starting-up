@@ -93,7 +93,7 @@ const TerrianRow = ({ row, height, regions, counts }) => {
   );
 };
 
-const Region = ({ row, column, count, region }) => {
+export const Region = ({ row, column, count, region }) => {
   const classes = useStyles();
   const [anchorEl, setAnchorEl] = useState(null);
   const IconComponent = (count === 0 || count === undefined) ? RegionIcon : CompanyIcon;

@@ -22,8 +22,14 @@ import image4 from "../../assets/baseline-model-funding.png";
 import image5 from "../../assets/baseline-model-region-terrian.png";
 import image6 from "../../assets/baseline-model-strategy.png";
 import image7 from "../../assets/baseline-model-user-revenue.png";
-import Terrian from "../../components/game/Terrian";
+import regionSchema from "../../assets/region-schema.png";
+import fundingSchema from "../../assets/funding-schema.png";
+import companySchema from "../../assets/company-schema.png";
+import userTransitionMatrix from "../../assets/user-transition-matrix.png";
+import strategyStructure from "../../assets/strategy-structure.png";
+import Terrian, { Region } from "../../components/game/Terrian";
 import { Box, Slider, Typography } from "@material-ui/core";
+import { StrategyButton } from "../CompanyList";
 
 const tileData = [
   {
@@ -88,11 +94,114 @@ const Model = () => {
             containerHeight={600}
           />
         </VisualizationController>
-        <VisualizationController>
+        <VisualizationController steps={10}>
           <CycleDemo />
         </VisualizationController>
-        <VisualizationController>
+        <VisualizationController steps={4}>
           <TerrianDemo />
+        </VisualizationController>
+        <VisualizationController>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">Structure of a Region</Typography>
+            <img width={600} src={regionSchema} alt="Region Schema" />
+            <Typography style={{ marginTop: 16 }} variant="h6">
+              Example (click below)
+            </Typography>
+            <Region
+              column={0}
+              row={0}
+              count={0}
+              region={{
+                population: 100,
+                conversionRate: 0.01,
+                leavingRate: 0.0125,
+                revenue: 1,
+                cost: 10,
+                growth: 2,
+              }}
+            />
+          </Box>
+        </VisualizationController>
+        <VisualizationController>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">Structure of a Company</Typography>
+            <img width={600} src={companySchema} alt="Company Schema" />
+          </Box>
+        </VisualizationController>
+        <VisualizationController>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">Structure of a Strategy</Typography>
+            <img
+              width={600}
+              src={strategyStructure}
+              alt="Strategy Structure"
+              style={{ marginTop: 12, marginBottom: 16 }}
+            />
+            <StrategyButton title="Click to Show Sample Strategy" />
+          </Box>
+        </VisualizationController>
+        <VisualizationController>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">Structure of a Funding</Typography>
+            <img
+              width={600}
+              src={fundingSchema}
+              alt="Funding Schema"
+              style={{ marginTop: 12 }}
+            />
+          </Box>
+        </VisualizationController>
+        <VisualizationController>
+          <Box
+            display="flex"
+            flexDirection="column"
+            justifyContent="center"
+            alignItems="center"
+          >
+            <Typography variant="h6">User</Typography>
+            <img
+              width={600}
+              src={userTransitionMatrix}
+              alt="User Transition Matrix"
+              style={{ marginTop: 12 }}
+            />
+            <Typography style={{ marginTop: 16 }} variant="h6">
+              Region with active users (click below)
+            </Typography>
+            <Region
+              column={0}
+              row={0}
+              count={10}
+              region={{
+                population: 100,
+                conversionRate: 0.01,
+                leavingRate: 0.0125,
+                revenue: 1,
+                cost: 10,
+                growth: 2,
+              }}
+            />
+          </Box>
         </VisualizationController>
         <ActionButton
           title={"Next section: Demo"}
@@ -119,10 +228,17 @@ function getCycleValueText(value) {
   return `Cycle ${value}`;
 }
 
-const CycleDemo = ({ cycles, cycleValueText }) => {
+const CycleDemo = ({ cycles, cycleValueText, step }) => {
   const [regions] = useState(Array(9).fill(baseRegion));
   const [counts, setCounts] = useState(baseCounts);
   const [cycle, setCycle] = useState(0);
+
+  const changeState = useCallback((newCycle) => {
+    const temp = [...baseCounts];
+    increaseOrder.slice(0, newCycle).forEach((i) => (temp[i] = 1));
+    setCounts(temp);
+    setCycle(newCycle);
+  }, []);
 
   const handleCycleChange = useCallback((event, newCycle) => {
     const temp = [...baseCounts];
@@ -130,6 +246,10 @@ const CycleDemo = ({ cycles, cycleValueText }) => {
     setCounts(temp);
     setCycle(newCycle);
   }, []);
+
+  useEffect(() => {
+    changeState(step);
+  }, [changeState, step]);
 
   return (
     <Box
@@ -152,6 +272,7 @@ const CycleDemo = ({ cycles, cycleValueText }) => {
         valueLabelDisplay="auto"
         step={1}
         marks
+        value={cycle}
         min={0}
         max={cycles}
       />
@@ -164,7 +285,7 @@ CycleDemo.defaultProps = {
   cycleValueText: getCycleValueText,
 };
 
-const TerrianDemo = () => {
+const TerrianDemo = ({ step }) => {
   const [size, setSize] = useState(3);
 
   const regions = Array(size * size).fill(baseRegion);
@@ -174,6 +295,14 @@ const TerrianDemo = () => {
     setSize(newSize);
   }, []);
 
+  const changeState = useCallback((step) => {
+    setSize(step * 2 + 3);
+  }, []);
+
+  useEffect(() => {
+    changeState(step);
+  }, [changeState, step]);
+
   return (
     <Box
       display="flex"
@@ -182,7 +311,9 @@ const TerrianDemo = () => {
       alignItems="center"
     >
       <Box>
-        <Typography variant="h4">Current Size: {size} by {size}</Typography>
+        <Typography variant="h4">
+          Current Size: {size} by {size}
+        </Typography>
       </Box>
       <Box padding={2}>
         <Terrian width={size} height={size} regions={regions} counts={counts} />
@@ -195,6 +326,7 @@ const TerrianDemo = () => {
         valueLabelDisplay="auto"
         step={2}
         marks
+        value={size}
         min={3}
         max={9}
       />

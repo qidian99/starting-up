@@ -213,7 +213,7 @@ const CompanyList = () => {
   // return <Spinner />;
 };
 
-const StrategyButton = ({ strategy }) => {
+export const StrategyButton = ({ strategy, title }) => {
   const [anchorEl, setAnchorEl] = useState(null);
 
   const handleClick = useCallback((event) => {
@@ -231,7 +231,7 @@ const StrategyButton = ({ strategy }) => {
   return (
     <>
       <Button onClick={handleClick} variant="contained" color="primary">
-        Show
+        {title}
       </Button>
       <Popover
         id={id}
@@ -269,6 +269,17 @@ const StrategyButton = ({ strategy }) => {
       </Popover>
     </>
   );
+};
+
+StrategyButton.defaultProps = {
+  strategy: {
+    preseed: 0.4,
+    seed: 0.3,
+    seriesA: 0.2,
+    seriesB: 0.1,
+    seriesC: 0.0,
+  },
+  title: "Show"
 };
 
 export default CompanyList;

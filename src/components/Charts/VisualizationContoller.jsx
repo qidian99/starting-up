@@ -17,11 +17,13 @@ const VisualizationController = ({
   limit,
   isLast,
   title,
+  steps,
   ...rest
 }) => {
   const rootRef = useRef(null);
   const [active, setActive] = useState(false);
   const [opacity, setOpacity] = useState(1);
+  const [step, setStep] = useState(0);
 
   return (
     <PlotContainer ref={rootRef} active={active} opacity={opacity}>
@@ -29,6 +31,7 @@ const VisualizationController = ({
       {React.Children.toArray(children).map((child, index) =>
         React.cloneElement(child, {
           active: active,
+          step: steps !== undefined ? step : undefined,
           ...rest,
         })
       )}
@@ -38,9 +41,7 @@ const VisualizationController = ({
           triggerElement={trigger}
           // indicators
           // triggerHook={0.5}
-          triggerHook={
-            APP_BAR_HEIGHT_INT / window.innerHeight + TRIGGER_OFFSET 
-          }
+          triggerHook={APP_BAR_HEIGHT_INT / window.innerHeight + TRIGGER_OFFSET}
         >
           {(progress, event) => {
             const ref = rootRef.current;
@@ -60,6 +61,15 @@ const VisualizationController = ({
               } else if (progress > 1 - FADE_OUT_OFFSET) {
                 setOpacity((1 - progress) / FADE_OUT_OFFSET);
               } else {
+                if (steps !== undefined) {
+                  const partLength =
+                    (duration * (1 - FADE_IN_OFFSET - FADE_OUT_OFFSET)) / steps;
+                  const newStep = Math.floor(
+                    ((progress - FADE_IN_OFFSET) * duration) / partLength
+                  );
+                  setStep(newStep);
+                }
+
                 setOpacity(1);
               }
             }
