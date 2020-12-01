@@ -22,9 +22,10 @@ import image4 from "../../assets/baseline-model-funding.png";
 import image5 from "../../assets/baseline-model-region-terrian.png";
 import image6 from "../../assets/baseline-model-strategy.png";
 import image7 from "../../assets/baseline-model-user-revenue.png";
-import regionSchema from "../../assets/region-schema.png";
-import fundingSchema from "../../assets/funding-schema.png";
-import companySchema from "../../assets/company-schema.png";
+import regionSchemaImage from "../../assets/region-schema.png";
+import fundingSchemaImage from "../../assets/funding-schema.png";
+import companySchemaImage from "../../assets/company-schema.png";
+import revenueImage from "../../assets/revenue.png";
 import userTransitionMatrix from "../../assets/user-transition-matrix.png";
 import strategyStructure from "../../assets/strategy-structure.png";
 import Terrian, { Region } from "../../components/game/Terrian";
@@ -108,7 +109,7 @@ const Model = () => {
             alignItems="center"
           >
             <Typography variant="h6">Structure of a Region</Typography>
-            <img width={600} src={regionSchema} alt="Region Schema" />
+            <img width={600} src={regionSchemaImage} alt="Region Schema" />
             <Typography style={{ marginTop: 16 }} variant="h6">
               Example (click below)
             </Typography>
@@ -135,7 +136,7 @@ const Model = () => {
             alignItems="center"
           >
             <Typography variant="h6">Structure of a Company</Typography>
-            <img width={600} src={companySchema} alt="Company Schema" />
+            <img width={600} src={companySchemaImage} alt="Company Schema" />
           </Box>
         </VisualizationController>
         <VisualizationController>
@@ -165,7 +166,7 @@ const Model = () => {
             <Typography variant="h6">Structure of a Funding</Typography>
             <img
               width={600}
-              src={fundingSchema}
+              src={fundingSchemaImage}
               alt="Funding Schema"
               style={{ marginTop: 12 }}
             />
@@ -206,7 +207,14 @@ const Model = () => {
         <ActionButton
           title={"Next section: Demo"}
           onClick={() => history.push("/project/demo")}
-        />
+        >
+          <img
+            width={400}
+            src={revenueImage}
+            alt="Revenue"
+            style={{ marginTop: 12 }}
+          />
+        </ActionButton>
       </Visualizer>
     </PersistentDrawer>
   );

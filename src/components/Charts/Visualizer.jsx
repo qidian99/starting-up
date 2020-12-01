@@ -47,6 +47,7 @@ const Visualizer = ({ frames, children }) => {
 
   // const frameRefs = useRef(Array(frames.length).fill(createRef()));
   // console.log(frameRefs);
+  // console.log(heights);
 
   useEffect(() => {
     const container = frameContainer.current;
@@ -74,7 +75,7 @@ const Visualizer = ({ frames, children }) => {
         <ProjectPlot>
           {React.Children.toArray(children).map((child, index) =>
             React.cloneElement(child, {
-              duration: heights[0] || 300,
+              duration: heights[index] || 300,
               trigger: "#" + getFrameId(index),
             })
           )}

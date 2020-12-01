@@ -105,7 +105,7 @@ const DoublePieChart = ({ outerData, innerData, active }) => {
 DoublePieChart.defaultProps = {
   innerData: data01,
   outerData: data02,
-  active: true,
+  active: "true",
 };
 
 export default DoublePieChart;

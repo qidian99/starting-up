@@ -24,3 +24,31 @@ export const startupExitData = [
   { name: "2017", amount: 4297 },
   { name: "2018", amount: 4228 },
 ];
+
+
+export const numBankruptData = [
+  { name: "0.20", value: 469 },
+  { name: "0.22", value: 351 },
+  { name: "0.24", value: 180 },
+  { name: "0.26", value: 49 },
+  { name: "0.28", value: 7 },
+  { name: "0.30", value: 0 },
+]
+
+export const avgRevenueData1 = [
+  { name: "0.20", value: 727.77 },
+  { name: "0.22", value: 798.60 },
+  { name: "0.24", value: 769.49 },
+  { name: "0.26", value: 754.91 },
+  { name: "0.28", value: 695.57 },
+  { name: "0.30", value: 677.20 },
+]
+
+export const avgRevenueData2 = [
+  { name: "0.20", value: 45.12 },
+  { name: "0.22", value: 237.98 },
+  { name: "0.24", value: 492.47 },
+  { name: "0.26", value: 680.93 },
+  { name: "0.28", value: 685.83 },
+  { name: "0.30", value: 677.20 },
+]

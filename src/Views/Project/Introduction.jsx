@@ -22,10 +22,15 @@ import image1 from "../../assets/starting-up-history.png";
 import image2 from "../../assets/starting-up-region.png";
 import image3 from "../../assets/starting-up-company.png";
 import image4 from "../../assets/starting-up-region-detail.png";
+
+import image5 from "../../assets/algorithm.png";
+import image6 from "../../assets/multimedia.png";
+import image7 from "../../assets/m0_num_bankrupt.png";
+import image8 from "../../assets/business.png";
 import { Info, StarBorder } from "@material-ui/icons";
 import ImageGridList from "./ImageGridList";
 
-const tileData = [
+const myObjectiveData = [
   {
     img: image1,
     title: "Interactive User Interface",
@@ -51,6 +56,37 @@ const tileData = [
     cols: 2,
   },
 ];
+
+
+const outlineData = [
+  {
+    img: image5,
+    title: "Model",
+    author: "Dian Qi",
+    cols: 1,
+  },
+  {
+    img: image6,
+    title: "Demo",
+    author: "Dian Qi",
+    cols: 1,
+  },
+  {
+    img: image7,
+    title: "Evaluation",
+    author: "Dian Qi",
+    cols: 1,
+  },
+  {
+    img: image8,
+    title: "Conclustion",
+    author: "Dian Qi",
+    cols: 1,
+  },
+];
+
+
+
 
 
 const Introduction = () => {
@@ -86,12 +122,14 @@ const Introduction = () => {
           <GappedPieChart />
         </VisualizationController>
         <VisualizationController>
-          <ImageGridList data={tileData} />
+          <ImageGridList data={myObjectiveData} />
         </VisualizationController>
         <ActionButton
           title={"Next section: Model"}
           onClick={() => history.push("/project/model")}
-        />
+        >
+          <ImageGridList background={false} titlePosition="bottom" data={outlineData} />
+        </ActionButton>
       </Visualizer>
     </PersistentDrawer>
   );

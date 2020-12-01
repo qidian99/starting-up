@@ -35,7 +35,7 @@ const useStyles = makeStyles((theme) => ({
     backgroundColor: theme.palette.background.paper,
   },
   gridList: {
-    backgroundColor: theme.palette.primary.main,
+    backgroundColor:  (props) => props.background ? theme.palette.primary.main : null,
     width: (props) => props.width,
     padding: 3,
   },
@@ -62,8 +62,11 @@ const ImageGridList = ({
   containerHeight,
   cellHeight,
   titlePosition,
+  background,
 }) => {
-  const classes = useStyles({ titlePosition, width, cellHeight });
+  const classes = useStyles({ titlePosition, width, cellHeight, background });
+
+  const history = useHistory();
 
   return (
     <div className={classes.root}>
@@ -86,6 +89,7 @@ const ImageGridList = ({
               titlePosition={titlePosition}
               actionIcon={
                 <IconButton
+                  onClick={() => tile.path && history.push(tile.path)}
                   aria-label={`star ${tile.title}`}
                   className={classes.icon}
                 >
@@ -109,6 +113,7 @@ ImageGridList.defaultProps = {
   width: 500,
   cellHeight: 200,
   containerHeight: null,
+  background: true,
 };
 
 export default ImageGridList;

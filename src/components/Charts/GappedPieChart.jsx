@@ -35,7 +35,7 @@ GappedPieChart.defaultProps = {
     { name: "Ad-based", value: 25 },
     { name: "Transaction-based", value: 25 },
   ],
-  active: true,
+  active: "true",
 };
 
 export default GappedPieChart;

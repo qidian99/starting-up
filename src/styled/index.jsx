@@ -46,11 +46,11 @@ export const PlotContainer = styled.div`
 export const ActionButtonContainer = styled.div`
   display: flex;
   flex-direction: column;
-  justify-content: flex-end;
-  align-items: flex-end;
+  justify-content: center;
+  align-items: center;
   height: 100%;
   width: 100%;
-  position: absolute;
+  position: relative;
   padding: 32px;
 `;
 

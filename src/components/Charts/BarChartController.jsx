@@ -29,14 +29,14 @@ const ChartController = ({
     (data.length - limit > 0 ? data.length - limit + 1 : 1);
 
   return (
-    <PlotContainer ref={rootRef} active={active} opacity={opacity}>
+    <PlotContainer ref={rootRef} active={active ? true : undefined} opacity={opacity}>
       {title && <Typography variant="h6">{title}</Typography>}
       {React.Children.toArray(children).map((child, index) =>
         React.cloneElement(child, {
           width: width,
           height: height,
           data: data.slice(0, offset + limit),
-          active: active,
+          active: active ? "true" : "false",
           ...other,
         })
       )}
@@ -75,7 +75,10 @@ const ChartController = ({
                   setOffset(newOffset);
                 }
               }
+            } else {
+              setActive(false);
             }
+
             // If animation ends, hide the graph
             if ((isAfter && finished) || (isDuring && !started)) {
               setOpacity(0);

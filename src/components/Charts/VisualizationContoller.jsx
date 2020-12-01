@@ -28,7 +28,7 @@ const VisualizationController = ({
   return (
     <PlotContainer
       ref={rootRef}
-      active={active}
+      active={active ? "true" : "false"}
       opacity={opacity}
       style={{
         display: opacity === 0 ? "none" : "flex",
@@ -38,7 +38,7 @@ const VisualizationController = ({
       {React.Children.toArray(children).map((child, index) => {
         // console.log({ childStyle: child.props });
         return React.cloneElement(child, {
-          active: active,
+          active: active ? "true" : "false",
           step: steps !== undefined ? step : undefined,
           ...rest,
         });
@@ -77,10 +77,12 @@ const VisualizationController = ({
                   );
                   setStep(newStep);
                 }
-
                 setOpacity(1);
               }
+            } else {
+              setActive(false);
             }
+
             // If animation ends, hide the graph
             if ((isAfter && finished) || (isDuring && !started)) {
               setOpacity(0);
