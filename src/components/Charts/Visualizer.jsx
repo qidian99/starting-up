@@ -8,6 +8,7 @@ import {
   endPadding,
 } from "../../styled";
 import { getFrameId } from "../../Utils";
+import { TRIGGER_OFFSET } from "./default";
 
 const canRender = (arr = []) => {
   let ret = true;
@@ -16,7 +17,7 @@ const canRender = (arr = []) => {
   });
   return ret;
 };
-const Visualizer = ({ frames, children, endPadding }) => {
+const Visualizer = ({ frames, children, endPadding, firstOffset }) => {
   const [heights, setHeights] = useState(Array(frames.length).fill(0));
 
   const setHeight = useCallback(
@@ -24,7 +25,7 @@ const Visualizer = ({ frames, children, endPadding }) => {
       if (!heights[index] || (height && heights[index] !== height)) {
         heights[index] = height;
         setHeights([...heights]);
-        console.log(heights);
+        // console.log(heights);  
       }
     },
     [heights]
@@ -80,7 +81,9 @@ const Visualizer = ({ frames, children, endPadding }) => {
               duration: heights[index] || 300,
               trigger: "#" + getFrameId(index),
               isFirst: index === 0,
+              firstOffset,
               isLast: arr.length - 1 === index,
+              index: index,
             })
           )}
         </ProjectPlot>
@@ -91,6 +94,7 @@ const Visualizer = ({ frames, children, endPadding }) => {
 
 Visualizer.defaultProps = {
   endPadding: 600,
+  firstOffset: 0,
 };
 
 export default Visualizer;

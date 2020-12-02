@@ -31,7 +31,7 @@ fetch(`http://localhost:1337/graphql`, {
       }
     });
 
-    console.log(JSON.stringify(possibleTypes))
+    // console.log(JSON.stringify(possibleTypes))
     // fs.writeFile('./possibleTypes.json', JSON.stringify(possibleTypes), err => {
     //   if (err) {
     //     console.error('Error writing possibleTypes.json', err);

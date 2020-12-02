@@ -18,7 +18,7 @@ export const FADE_IN_OFFSET = 0.15;
 export const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#9C27B0"];
 
 const getIntroOfPage = (label) => {
-  console.log(label);
+  // console.log(label);
   if (label === "Page A") {
     return "Page A is about men's clothing";
   }

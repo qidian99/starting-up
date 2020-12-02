@@ -96,7 +96,7 @@ const GameSubscription = ({
     if (!gameSubscription) {
       return;
     }
-    console.log(gameSubscription);
+    // console.log(gameSubscription);
     gameSubscription.joinGame.forEach((update) => {
       switch (update.__typename) {
         case TYPE_GAME_INFO_UPDATE: {
@@ -190,7 +190,7 @@ const SimpleGame = () => {
 
   const { loading: gameLoading, data: gameQueryResult } = useQuery(GAME_QUERY, {
     variables: {
-      gameId: _.get(gameState, ["game", "id"]) || '',
+      gameId: _.get(gameState, ["game", "id"]) || "",
     },
   });
 
@@ -227,18 +227,17 @@ const SimpleGame = () => {
 
   useEffect(() => {
     if (errorState.error) {
-        if (errorRef.current ===  errorState.error) return;
-        errorRef.current = errorState.error;
-        dispatch({
-          type: ERROR_ACTIONS.CLEAR_ERROR
-        });
-        addToast(errorState.error, {
+      if (errorRef.current === errorState.error) return;
+      errorRef.current = errorState.error;
+      dispatch({
+        type: ERROR_ACTIONS.CLEAR_ERROR,
+      });
+      addToast(errorState.error, {
         appearance: "error",
         onDismiss: () => {
-          history.push('/');
+          history.push("/");
         },
       });
-        
     }
   }, [addToast, dispatch, errorState, history]);
 
@@ -264,14 +263,14 @@ const SimpleGame = () => {
       )
     );
 
-    console.log({
-      s: _.get(companyQueryResult, ["company", "strategy"]),
-      v: simpleGameStrategies,
-      res: _.pick(
-        _.get(companyQueryResult, ["company", "strategy"]),
-        simpleGameStrategies
-      ),
-    });
+    // console.log({
+    //   s: _.get(companyQueryResult, ["company", "strategy"]),
+    //   v: simpleGameStrategies,
+    //   res: _.pick(
+    //     _.get(companyQueryResult, ["company", "strategy"]),
+    //     simpleGameStrategies
+    //   ),
+    // });
     setStrategy(newStrategy);
   }, [companyQueryResult, companyState]);
 
@@ -281,34 +280,34 @@ const SimpleGame = () => {
 
     if (newGame) {
       createSimpleGame().catch((e) => {
-        console.log(e);
+        // console.log(e);
         setGameError("Simple game creation failed");
       });
     }
 
-    console.log({ game: gameQueryResult });
+    // console.log({ game: gameQueryResult });
     if (gameQueryResult) {
       setGameInstance(new Game(gameQueryResult.game));
     }
   }, [gameState, gameQueryResult, createSimpleGame]);
 
   useEffect(() => {
-    console.log({
-      gameStatus,
-    });
+    // console.log({
+    //   gameStatus,
+    // });
   }, [gameStatus]);
 
-  useEffect(() => {
-    console.log({
-      game: gameQueryResult,
-    });
-  }, [gameQueryResult]);
+  // useEffect(() => {
+  //   console.log({
+  //     game: gameQueryResult,
+  //   });
+  // }, [gameQueryResult]);
 
-  useEffect(() => {
-    // console.log({
-    //   logs,
-    // });
-  }, [logs]);
+  // useEffect(() => {
+  //   console.log({
+  //     logs,
+  //   });
+  // }, [logs]);
 
   useEffect(() => {
     // console.log(gameResponse);
@@ -332,10 +331,8 @@ const SimpleGame = () => {
   }, [addToast, gameError]);
 
   if (gameLoading || gameState.newGame || !gameInstance) {
-    console.log("Game instance not instantiated.");
-    return (
-      <Spinner />
-    );
+    // console.log("Game instance not instantiated.");
+    return <Spinner />;
   }
 
   // console.log("Fundings", gameInstance.fundings);
@@ -343,9 +340,7 @@ const SimpleGame = () => {
 
   return (
     <>
-      {gameCycle < 1 && (
-        <Spinner />
-      )}
+      {gameCycle < 1 && <Spinner />}
       {!gameState.newGame && gameInstance.id && (
         <GameSubscription
           gameInstance={gameInstance}

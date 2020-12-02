@@ -18,8 +18,10 @@ const VisualizationController = ({
   limit,
   isLast,
   isFirst,
+  firstOffset,
   title,
   steps,
+  index,
   ...rest
 }) => {
   const rootRef = useRef(null);
@@ -30,7 +32,7 @@ const VisualizationController = ({
 
   const ChildrenComponents = useMemo(
     () =>
-      React.Children.toArray(children).map((child, index) => {
+      React.Children.toArray(children).map((child) => {
         // console.log({ childStyle: child.props });
         return React.cloneElement(child, {
           active: active,
@@ -45,23 +47,25 @@ const VisualizationController = ({
       ref={rootRef}
       active={active ? "true" : "false"}
       opacity={opacity}
-      // style={{
-      //   display: opacity === 0 ? "none" : "flex",
-      // }}
+      style={{
+        // zIndex: -index,
+        // display: opacity === 0 ? "none" : "flex",
+      }}
     >
       {title && <Typography variant="h6">{title}</Typography>}
       {ChildrenComponents}
       <Controller>
         <Scene
           duration={
-            duration - window.innerHeight * (isFirst ? TRIGGER_OFFSET : 0)
+            duration -
+            window.innerHeight * (isFirst ? (TRIGGER_OFFSET - firstOffset) : 0)
           }
           triggerElement={trigger}
           // indicators
           // triggerHook={0.5}
           triggerHook={
             APP_BAR_HEIGHT_INT / window.innerHeight +
-            (isFirst ? 0 : TRIGGER_OFFSET)
+            (isFirst ? firstOffset : TRIGGER_OFFSET)
           }
         >
           {(progress, event) => {
@@ -91,15 +95,15 @@ const VisualizationController = ({
                   const newStep = Math.floor(
                     ((progress - FADE_IN_OFFSET) * duration) / partLength
                   );
-                  console.log({
-                    duration,
-                    name,
-                    trigger,
-                    state: event.state,
-                    partLength,
-                    progress,
-                    newStep,
-                  });
+                  // console.log({
+                  //   duration,
+                  //   name,
+                  //   trigger,
+                  //   state: event.state,
+                  //   partLength,
+                  //   progress,
+                  //   newStep,
+                  // });
                   setStep(newStep);
                 }
                 setOpacity(1);

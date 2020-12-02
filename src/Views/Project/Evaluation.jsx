@@ -75,7 +75,7 @@ const Evaluation = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={EVALUATION_FRAMES}>
+      <Visualizer frames={EVALUATION_FRAMES} firstOffset={0.2}>
         <VisualizationController>
           {/* <ImageGridList data={tileData} /> */}
           <img
@@ -298,7 +298,7 @@ const baseRegion = {
 };
 
 const getCounts = (step, size = 9) => {
-  console.log({ step });
+  // console.log({ step });
   return Array(size * size)
     .fill(0)
     .map((val, index) => {

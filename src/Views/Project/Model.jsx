@@ -87,7 +87,7 @@ const Model = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={MODEL_FRAMES} endPadding={200}>
+      <Visualizer frames={MODEL_FRAMES} endPadding={200} firstOffset={0.2}>
         <VisualizationController>
           <ImageGridList
             data={tileData}

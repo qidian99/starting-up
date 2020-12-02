@@ -120,7 +120,7 @@ class SignificanceLevel extends Component {
 
             const animationEnded = event.state === "AFTER" && progress === 1;
 
-            console.log(animationStart, animationEnd);
+            // console.log(animationStart, animationEnd);
 
             // if width exceeds the width of the graph, set it to the graph to prevet overflow
             const widthChange =

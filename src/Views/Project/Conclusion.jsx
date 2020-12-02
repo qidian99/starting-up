@@ -28,7 +28,7 @@ const Conclusion = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={CONCLUSION_FRAMES}>
+      <Visualizer frames={CONCLUSION_FRAMES} firstOffset={0.2}>
         <VisualizationController>
           <img src={conclusionImage} width={400} alt="Conclusion" />
         </VisualizationController>

@@ -68,13 +68,13 @@ const History = () => {
   }, [history]);
 
   useEffect(() => {
-    console.log(gameQueryResult);
+    // console.log(gameQueryResult);
     if (!gameQueryResult) return;
 
     setGameInstance(new Game(gameQueryResult.game));
     const player = _.get(gameQueryResult, ["game", "companies", '0', "id"]);
     const s = _.pick(_.get(gameQueryResult, ["game", "companies", "0", "strategy"]), simpleGameStrategies);
-    console.log({ player, s })
+    // console.log({ player, s })
     setCurrentPlayer(player);
     setStrategy(s);
     const status = _.chain(gameQueryResult)
@@ -90,7 +90,7 @@ const History = () => {
       }))
       .value();
     setGameStatus(status);
-    console.log({status})
+    // console.log({status})
 
 
     const updates = _.get(gameQueryResult, ["game", "update"]);
@@ -101,12 +101,12 @@ const History = () => {
       .maxBy("cycle")
       .value();
     if (!maxCycles) return;
-    console.log({ updates, maxCycles });
+    // console.log({ updates, maxCycles });
     setCycles(maxCycles.cycle);
   }, [gameQueryResult]);
 
   useEffect(() => {
-    console.log(gameInstance);
+    // console.log(gameInstance);
   }, [gameInstance]);
 
   const handleCycleChange = useCallback(
@@ -132,7 +132,7 @@ const History = () => {
         )
       );
       setGameLogs(gameInstance.logs);
-      console.log(gameInstance);
+      // console.log(gameInstance);
     },
     [setGameCycle, setGameLogs, gameInstance, gameCycle]
   );

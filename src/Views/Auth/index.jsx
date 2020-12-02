@@ -86,10 +86,10 @@ export default (props) => {
     }
   }, [mode]);
 
-  useEffect(() => {
-    console.log(auth);
-    return () => {};
-  }, [auth]);
+  // useEffect(() => {
+  //   console.log(auth);
+  //   return () => {};
+  // }, [auth]);
 
   const onButtonClick = useCallback(
     (email, password) => () => {
