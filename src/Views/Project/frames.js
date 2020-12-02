@@ -6,7 +6,7 @@ import {
 export const INTRODUCTION_FRAMES = [{
   title: 'Introduction',
   body: [
-    `Since the internet bubble from the 90s, more and morestartup companies are emerging. Some entrepreneurs dropped school and ended up doing businesses and writing biographies. Many other young professionals in their early careers are stimulated to start their own business as well.`,
+    `Since the internet bubble from the 90s, more and more startup companies are emerging. Some entrepreneurs dropped school and ended up doing businesses and writing biographies. Many other young professionals in their early careers are stimulated to start their own business as well.`,
     `Chart on the right shows the projected total of Angel-Seed, Early Stage, Late Stage, Technology Growth dollar values between 2010 and 2019.`,
     {
       type: 'link',
@@ -165,7 +165,7 @@ export const MODEL_FRAMES = [{
       `implies that the neighboring Regions of a particular Region`,
       formatTex(`R_n`),
       `can gain users after the number of active users of that Region exceeds`,
-      formatTex(`R_{ ij }P_{ ij }.`),
+      formatTex(`R_{ij}P_{ij}.`),
     ],
   }],
 },
@@ -174,8 +174,8 @@ export const MODEL_FRAMES = [{
   body: [{
     type: 'text',
     value: [
-      `There are four Funding phases in the entire span of a simulation. The Seed Round Funding, Series A Funding, Series B Funding, and Series C Funding. The amount of these Fundings are`,
-      formatTex(`F_0, F_1, F_2, F_3`),
+      `There are 5 Funding phases in the entire span of a simulation. The Seed Round Funding, Series A Funding, Series B Funding, and Series C Funding. The amount of these Fundings are`,
+      formatTex(`F_0, F_1, F_2, F_3, F_4`),
       `respectively.`
     ],
   },],
@@ -251,7 +251,7 @@ export const EVALUATION_FRAMES = [{
     },
     {
       type: 'text',
-      value: [`By calculation, if we start from`, formatTex(`x_0 = 0,`), formatTex(`f(x)`), `will reach 10 in 6 cycles. Starting from`, formatTex(`x_0 = 10,`), formatTex(`f(x)`), `is shown in the graph on the right.`]
+      value: [`By calculation, if we start from`, formatTex(`x_0 = 1,`), formatTex(`f(x)`), `will reach 10 in 6 cycles. Starting from`, formatTex(`x_0 = 10,`), formatTex(`f(x)`), `is shown in the graph on the right.`]
     },
     {
       type: 'text',

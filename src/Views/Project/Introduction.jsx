@@ -114,7 +114,7 @@ const Introduction = () => {
         <ChartController
           dataKey={"amount"}
           name={"Global Startup Exits"}
-          title={"Volume of Global Startup Exits"}
+          title={"Volume of Global Startup Exits (in million $)"}
           data={startupExitData}
         >
           <SingleBarChart />
@@ -132,7 +132,11 @@ const Introduction = () => {
           title={"Next section: Model"}
           onClick={() => history.push("/project/model")}
         >
-          <ImageGridList background={false} titlePosition="bottom" data={outlineData} />
+          <ImageGridList
+            background={false}
+            titlePosition="bottom"
+            data={outlineData}
+          />
         </ActionButton>
       </Visualizer>
     </PersistentDrawer>

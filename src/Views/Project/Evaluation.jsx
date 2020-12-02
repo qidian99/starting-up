@@ -111,8 +111,8 @@ const Evaluation = () => {
 
         <ChartController
           dataKey={"value"}
-          name={"Averge Revenue"}
-          title={"Averge revenue by m0 excluding bankrupted cases"}
+          name={"Average Revenue"}
+          title={"Average revenue by m0 excluding bankrupted cases"}
           data={avgRevenueData1}
           limit={1}
         >
@@ -124,8 +124,8 @@ const Evaluation = () => {
         >
           <ChartController
             dataKey={"value"}
-            name={"Averge Revenue"}
-            title={"Averge revenue by m0 including bankrupted cases"}
+            name={"Average Revenue"}
+            title={"Average revenue by m0 including bankrupted cases"}
             data={avgRevenueData2}
             limit={1}
           >
