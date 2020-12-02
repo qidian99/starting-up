@@ -35,7 +35,7 @@ const SingleBarChart = ({
       <YAxis />
       <Tooltip />
       <Legend />
-      <Bar dataKey={dataKey} name={name || dataKey} fill="#8884d8" isAnimationActive={active} />
+      <Bar dataKey={dataKey} name={name || dataKey} fill="#8884d8" isAnimationActive={active} isUpdateAnimationActive={active} />
     </BarChart>
   );
 };

@@ -37,7 +37,7 @@ const tileData = [
   },
   {
     img: image3,
-    title: "Join simulation",
+    title: "Enter simulation",
     author: "Dian Qi",
     cols: 2,
     path: "/simplegame",
@@ -52,12 +52,12 @@ const Demo = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={DEMO_FRAMES}>
+      <Visualizer frames={DEMO_FRAMES} endPadding={0}>
         <ActionButton
           title={"Next section: Evaluation"}
           onClick={() => history.push("/project/evaluation")}
         >
-          <ImageGridList data={tileData} />;
+          <ImageGridList data={tileData} />
         </ActionButton>
       </Visualizer>
     </PersistentDrawer>

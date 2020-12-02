@@ -5,6 +5,7 @@ import {
   ProjectText,
   ProjectPlot,
   APP_BAR_HEIGHT_INT,
+  endPadding,
 } from "../../styled";
 import { getFrameId } from "../../Utils";
 
@@ -15,7 +16,7 @@ const canRender = (arr = []) => {
   });
   return ret;
 };
-const Visualizer = ({ frames, children }) => {
+const Visualizer = ({ frames, children, endPadding }) => {
   const [heights, setHeights] = useState(Array(frames.length).fill(0));
 
   const setHeight = useCallback(
@@ -23,14 +24,13 @@ const Visualizer = ({ frames, children }) => {
       if (!heights[index] || (height && heights[index] !== height)) {
         heights[index] = height;
         setHeights([...heights]);
+        console.log(heights);
       }
     },
     [heights]
   );
 
   const [top, setTop] = useState(0);
-
-  // console.log(heights);
 
   const frameContainer = useRef(null);
 
@@ -68,21 +68,29 @@ const Visualizer = ({ frames, children }) => {
             frame={frame}
             setHeight={setHeight}
             isLast={arr.length - 1 === index}
+            isFirst={index === 0}
+            endPadding={endPadding}
           />
         ))}
       </ProjectText>
       {canRender(heights) && (
         <ProjectPlot>
-          {React.Children.toArray(children).map((child, index) =>
+          {React.Children.toArray(children).map((child, index, arr) =>
             React.cloneElement(child, {
               duration: heights[index] || 300,
               trigger: "#" + getFrameId(index),
+              isFirst: index === 0,
+              isLast: arr.length - 1 === index,
             })
           )}
         </ProjectPlot>
       )}
     </ProjectContainer>
   );
+};
+
+Visualizer.defaultProps = {
+  endPadding: 600,
 };
 
 export default Visualizer;

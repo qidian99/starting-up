@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Controller, Scene } from "react-scrollmagic";
 import { APP_BAR_HEIGHT_INT, PlotContainer } from "../../styled";
 import { startupDollarValueData } from "./data";
@@ -22,24 +22,34 @@ const ChartController = ({
   const { width, height, data, ...other } = rest;
   const rootRef = useRef(null);
   const [active, setActive] = useState(false);
-  const [opacity, setOpacity] = useState(1);
+  const [opacity, setOpacity] = useState(0);
   const [offset, setOffset] = useState(0);
   const partLength =
     (duration * (1 - FADE_IN_OFFSET - FADE_OUT_OFFSET)) /
     (data.length - limit > 0 ? data.length - limit + 1 : 1);
 
+  // console.log({ children, duration, trigger });
+
+  const ChildrenComponents = useMemo(() =>
+    React.Children.toArray(children).map((child, index) =>
+      React.cloneElement(child, {
+        width: width,
+        height: height,
+        data: data.slice(0, offset + limit),
+        active: active,
+        ...other,
+      })
+    ), [active, children, data, height, limit, offset, other, width]
+  );
+
   return (
-    <PlotContainer ref={rootRef} active={active ? true : undefined} opacity={opacity}>
+    <PlotContainer
+      ref={rootRef}
+      active={active ? "true" : "false"}
+      opacity={opacity}
+    >
       {title && <Typography variant="h6">{title}</Typography>}
-      {React.Children.toArray(children).map((child, index) =>
-        React.cloneElement(child, {
-          width: width,
-          height: height,
-          data: data.slice(0, offset + limit),
-          active: active ? "true" : "false",
-          ...other,
-        })
-      )}
+      {ChildrenComponents}
 
       <Controller>
         <Scene
@@ -56,6 +66,7 @@ const ChartController = ({
             const isAfter = event.state === "AFTER";
             const started = progress > 0;
             const finished = progress === 1;
+
             if (isBefore) {
               setOpacity(0);
             }

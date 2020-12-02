@@ -98,7 +98,7 @@ const Introduction = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={INTRODUCTION_FRAMES}>
+      <Visualizer frames={INTRODUCTION_FRAMES} endPadding={200}>
         <ChartController
           names={["Projected Totals"]}
           dataKeys={["total"]}

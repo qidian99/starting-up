@@ -25,8 +25,8 @@ export const getY = (
 
 // ticks generator
 const generateTicks = (
-    start, length, step,
-  ) => Array
+  start, length, step,
+) => Array
   .from({
     length
   }, (v, i) => BigNumber(start).plus(BigNumber(step).times(i)))
@@ -130,3 +130,15 @@ export const formatList = (value) => ({
   type: 'list',
   value,
 })
+
+export const baselineUserGrowthFn = (x) => Math.sqrt(x + 1) / 100 * (100 - x) - 0.625;
+
+export const generateGraphData = (f = baselineUserGrowthFn, start = 0, end = 100, step = 1, precision = 2) => {
+  const data = _.range(start, end + step, step).map((x) => ({ x: x.toFixed(precision), y: f(x).toFixed(precision) }));
+
+  return data;
+}
+
+export function getCycleValueText(value) {
+  return `Cycle ${value}`;
+}

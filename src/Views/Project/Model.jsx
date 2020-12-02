@@ -31,6 +31,7 @@ import strategyStructure from "../../assets/strategy-structure.png";
 import Terrian, { Region } from "../../components/game/Terrian";
 import { Box, Slider, Typography } from "@material-ui/core";
 import { StrategyButton } from "../CompanyList";
+import { getCycleValueText } from "../../Utils";
 
 const tileData = [
   {
@@ -86,7 +87,7 @@ const Model = () => {
 
   return (
     <PersistentDrawer>
-      <Visualizer frames={MODEL_FRAMES}>
+      <Visualizer frames={MODEL_FRAMES} endPadding={200}>
         <VisualizationController>
           <ImageGridList
             data={tileData}
@@ -231,10 +232,6 @@ const baseRegion = {
 };
 
 const exampleCycles = 9;
-
-function getCycleValueText(value) {
-  return `Cycle ${value}`;
-}
 
 const CycleDemo = ({ cycles, cycleValueText, step }) => {
   const [regions] = useState(Array(9).fill(baseRegion));

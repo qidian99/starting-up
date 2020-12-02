@@ -1,5 +1,5 @@
 import { Typography } from "@material-ui/core";
-import React, { useRef, useState } from "react";
+import React, { useMemo, useRef, useState } from "react";
 import { Controller, Scene } from "react-scrollmagic";
 import { APP_BAR_HEIGHT_INT, PlotContainer } from "../../styled";
 import { startupDollarValueData } from "./data";
@@ -11,11 +11,13 @@ import {
 } from "./default";
 
 const VisualizationController = ({
+  name,
   children,
   duration,
   trigger,
   limit,
   isLast,
+  isFirst,
   title,
   steps,
   ...rest
@@ -24,32 +26,43 @@ const VisualizationController = ({
   const [active, setActive] = useState(false);
   const [opacity, setOpacity] = useState(0);
   const [step, setStep] = useState(0);
+  // console.log({ isFirst })
 
+  const ChildrenComponents = useMemo(
+    () =>
+      React.Children.toArray(children).map((child, index) => {
+        // console.log({ childStyle: child.props });
+        return React.cloneElement(child, {
+          active: active,
+          step: steps !== undefined ? step : undefined,
+          ...rest,
+        });
+      }),
+    [active, children, rest, step, steps]
+  );
   return (
     <PlotContainer
       ref={rootRef}
       active={active ? "true" : "false"}
       opacity={opacity}
-      style={{
-        display: opacity === 0 ? "none" : "flex",
-      }}
+      // style={{
+      //   display: opacity === 0 ? "none" : "flex",
+      // }}
     >
       {title && <Typography variant="h6">{title}</Typography>}
-      {React.Children.toArray(children).map((child, index) => {
-        // console.log({ childStyle: child.props });
-        return React.cloneElement(child, {
-          active: active ? "true" : "false",
-          step: steps !== undefined ? step : undefined,
-          ...rest,
-        });
-      })}
+      {ChildrenComponents}
       <Controller>
         <Scene
-          duration={duration}
+          duration={
+            duration - window.innerHeight * (isFirst ? TRIGGER_OFFSET : 0)
+          }
           triggerElement={trigger}
           // indicators
           // triggerHook={0.5}
-          triggerHook={APP_BAR_HEIGHT_INT / window.innerHeight + TRIGGER_OFFSET}
+          triggerHook={
+            APP_BAR_HEIGHT_INT / window.innerHeight +
+            (isFirst ? 0 : TRIGGER_OFFSET)
+          }
         >
           {(progress, event) => {
             const ref = rootRef.current;
@@ -60,6 +73,9 @@ const VisualizationController = ({
             const finished = progress === 1;
             if (isBefore) {
               setOpacity(0);
+              if (steps !== undefined) {
+                setStep(0);
+              }
             }
             // If animating, display the graph
             if (started) {
@@ -75,6 +91,15 @@ const VisualizationController = ({
                   const newStep = Math.floor(
                     ((progress - FADE_IN_OFFSET) * duration) / partLength
                   );
+                  console.log({
+                    duration,
+                    name,
+                    trigger,
+                    state: event.state,
+                    partLength,
+                    progress,
+                    newStep,
+                  });
                   setStep(newStep);
                 }
                 setOpacity(1);
@@ -100,6 +125,5 @@ const VisualizationController = ({
 export default VisualizationController;
 
 VisualizationController.defaultProps = {
-  ...CHART_DEFAULT_PROPS,
   limit: 5,
 };

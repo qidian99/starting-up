@@ -186,7 +186,7 @@ const CompanyList = () => {
                               : typeof value === "boolean"
                               ? value
                                 ? "True"
-                                : "False"
+                                : undefined
                               : value}
                           </StyledTableCell>
                         );

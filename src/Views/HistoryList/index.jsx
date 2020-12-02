@@ -183,7 +183,7 @@ const HistoryList = () => {
                               : typeof value === "boolean"
                               ? value
                                 ? "True"
-                                : "False"
+                                : undefined
                               : value}
                           </StyledTableCell>
                         );

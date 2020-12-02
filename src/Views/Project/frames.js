@@ -238,26 +238,67 @@ export const EVALUATION_FRAMES = [{
   body: [`This section will first evaluate the best strategy in the baseline model. After that, I will introduce other variants of the model.`],
 }, {
   title: 'Fixed Point Iteration',
-  body: [``],
+  body: [`In the baseline model, we have the leaving rate`, formatTex(`lr_{ij} = \\frac{0.625}{U_{ij}}`), `and the converstion (user growth) rate`, formatTex(`cr_{ij} = \\delta_{ij}\\alpha r_{ij}(f(U_{ij}))`),
+    `Therefore, we can convert the discrete problem to a continuous one, and assume that the net user growth is exactly the its expected value for now. We have the following formal description to find out how many cycles it needs until the number of active users converges.`,
+    `We have`,
+    formatTex(`f(x) = \\frac{\\sqrt{x + 1}}{100}\\cdot (100-x) - 0.625`),
+    formatTex(`x_0 = 10`),
+    `and the recursive relation`,
+    formatTex(`x_t = x_{t-1} + f(x_{t-1})\\quad\\forall t\\in \\mathbb N_{\\ge 1}`),
+    {
+      type: 'text',
+      value: [`It can be shown that no matter what initial guess we have in fixed point iteration,`, formatTex(`f^n(x)`), `will always converge to`, formatTex(`x^* = 93.573.`),]
+    },
+    {
+      type: 'text',
+      value: [`By calculation, if we start from`, formatTex(`x_0 = 0,`), formatTex(`f(x)`), `will reach 10 in 6 cycles. Starting from`, formatTex(`x_0 = 10,`), formatTex(`f(x)`), `is shown in the graph on the right.`]
+    },
+    {
+      type: 'text',
+      value: [`Under this assumption, the optimal `, formatTex(`m_0`), `is in between`, formatTex(`\\frac{x_t}{100} = 0.26`), `and`, formatTex(`\\frac{x_{t+1}}{100} = 0.30.`)],
+    },
+  ],
 }, {
   title: 'Neighboring Regions',
-  body: [``],
-  }, {
-    title: 'Simulation',
-    body: [``],
-  }, {
-    title: 'Result I: Number of Bankruptcy',
-    body: [``],
-  }, {
-    title: 'Result II: Average Revenue (1)',
-    body: [``],
-  }, {
-    title: 'Result III: Average Revenue (2)',
-    body: [``],
-  },];
+  body: [`Suppose that we are in a squared Terrian with the spawning region is at the center, and that the company will expand uniformly on each direction. Then the Regions with active users will look like a regular rhombus. Therefore, we have that`, formatTex(`\\text{# of outer neighboring Regions} = 4x`), formatTex(`\\text{# of Regions} = 2x^2+2x+1`),
+    {
+      type: 'text',
+      value: [
+        `So the overhead of expanding into neighbor Regions until break-even is decreasing. It explains why`, formatTex(`F_0`), `and`, formatTex(`m_0`), `are more important than other parameters.`
+      ],
+    }
+  ],
+}, {
+  title: 'Simulation',
+  body: [{
+    type: 'text',
+    value: [`For each choice of`, formatTex(`m_0`), `in`, formatTex(`[0.20, 0.22, 0.24, 0.26, 0.28, 0.30],`), `500 simulations of the first 20 cycles were performed.`]
+  }],
+}, {
+  title: 'Result I: Number of Bankruptcy',
+  body: [{ type: 'text', value: [`The barchart on the right shows the number of bankruptcy in the 500 simulations for different choices of`, formatTex(`m_0.`)] }],
+}, {
+  title: 'Result II: Average Revenue (1)',
+  body: [`The barchart on the right shows the average accumulated revenue in the 500 simulations excluding cases where the company went bankrupt.`],
+}, {
+  title: 'Result III: Average Revenue (2)',
+  body: [`The barchart on the right shows the average accumulated revenue in the 500 simulations including cases where the company went bankrupt. If a company goes bankrupt then its accumulative revenue is treated as 0.`],
+},];
 
 
 export const CONCLUSION_FRAMES = [{
   title: 'Conclusion',
-  body: [`After summarizing the models, I will discuss the possible applications of this project across multiple disciplinaries.`],
-},];
+  body: [{
+    type: 'text',
+    value: [
+      `The baseline model can be analyzed using fixed point iteration. Among all the parameters,`, formatTex(`m_0`), `and`, formatTex(`F_0`), `are the most important. There are several ways to make other parameters have larger implications. The first way is to alter the cost and revenue function. For instance, change fixed cost from being a linear function of number of \textit{Regions} to other polynomial functions. The second way is to alter the growth rate and leaving rate. In the baseline model, the expectation of users stop using the product is fixed across all region because `, formatTex(`g(x) = x`), `. `, formatTex(`f(\\cdot)`), ` and `, formatTex(`g(\\cdot)`), `can be changed respectively to give us different optimization conditions.`
+    ]
+  },],
+}, {
+  title: 'Variants',
+  body: [`In my final report I also introduced three variants of the baseline model. Variant I is about adding interactions between Regions to mimic the flux of population and generations. Variant II is about adding more dynamic elements such as Terrian formation, allowing user to control direction of expansion, and allowing the company to shift its users around at a certain cost. Variant III discusses the multi-company simulation where competition is involved.`],
+}, {
+  title: 'Implication',
+  body: [`For the implication of this project, it can be applied in many disciplinaries such as math, statistics, computer science, and data science. It can also be deployed as an IO game or platform for algorithm competition.`],
+},
+];

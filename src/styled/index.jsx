@@ -1,7 +1,7 @@
 const { default: styled } = require("styled-components");
 
 export const APP_BAR_HEIGHT_INT = 64;
-export const APP_BAR_HEIGHT = APP_BAR_HEIGHT_INT + 'px';
+export const APP_BAR_HEIGHT = APP_BAR_HEIGHT_INT + "px";
 export const FRAME_FONT_SIZE = 16;
 /* Components */
 export const ProjectContainer = styled.div`
@@ -28,11 +28,11 @@ export const ProjectPlot = styled.div`
   height: calc(100vh - ${APP_BAR_HEIGHT});
   width: 60%;
   top: ${APP_BAR_HEIGHT};
-  background: rgba(255,0,0,0.01);
+  background: rgba(255, 0, 0, 0.01);
 `;
 
 export const PlotContainer = styled.div`
-  display: ${(props) => (props.active ? "flex" : "none")};
+  display: ${(props) => (props.active === "true" ? "flex" : "none")};
   opacity: ${(props) => (props.opacity !== undefined ? props.opacity : 1)};
   flex-direction: column;
   justify-content: center;
@@ -41,7 +41,6 @@ export const PlotContainer = styled.div`
   width: 100%;
   position: absolute;
 `;
-
 
 export const ActionButtonContainer = styled.div`
   display: flex;
@@ -54,7 +53,6 @@ export const ActionButtonContainer = styled.div`
   padding: 32px;
 `;
 
-
 export const Plot = styled.div`
   display: flex;
   flex-direction: column;
@@ -63,7 +61,6 @@ export const Plot = styled.div`
   height: 50%;
   width: 100%;
 `;
-
 
 export const FrameContainer = styled.div`
   padding: 300px 24px;
@@ -80,15 +77,12 @@ export const FrameText = styled.div`
   display: ${(props) => (props.inline ? "inline-block" : "block")};
 `;
 
-
 export const FrameInlineWrapper = styled.span`
   line-height: 1.5;
   margin: 6px 0 6px 0;
   display: inline;
-  margin-left: ${(props) =>
-    props.first ? 0 : "2px"};
+  margin-left: ${(props) => (props.first ? 0 : "2px")};
 `;
-
 
 export const FrameTextInline = styled(FrameInlineWrapper)`
   font-size: ${FRAME_FONT_SIZE}px;

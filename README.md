@@ -1,8 +1,26 @@
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+# Starting Up
+A project that is aimed at decision making of startup companies.
+
+
+## Gotchas in Development
+1. Visualization
+   There is some weird glitch effects when the user first enter a section. The charts visualization
+   is not animated when the charts come with the next section button, e.g., when the charts is the
+   last frame of a section.
+
+2. Back-end
+   The deployed web app is sending back-end API requests to localhost:1337. This is meant to avoid
+   exploitation of the API and database. If anyone wants to test out this project, please also clone
+   the back-end from `starting-up-backend` and configure the database. An local MongoDB database
+   will do the job.
 
 ## Available Scripts
 
 In the project directory, you can run:
+
+## Collaboration
+If anyone wants to extend this project, DM me with your background so that we can discuss the
+possible use cases where the project can be applied to.
 
 ### `yarn start`
 

@@ -71,6 +71,7 @@ const Frame = (props) => {
     id,
     isLast,
     setHeight,
+    endPadding,
   } = props;
 
   const frameRef = useRef(null);
@@ -96,15 +97,15 @@ const Frame = (props) => {
       <FrameContainer id={id} ref={frameRef}>
         <FrameTitle>{title}</FrameTitle>
         {renderBody()}
-        {!isLast ? (
-          <div
-            id={getFrameEndId(position)}
-            //  style={{ border: "1px solid black" }}
-          />
-        ) : (
-          <div style={{ height: 180 }} />
-        )}
       </FrameContainer>
+      {!isLast ? (
+        <div
+          id={getFrameEndId(position)}
+          //  style={{ border: "1px solid black" }}
+        />
+      ) : (
+        <div style={{ height: endPadding }} />
+      )}
     </MathJax.Provider>
   );
 };

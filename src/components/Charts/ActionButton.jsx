@@ -1,11 +1,31 @@
 import { Button } from "@material-ui/core";
-import React from "react";
+import React, { useMemo } from "react";
 import { PlayState, Tween } from "react-gsap";
 import { Controller, Scene } from "react-scrollmagic";
 import { APP_BAR_HEIGHT_INT, ActionButtonContainer } from "../../styled";
 import { FADE_OUT_OFFSET, TRIGGER_OFFSET } from "./default";
 
-const ActionButton = ({ duration, trigger, title, onClick, children }) => {
+const ActionButton = ({
+  duration,
+  trigger,
+  title,
+  onClick,
+  children,
+  isFirst,
+  isLast,
+}) => {
+  const ChildrenComponents = useMemo(
+    () =>
+      React.Children.toArray(children).map((child, index, arr) => {
+        return React.cloneElement(child, {
+          duration,
+          trigger,
+          isFirst,
+          isLast,
+        });
+      }),
+    [children, duration, isFirst, isLast, trigger]
+  );
   return (
     <Controller>
       <Scene
@@ -20,11 +40,11 @@ const ActionButton = ({ duration, trigger, title, onClick, children }) => {
         // }
         triggerHook={APP_BAR_HEIGHT_INT / window.innerHeight + TRIGGER_OFFSET}
       >
-        {(progress) => {
-          if (progress === 0)
+        {(progress, event) => {
+          if (progress === 0 || event.state === "AFTER")
             return (
               <ActionButtonContainer style={{ display: "none" }}>
-                {children}
+                {ChildrenComponents}
               </ActionButtonContainer>
             );
           return (
@@ -34,7 +54,7 @@ const ActionButton = ({ duration, trigger, title, onClick, children }) => {
                 progress={progress * 10 < 1 ? progress * 10 : 1}
                 playState={progress > 0 ? PlayState.play : PlayState.pause}
               >
-                <div>{children}</div>
+                {ChildrenComponents}
               </Tween>
               <Tween
                 from={{ opacity: 0, transform: "translate3d(100vw, 0, 0)" }}
